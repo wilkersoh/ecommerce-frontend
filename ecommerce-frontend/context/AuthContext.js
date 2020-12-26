@@ -30,8 +30,8 @@ const useAuthProvider = (props) => {
         setUser({ email });
 
         // Just for testing
-        const token = await getToken();
-        console.log(token);
+        // const token = await getToken();
+        // console.log(token);
       }
     } catch (error) {}
   };

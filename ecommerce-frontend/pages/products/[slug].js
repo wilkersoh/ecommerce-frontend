@@ -2,17 +2,9 @@ import Head from "next/head";
 import Image from "next/image";
 import { API_URL, fromImageToUrl } from "../../utils/urls";
 import { twoDecimals } from "../../utils/format";
-import {
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  useNumberInput,
-  HStack,
-  Button,
-  Input,
-} from "@chakra-ui/react";
+import { useNumberInput, HStack, Button, Input } from "@chakra-ui/react";
+import CheckoutButton from "../../components/CheckoutButton";
+import AddCart from "../../components/AddCart";
 import BuyButton from "../../components/BuyButton";
 
 const Product = ({ product }) => {
@@ -31,6 +23,9 @@ const Product = ({ product }) => {
   const dec = getDecrementButtonProps();
   const input = getInputProps({ isReadOnly: true });
 
+  // detruction product, it may only need "id" for order backend thru buybutton
+  const { id } = product;
+
   return (
     <div>
       <Head>
@@ -40,6 +35,7 @@ const Product = ({ product }) => {
         )}
       </Head>
       <h3>{product.name}</h3>
+      {/* <pre>{JSON.stringify(product, null, 2)}</pre> */}
       <Image src={fromImageToUrl(product.image)} width={500} height={500} />
       <h3>{product.name}</h3>
       <div>
@@ -50,10 +46,12 @@ const Product = ({ product }) => {
           <Button {...dec}>-</Button>
         </HStack>
       </div>
+      <AddCart product={product}>Add To Cart</AddCart>
       <p>
-        ${twoDecimals(product.price * parseInt(input.value))}{" "}
-        <BuyButton product={product} quantity={input} />
+        ${twoDecimals(product.price * parseInt(input.value))}
+        {/* <BuyButton product={product} quantity={input} /> */}
       </p>
+      <BuyButton>Buy Item</BuyButton>
       <p>{product.content}</p>
     </div>
   );
