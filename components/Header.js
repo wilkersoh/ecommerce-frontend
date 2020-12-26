@@ -2,12 +2,14 @@ import React from "react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { useAuth } from "../context/AuthContext";
-
+import { Link } from "@chakra-ui/react";
 import styles from "../styles/Header.module.css";
+import { useCart } from "../context/CartContext";
 
 export default function Header() {
   const router = useRouter();
   const { user } = useAuth();
+  const { cartItems } = useCart();
 
   const isHome = router.pathname === "/";
   const goBack = (event) => {
@@ -29,6 +31,9 @@ export default function Header() {
           </a>
         </NextLink>
       </div>
+      <NextLink href='/cart'>
+        <Link>Cart Store - {cartItems?.length}</Link>
+      </NextLink>
       <div className={styles.auth}>
         {user ? (
           <NextLink href='/account'>
