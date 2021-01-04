@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import useSWR from "swr";
 import { API_URL } from "../utils/urls";
 import fetcher from "../utils/fetcher";
@@ -19,42 +18,52 @@ export const useCart = () => {
   return useContext(CartContext);
 };
 
-const useCartProvider = async () => {
+const useCartProvider = () => {
   const [cartItems, setCartItem] = useState([]);
 
-  const { user, getToken } = useAuth();
-  const [token, setToken] = useState("");
+  const { user, token } = useAuth();
 
+  const { data } = useSWR(user ? [`${API_URL}/carts`, token] : null, fetcher, {
+    revalidateOnFocus: false,
+  });
+
+  // console.log(data); re-render 7 time in index page
   useEffect(() => {
-    async function fetchCartOrder() {
-      const tokenID = await getToken();
-      setToken(tokenID);
-    }
-    fetchCartOrder();
-  }, [user]);
+    if (Array.isArray(data)) setCartItem(data);
+  }, [data]);
 
-  /**
-   * This is dumb data
-   */
-  useEffect(() => {
-    const carts = [
-      { name: "BirdEgg", price: "29.90", quantity: 1 },
-      { name: "The NextJs With Strapi Courses", price: "49.90", quantity: 1 },
-    ];
+  const getCurrentCartItem = (productID) => {
+    return cartItems.find((cart) => cart.product.id === productID) || {};
+  };
 
-    setCartItem(carts);
-  }, []);
+  const createNewCart = async (productID, quantity) => {
+    return await fetch(`${API_URL}/carts`, {
+      method: "POST",
+      body: JSON.stringify([{ productID, quantity }]),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  };
 
-  const { data, error } = useSWR(
-    user ? [`${API_URL}/orders`, token] : null,
-    fetcher
-  );
-
-  console.log(data);
-  // if(data) setCartItem(data)
+  const updateCart = async (cartID, quantity) => {
+    return await fetch(`${API_URL}/carts/${cartID}`, {
+      method: "PUT",
+      body: JSON.stringify([{ quantity }]),
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  };
 
   return {
     setCartItem,
     cartItems,
+    createNewCart,
+    updateCart,
+    getCurrentCartItem,
   };
 };

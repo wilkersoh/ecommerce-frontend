@@ -20,6 +20,7 @@ export const useAuth = () => {
 
 const useAuthProvider = (props) => {
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
   const router = useRouter();
 
   const checkUserLoggedIn = async () => {
@@ -30,8 +31,9 @@ const useAuthProvider = (props) => {
         setUser({ email });
 
         // Just for testing
-        // const token = await getToken();
-        // console.log(token);
+        const token = await getToken();
+        console.log(token);
+        setToken(token);
       }
     } catch (error) {}
   };
@@ -84,6 +86,7 @@ const useAuthProvider = (props) => {
     loginUser,
     logoutUser,
     getToken,
+    token,
   };
 };
 

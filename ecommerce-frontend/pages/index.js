@@ -17,6 +17,7 @@ export default function Home({ products }) {
           <NextLink href={`/products/${product.slug}`}>
             <a>
               <div className={styles.product__Row}>
+                {product.id}
                 <div className={styles.product__ColImg}>
                   <Image
                     src={fromImageToUrl(product.image)}
