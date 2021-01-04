@@ -19,3 +19,13 @@ Face issue
 
 # Buy Button
 1. Redirect to the cart page
+
+
+# Mind Playground
+1. What's the relation with cart, product and order
+2. Cart is a temporary gap table for order.
+3. Cart will received the item intent to buy.
+4. Cart will store quantity and product item id
+5. Cart will be created from buy button or add cart button
+6. by default cart button will be added quantity 1, if multiple click, it will check and plus one in same cart item.
+7.

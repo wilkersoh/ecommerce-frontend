@@ -1,24 +1,45 @@
 import React from "react";
-import NextLink from "next/link";
-import { Link } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { useCart } from "../context/CartContext";
 
-export default function AddCart({ product, children, ...porps }) {
-  const { cartItems, setCartItem } = useCart();
-  const onAddToCart = (name, quantity = 1) => {
-    // Check is there already in cart
-    cartItems?.forEach((cart) => {
-      if (cart.name === product.name) {
-        cart.quantity++;
-      }
-    });
+export default function AddCart({ product, quantity = 1 }) {
+  const {
+    cartItems,
+    setCartItem,
+    getCurrentCartItem,
+    createNewCart,
+    updateCart,
+  } = useCart();
 
-    setCartItem([...cartItems]);
+  const onAddToCart = async (productID) => {
+    const hasObject = getCurrentCartItem(productID);
+
+    try {
+      if (!Object.entries(hasObject).length) {
+        const res = await createNewCart(productID, quantity);
+        const payload = await res.json();
+
+        setCartItem([...payload, ...cartItems]);
+      } else {
+        const res = await updateCart(hasObject.id, quantity);
+        const payload = await res.json();
+        const updated = cartItems.map((cart) =>
+          cart.id === payload.id
+            ? { ...cart, quantity: payload.quantity }
+            : cart
+        );
+        setCartItem([...updated]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    <div onClick={onAddToCart}>
-      <div {...porps}>{children}</div>
+    <div>
+      <Button colorScheme='teal' onClick={() => onAddToCart(product.id)}>
+        Add To Cart
+      </Button>
     </div>
   );
 }
