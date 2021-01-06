@@ -1,18 +1,30 @@
 import React, { useState } from "react";
-import NextLink from "next/link";
 import { useRouter } from "next/router";
-import { Link } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
+import { useCart } from "../context/CartContext";
 
-export default function BuyButton({ productID, children, ...porps }) {
+export default function BuyButton({
+  productID,
+  quantity = 1,
+  children,
+  ...porps
+}) {
   const router = useRouter();
+  const { cartItems, setCartItem } = useCart();
 
-  const onCheckItem = (id, quantity = 1) => {
-    console.log("added buy button");
+  const onCheckItem = () => {
+    // isChecked is true
+    const updated = cartItems.map((cart) =>
+      cart.product.id === productID ? { ...cart, isChecked: true } : cart
+    );
+    setCartItem([...updated]);
+
+    router.push("/cart");
   };
 
   return (
-    <div onClick={() => onCheckItem(productID)}>
-      <div {...porps}>{children}</div>
+    <div onClick={onCheckItem}>
+      <Button {...porps}>{children}</Button>
     </div>
   );
 }

@@ -11,22 +11,33 @@ import { useCart } from "../../context/CartContext";
 
 const Product = ({ product }) => {
   const { cartItems, getCurrentCartItem } = useCart();
-  const [currentCart, setCurrentCart] = useState({ quantity: 1 });
+  const [currentProduct, setCurrentProduct] = useState({ quantity: 1 });
 
   useEffect(() => {
     const current = getCurrentCartItem(product.id);
-    setCurrentCart({ ...currentCart, ...current });
-  }, [cartItems, setCurrentCart]);
+    setCurrentProduct({ ...currentProduct, ...current });
+  }, [cartItems, setCurrentProduct]);
+
+  const checkStoreQuantity = (total, quantity) => {
+    if (quantity > total) return true;
+  };
 
   const addToInput = (valueToAdd) => {
-    setCurrentCart({
-      ...currentCart,
-      quantity: currentCart.quantity + valueToAdd,
+    const quantity = currentProduct.quantity + valueToAdd;
+    const isMax = checkStoreQuantity(product.store, quantity);
+    setCurrentProduct({
+      ...currentProduct,
+      quantity: isMax ? product.store : quantity,
     });
   };
 
   const handleChange = (e) => {
-    setCurrentCart({ ...currentCart, quantity: Number(e.target.value) });
+    const quantity = Number(e.target.value);
+    const isMax = checkStoreQuantity(product.store, quantity);
+    setCurrentProduct({
+      ...currentProduct,
+      quantity: isMax ? product.store : quantity,
+    });
   };
 
   const router = useRouter();
@@ -59,7 +70,7 @@ const Product = ({ product }) => {
           <input
             type='text'
             name={"quantity"}
-            value={currentCart.quantity}
+            value={currentProduct.quantity}
             onChange={handleChange}></input>
           <Button
             type='button'
@@ -72,13 +83,13 @@ const Product = ({ product }) => {
 
         <div>In Store - {product.store}</div>
       </div>
-      <AddCart product={product} quantity={currentCart.quantity}>
+      <AddCart product={product} quantity={currentProduct.quantity}>
         Add To Cart
       </AddCart>
       <p>${twoDecimals(product.price * parseInt(1))}</p>
       <BuyButton
         productID={product.id}
-        quantity={currentCart.quantity}
+        quantity={currentProduct.quantity}
         colorScheme='blue'
         px={4}>
         Buy Item

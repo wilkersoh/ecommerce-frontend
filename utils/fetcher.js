@@ -8,9 +8,5 @@ export default async (url, token) => {
     credentials: "same-origin",
   });
 
-  console.log("token:", token);
-
-  const data = await res.json();
-
-  return data; // 这里的 data 会pass回去 dashboard useSWR()
+  return res.json(); // 这里的 data 会pass回去 dashboard useSWR()
 };

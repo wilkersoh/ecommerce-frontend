@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
+import useSWR from "swr";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "@chakra-ui/react";
 import styles from "../styles/Header.module.css";
 import { useCart } from "../context/CartContext";
+import fetcher from "../utils/fetcher";
+import { API_URL } from "../utils/urls";
 
 export default function Header() {
   const router = useRouter();
@@ -31,9 +34,13 @@ export default function Header() {
           </a>
         </NextLink>
       </div>
-      <NextLink href='/cart'>
-        <Link>Cart Store - {cartItems?.length}</Link>
-      </NextLink>
+      {user ? (
+        <NextLink href='/cart'>
+          <Link>Cart Store - {cartItems.length}</Link>
+        </NextLink>
+      ) : (
+        <div>Cart Store - </div>
+      )}
       <div className={styles.auth}>
         {user ? (
           <NextLink href='/account'>

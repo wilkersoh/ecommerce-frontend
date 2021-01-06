@@ -21,13 +21,16 @@ export default function AddCart({ product, quantity = 1 }) {
 
         setCartItem([...payload, ...cartItems]);
       } else {
-        const res = await updateCart(hasObject.id, quantity);
+        const cartObject = [{ id: hasObject.id, quantity }];
+        const res = await updateCart(cartObject);
         const payload = await res.json();
+
         const updated = cartItems.map((cart) =>
-          cart.id === payload.id
-            ? { ...cart, quantity: payload.quantity }
+          cart.id === payload[0].id
+            ? { ...cart, quantity: payload[0].quantity }
             : cart
         );
+
         setCartItem([...updated]);
       }
     } catch (error) {
