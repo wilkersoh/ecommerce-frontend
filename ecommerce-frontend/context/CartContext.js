@@ -42,18 +42,32 @@ const useCartProvider = () => {
       body: JSON.stringify([{ productID, quantity }]),
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
   };
 
-  const updateCart = async (cartID, quantity) => {
-    return await fetch(`${API_URL}/carts/${cartID}`, {
+  /**
+   *
+   * @param {ArrayObject: [ {id, rest} ] } data
+   */
+  const updateCart = async (data) => {
+    return await fetch(`${API_URL}/carts/${data[0].id}`, {
       method: "PUT",
-      body: JSON.stringify([{ quantity }]),
+      body: JSON.stringify([...data]),
       headers: {
         "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  };
+
+  const removeCartItem = async (id) => {
+    return await fetch(`${API_URL}/carts/${id}`, {
+      method: "DELETE",
+      body: JSON.stringify(id),
+      headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
@@ -64,6 +78,7 @@ const useCartProvider = () => {
     cartItems,
     createNewCart,
     updateCart,
+    removeCartItem,
     getCurrentCartItem,
   };
 };
