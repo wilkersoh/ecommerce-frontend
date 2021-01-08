@@ -113,8 +113,9 @@ export async function getStaticProps({ params: { slug } }) {
 
 export async function getStaticPaths() {
   // Retrieve all the possbile paths
+  let products = [];
   const products_res = await fetch(`${API_URL}/products/`);
-  const products = await products_res.json();
+  products = await products_res.json();
   // Return them to Nextjs context
   return {
     paths: products.map((product) => ({
