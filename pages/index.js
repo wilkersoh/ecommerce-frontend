@@ -12,7 +12,8 @@ export default function Home({ products }) {
         <title>Create Next App</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      {products ? (
+      <div>Remove proudct</div>
+      {/* {products ? (
         products.map((product) => (
           <div key={product.name} className={styles.product}>
             <NextLink href={`/products/${product.slug}`}>
@@ -36,7 +37,7 @@ export default function Home({ products }) {
         ))
       ) : (
         <div>Please update product</div>
-      )}
+      )} */}
     </div>
   );
 }
