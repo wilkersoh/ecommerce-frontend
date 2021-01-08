@@ -113,14 +113,15 @@ export async function getStaticProps({ params: { slug } }) {
 
 export async function getStaticPaths() {
   // Retrieve all the possbile paths
-  let products = [];
   const products_res = await fetch(`${API_URL}/products/`);
-  products = await products_res.json();
+  const products = await products_res.json();
   // Return them to Nextjs context
   return {
-    paths: products.map((product) => ({
-      params: { slug: String(product.slug) },
-    })),
+    paths: !products
+      ? []
+      : products.map((product) => ({
+          params: { slug: String(product.slug) },
+        })),
     fallback: true, // Tells to nextjs to show a 404 if the param is not found
   };
 }
