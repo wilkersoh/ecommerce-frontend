@@ -12,27 +12,31 @@ export default function Home({ products }) {
         <title>Create Next App</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      {products.map((product) => (
-        <div key={product.name} className={styles.product}>
-          <NextLink href={`/products/${product.slug}`}>
-            <a>
-              <div className={styles.product__Row}>
-                {product.id}
-                <div className={styles.product__ColImg}>
-                  <Image
-                    src={fromImageToUrl(product.image)}
-                    width={500}
-                    height={500}
-                  />
+      {products ? (
+        products.map((product) => (
+          <div key={product.name} className={styles.product}>
+            <NextLink href={`/products/${product.slug}`}>
+              <a>
+                <div className={styles.product__Row}>
+                  {product.id}
+                  <div className={styles.product__ColImg}>
+                    <Image
+                      src={fromImageToUrl(product.image)}
+                      width={500}
+                      height={500}
+                    />
+                  </div>
+                  <div className={styles.product__Col}>
+                    {product.name} ${twoDecimals(product.price)}
+                  </div>
                 </div>
-                <div className={styles.product__Col}>
-                  {product.name} ${twoDecimals(product.price)}
-                </div>
-              </div>
-            </a>
-          </NextLink>
-        </div>
-      ))}
+              </a>
+            </NextLink>
+          </div>
+        ))
+      ) : (
+        <div>Please update product</div>
+      )}
     </div>
   );
 }
