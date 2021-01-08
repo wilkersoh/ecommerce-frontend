@@ -48,7 +48,7 @@ export async function getStaticProps() {
   // Return the products
   return {
     props: {
-      products,
+      products: !products ? [] : products,
     },
   };
 }
