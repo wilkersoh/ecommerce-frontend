@@ -13,43 +13,42 @@ const Product = ({ product }) => {
   const { cartItems, getCurrentCartItem } = useCart();
   const [currentProduct, setCurrentProduct] = useState({ quantity: 1 });
 
-  // useEffect(() => {
-  //   const current = getCurrentCartItem(product.id);
-  //   setCurrentProduct({ ...currentProduct, ...current });
-  // }, [cartItems, setCurrentProduct]);
+  useEffect(() => {
+    const current = getCurrentCartItem(product.id);
+    setCurrentProduct({ ...currentProduct, ...current });
+  }, [cartItems, setCurrentProduct]);
 
-  // const checkStoreQuantity = (total, quantity) => {
-  //   if (quantity > total) return true;
-  // };
+  const checkStoreQuantity = (total, quantity) => {
+    if (quantity > total) return true;
+  };
 
-  // const addToInput = (valueToAdd) => {
-  //   const quantity = currentProduct.quantity + valueToAdd;
-  //   const isMax = checkStoreQuantity(product.store, quantity);
-  //   setCurrentProduct({
-  //     ...currentProduct,
-  //     quantity: isMax ? product.store : quantity,
-  //   });
-  // };
+  const addToInput = (valueToAdd) => {
+    const quantity = currentProduct.quantity + valueToAdd;
+    const isMax = checkStoreQuantity(product.store, quantity);
+    setCurrentProduct({
+      ...currentProduct,
+      quantity: isMax ? product.store : quantity,
+    });
+  };
 
-  // const handleChange = (e) => {
-  //   const quantity = Number(e.target.value);
-  //   const isMax = checkStoreQuantity(product.store, quantity);
-  //   setCurrentProduct({
-  //     ...currentProduct,
-  //     quantity: isMax ? product.store : quantity,
-  //   });
-  // };
+  const handleChange = (e) => {
+    const quantity = Number(e.target.value);
+    const isMax = checkStoreQuantity(product.store, quantity);
+    setCurrentProduct({
+      ...currentProduct,
+      quantity: isMax ? product.store : quantity,
+    });
+  };
 
-  // const router = useRouter();
+  const router = useRouter();
 
-  // if (router.isFallback) {
-  //   return <div>Loading... sorry for watiing...</div>;
-  // }
+  if (router.isFallback) {
+    return <div>Loading... sorry for watiing...</div>;
+  }
 
   return (
     <div>
-      <div>Testing</div>
-      {/* <Head>
+      <Head>
         {product.meta_title && <title>{product.meta_title}</title>}
         {product.meta_description && (
           <meta name='description' content={product.meta_description} />
@@ -95,36 +94,34 @@ const Product = ({ product }) => {
         px={4}>
         Buy Item
       </BuyButton>
-      <p>{product.content}</p> */}
+      <p>{product.content}</p>
     </div>
   );
 };
 
-// export async function getStaticProps({ params: { slug } }) {
-//   const product_res = await fetch(`${API_URL}/products/?slug=${slug}`); // question mark is query slug, to find the slug in the json
-//   const found = await product_res.json();
+export async function getStaticProps({ params: { slug } }) {
+  const product_res = await fetch(`${API_URL}/products/?slug=${slug}`); // question mark is query slug, to find the slug in the json
+  const found = await product_res.json();
 
-//   return {
-//     props: {
-//       product: found[0],
-//     },
-//     revalidate: 3,
-//   };
-// }
+  return {
+    props: {
+      product: found[0],
+    },
+    revalidate: 3,
+  };
+}
 
-// export async function getStaticPaths() {
-//   // Retrieve all the possbile paths
-//   const products_res = await fetch(`${API_URL}/products/`);
-//   const products = await products_res.json();
-//   // Return them to Nextjs context
-//   return {
-//     paths: !products
-//       ? []
-//       : products.map((product) => ({
-//           params: { slug: String(product.slug) },
-//         })),
-//     fallback: true, // Tells to nextjs to show a 404 if the param is not found
-//   };
-// }
+export async function getStaticPaths() {
+  // Retrieve all the possbile paths
+  const products_res = await fetch(`${API_URL}/products/`);
+  const products = await products_res.json();
+  // Return them to Nextjs context
+  return {
+    paths: products.map((product) => ({
+      params: { slug: String(product.slug) },
+    })),
+    fallback: true, // Tells to nextjs to show a 404 if the param is not found
+  };
+}
 
 export default Product;
