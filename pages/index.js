@@ -5,7 +5,7 @@ import styles from "../styles/Home.module.css";
 import { fromImageToUrl, API_URL } from "../utils/urls";
 import { twoDecimals } from "../utils/format";
 
-export default function Home({ products }) {
+export default function Home({ products = [] }) {
   return (
     <div>
       <Head>
@@ -43,12 +43,12 @@ export default function Home({ products }) {
 
 export async function getStaticProps() {
   // Fetch products
-  const product_res = await fetch(`${API_URL}/products/`);
-  const products = await product_res.json();
-  // Return the products
-  return {
-    props: {
-      products: !products ? [] : products,
-    },
-  };
+  // const product_res = await fetch(`${API_URL}/products/`);
+  // const products = await product_res.json();
+  // // Return the products
+  // return {
+  //   props: {
+  //     products: !products ? [] : products,
+  //   },
+  // };
 }
