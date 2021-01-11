@@ -21,7 +21,9 @@ export default function AddCart({ product, quantity = 1 }) {
 
         setCartItem([...payload, ...cartItems]);
       } else {
-        const cartObject = [{ id: hasObject.id, quantity }];
+        const cartObject = [
+          { id: hasObject.id, quantity: hasObject.quantity + quantity },
+        ];
         const res = await updateCart(cartObject);
         const payload = await res.json();
 

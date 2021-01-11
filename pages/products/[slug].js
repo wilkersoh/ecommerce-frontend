@@ -18,28 +18,6 @@ const Product = ({ product }) => {
     setCurrentProduct({ ...currentProduct, ...current });
   }, [cartItems, setCurrentProduct]);
 
-  const checkStoreQuantity = (total, quantity) => {
-    if (quantity > total) return true;
-  };
-
-  const addToInput = (valueToAdd) => {
-    const quantity = currentProduct.quantity + valueToAdd;
-    const isMax = checkStoreQuantity(product.store, quantity);
-    setCurrentProduct({
-      ...currentProduct,
-      quantity: isMax ? product.store : quantity,
-    });
-  };
-
-  const handleChange = (e) => {
-    const quantity = Number(e.target.value);
-    const isMax = checkStoreQuantity(product.store, quantity);
-    setCurrentProduct({
-      ...currentProduct,
-      quantity: isMax ? product.store : quantity,
-    });
-  };
-
   const router = useRouter();
 
   if (router.isFallback) {
@@ -59,34 +37,10 @@ const Product = ({ product }) => {
       <h3>{product.name}</h3>
       <div>
         <p>Quantity</p>
-        <div>
-          <Button
-            type='button'
-            px={4}
-            colorScheme='teal'
-            onClick={() => addToInput(-1)}>
-            -
-          </Button>
-          <input
-            type='text'
-            name={"quantity"}
-            value={currentProduct.quantity}
-            onChange={handleChange}></input>
-          <Button
-            type='button'
-            px={4}
-            colorScheme='teal'
-            onClick={() => addToInput(+1)}>
-            +
-          </Button>
-        </div>
-
         <div>In Store - {product.store}</div>
       </div>
-      <AddCart product={product} quantity={currentProduct.quantity}>
-        Add To Cart
-      </AddCart>
-      <p>${twoDecimals(product.price * parseInt(1))}</p>
+      <AddCart product={product} />
+      <p>${twoDecimals(product.price)}</p>
       <BuyButton
         productID={product.id}
         quantity={currentProduct.quantity}

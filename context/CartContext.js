@@ -29,7 +29,9 @@ const useCartProvider = () => {
 
   // console.log(data); re-render 7 time in index page
   useEffect(() => {
-    if (Array.isArray(data)) setCartItem(data);
+    if (Array.isArray(data)) {
+      setCartItem(data);
+    }
   }, [data]);
 
   const getCurrentCartItem = (productID) => {
@@ -37,6 +39,7 @@ const useCartProvider = () => {
   };
 
   const createNewCart = async (productID, quantity) => {
+    console.log("hit create");
     return await fetch(`${API_URL}/carts`, {
       method: "POST",
       body: JSON.stringify([{ productID, quantity }]),
@@ -63,9 +66,16 @@ const useCartProvider = () => {
   };
 
   const removeCartItem = async (id) => {
+    // return await fetch(`${API_URL}/carts/${id}`, {
+    //   method: "DELETE",
+    //   body: JSON.stringify({ids: [1]}),
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // });
     return await fetch(`${API_URL}/carts/${id}`, {
       method: "DELETE",
-      body: JSON.stringify(id),
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

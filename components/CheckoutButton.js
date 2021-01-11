@@ -2,14 +2,21 @@ import React from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../context/AuthContext";
 import { loadStripe } from "@stripe/stripe-js";
+import { Button } from "@chakra-ui/react";
 import { STRIPE_PK, API_URL } from "../utils/urls";
 
 import styles from "../styles/BuyButton.module.css";
+import { useCart } from "../context/CartContext";
 
 const stripePromise = loadStripe(STRIPE_PK);
 
-export default function CheckoutButton({ product, quantity }) {
+/**
+ *
+ * @param {ArrayObject} param
+ */
+export default function CheckoutButton() {
   const { user, getToken } = useAuth();
+  const { cartItems } = useCart();
   const router = useRouter();
 
   const redirectToLogin = () => {
@@ -22,7 +29,7 @@ export default function CheckoutButton({ product, quantity }) {
 
     const res = await fetch(`${API_URL}/orders`, {
       method: "POST",
-      body: JSON.stringify({ product, quantity }),
+      body: JSON.stringify([...cartItems]),
       headers: {
         "Content-type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -31,7 +38,7 @@ export default function CheckoutButton({ product, quantity }) {
 
     // session pass from stripe backend
     const session = await res.json();
-
+    console.log("session frontend:", session);
     const result = await stripe.redirectToCheckout({
       sessionId: session.id,
     });
@@ -40,14 +47,18 @@ export default function CheckoutButton({ product, quantity }) {
   return (
     <>
       {!user && (
-        <button className={styles.buy} onClick={redirectToLogin}>
+        <Button className={styles.buy} onClick={redirectToLogin}>
           Login to Buy
-        </button>
+        </Button>
       )}
       {user && (
-        <button className={styles.buy} onClick={handleCheckout}>
-          BUY
-        </button>
+        <Button
+          onClick={handleCheckout}
+          bgColor='#59756f'
+          color='#fff'
+          variant='solid'>
+          Check Out
+        </Button>
       )}
     </>
   );
