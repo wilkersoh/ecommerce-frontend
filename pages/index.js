@@ -43,8 +43,10 @@ export default function Home({ products = [] }) {
 
 export async function getStaticProps() {
   // Fetch products
+  console.log(API_URL);
   const product_res = await fetch(`${API_URL}/products/`);
   const products = await product_res.json();
+  console.log(products);
   // Return the products
   return {
     props: {
