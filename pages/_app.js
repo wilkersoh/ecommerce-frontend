@@ -1,6 +1,6 @@
 import "../styles/globals.css";
-import { ChakraProvider } from "@chakra-ui/react";
-import { extendTheme } from "@chakra-ui/react";
+import useSWR, { SWRConfig } from "swr";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { AuthProvider } from "../context/AuthContext";
 import { CartProvider } from "../context/CartContext";
 
@@ -21,13 +21,13 @@ function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider theme={theme}>
       <AuthProvider>
+        {/* <SWRConfig > */}
         <CartProvider>
-          <content>
-            <Header />
-            <Component {...pageProps} />
-            <Footer />
-          </content>
+          <Header />
+          <Component {...pageProps} />
+          <Footer />
         </CartProvider>
+        {/* </SWRConfig> */}
       </AuthProvider>
     </ChakraProvider>
   );

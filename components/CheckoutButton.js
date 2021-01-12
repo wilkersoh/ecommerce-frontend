@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../context/AuthContext";
 import { loadStripe } from "@stripe/stripe-js";
@@ -15,6 +15,7 @@ const stripePromise = loadStripe(STRIPE_PK);
  * @param {ArrayObject} param
  */
 export default function CheckoutButton() {
+  const [isLoading, setIsLoading] = useState(false);
   const { user, getToken } = useAuth();
   const { cartItems } = useCart();
   const router = useRouter();
@@ -26,7 +27,7 @@ export default function CheckoutButton() {
   const handleCheckout = async () => {
     const stripe = await stripePromise;
     const token = await getToken();
-
+    setIsLoading(true);
     const res = await fetch(`${API_URL}/orders`, {
       method: "POST",
       body: JSON.stringify([...cartItems]),
@@ -53,6 +54,7 @@ export default function CheckoutButton() {
       )}
       {user && (
         <Button
+          isLoading={isLoading}
           onClick={handleCheckout}
           bgColor='#59756f'
           color='#fff'

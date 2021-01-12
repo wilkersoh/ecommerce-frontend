@@ -1,41 +1,28 @@
 import React from "react";
+import NextLink from "next/link";
 import { useCart } from "../context/CartContext";
 
-import { Button, Checkbox } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Link,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+} from "@chakra-ui/react";
+import CheckoutButton from "../components/CheckoutButton";
 
 export default function cart() {
   const { cartItems, setCartItem, updateCart, removeCartItem } = useCart();
-
-  const onCheckboxChange = (cartID) => {
-    setCartItem((prev) => {
-      const updated = prev.map((cart) => {
-        return cart.id === cartID
-          ? { ...cart, isChecked: !cart.isChecked }
-          : cart;
-      });
-      return updated;
+  console.log(cartItems);
+  const handleChange = (id, value) => {
+    let cart = cartItems.map((item) => {
+      return item.id == id ? { ...item, quantity: Number(value) } : item;
     });
-  };
 
-  const handleChange = () => {
-    //  const quantity = Number(e.target.value);
-    //  const isMax = checkStoreQuantity(product.store, quantity);
-    //  setCurrentProduct({
-    //    ...currentProduct,
-    //    quantity: isMax ? product.store : quantity,
-    //  });
-  };
-
-  const addToInput = (valueToAdd, targetID) => {
-    setCartItem((prev) => {
-      const cart = cartItems.map((item, i) =>
-        item.id === targetID
-          ? { ...item, quantity: prev[i].quantity + valueToAdd }
-          : item
-      );
-
-      return cart;
-    });
+    setCartItem(cart);
   };
 
   const onUpdateCart = async () => {
@@ -52,10 +39,6 @@ export default function cart() {
 
   const onRemoveCart = async (targetID) => {
     try {
-      setCartItem(() => {
-        const cart = cartItems.filter((item) => item.id !== targetID);
-        return cart;
-      });
       await removeCartItem(targetID);
     } catch (error) {
       console.log(error);
@@ -67,42 +50,36 @@ export default function cart() {
       <h1>I am cart</h1>
       {cartItems.map((cart) => (
         <React.Fragment key={cart.id}>
-          <div>
-            {cart.product.name} ${cart.product.price}
-          </div>
-          <div>
-            <Button
-              type='button'
-              px={4}
-              colorScheme='teal'
-              onClick={() => addToInput(-1, cart.id)}>
-              -
-            </Button>
-            <input
-              type='text'
-              name={"quantity"}
+          <Box>{cart.product.name}</Box>
+          <Box>Price: RM {cart.product.price}</Box>
+          <Box>
+            <NumberInput
+              size={"sm"}
+              step={1}
               value={cart.quantity}
-              onChange={handleChange}></input>
-            <Button
-              type='button'
-              px={4}
-              colorScheme='teal'
-              onClick={() => addToInput(+1, cart.id)}>
-              +
-            </Button>
-          </div>
+              min={1}
+              max={cart.product.store}
+              id={cart.id}
+              onChange={(value) => handleChange(cart.id, value)}
+              clampValueOnBlur={true}>
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </Box>
+          <Box>Total: RM {(cart.quantity * cart.product.price).toFixed(2)}</Box>
           <div onClick={() => onRemoveCart(cart.id)}>Remove</div>
-          <div>
-            <Checkbox
-              onChange={() => onCheckboxChange(cart.id)}
-              colorScheme='green'
-              isChecked={cart.isChecked}></Checkbox>
-          </div>
         </React.Fragment>
       ))}
-      <Button colorScheme='#59756f' color={"#59756f"} variant='outline'>
-        Continue shopping
-      </Button>
+      <NextLink href='/'>
+        <Link>
+          <Button colorScheme='#59756f' color={"#59756f"} variant='outline'>
+            Continue shopping
+          </Button>
+        </Link>
+      </NextLink>
       <Button
         onClick={onUpdateCart}
         colorScheme='#59756f'
@@ -110,9 +87,7 @@ export default function cart() {
         variant='outline'>
         Update Cart
       </Button>
-      <Button bgColor='#59756f' color='#fff' variant='solid'>
-        Check Out
-      </Button>
+      <CheckoutButton />
     </div>
   );
 }

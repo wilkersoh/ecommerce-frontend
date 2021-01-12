@@ -66,14 +66,10 @@ const useCartProvider = () => {
   };
 
   const removeCartItem = async (id) => {
-    // return await fetch(`${API_URL}/carts/${id}`, {
-    //   method: "DELETE",
-    //   body: JSON.stringify({ids: [1]}),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    // });
+    setCartItem((prev) => {
+      const cart = cartItems.filter((item) => item.id != id);
+      return cart;
+    });
     return await fetch(`${API_URL}/carts/${id}`, {
       method: "DELETE",
       headers: {
