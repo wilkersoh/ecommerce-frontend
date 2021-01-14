@@ -1,7 +1,8 @@
+import fetch from "isomorphic-unfetch";
+
 export default async (url, token) => {
   const res = await fetch(url, {
     method: "GET",
-    // headers: new Headers({ "Content-Type": "application/json", token }),
     headers: {
       Authorization: `Bearer ${token}`,
     },

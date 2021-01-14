@@ -6,7 +6,6 @@ import { API_URL, fromImageToUrl } from "../../utils/urls";
 import { twoDecimals } from "../../utils/format";
 import { Button } from "@chakra-ui/react";
 import AddCart from "../../components/AddCart";
-import BuyButton from "../../components/BuyButton";
 import { useCart } from "../../context/CartContext";
 
 const Product = ({ product }) => {
@@ -41,13 +40,6 @@ const Product = ({ product }) => {
       </div>
       <AddCart product={product} />
       <p>${twoDecimals(product.price)}</p>
-      <BuyButton
-        productID={product.id}
-        quantity={currentProduct.quantity}
-        colorScheme='blue'
-        px={4}>
-        Buy Item
-      </BuyButton>
       <p>{product.content}</p>
     </div>
   );

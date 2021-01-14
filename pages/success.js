@@ -7,38 +7,25 @@ import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 
 const useOrder = (session_id, token) => {
-  const { cartItems, setCartItem } = useCart();
+  const { cartMutate, cartItems } = useCart();
   const [order, setOrder] = useState([]);
   const [loading, setLoading] = useState("");
 
-  const confirmPayment = () => {
-    return fetch(`${API_URL}/orders/confirm`, {
-      method: "POST",
-      body: JSON.stringify({ checkout_session: session_id }),
-      headers: {
-        "Content-type": "application/json",
-      },
-    });
-  };
-
-  const removeCart = () => {
-    return fetch(`${API_URL}/carts/deletes`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-  };
-
   useEffect(() => {
+    // to avoid server error
+    if (Array.isArray(session_id)) return;
+
     const fetchOrder = async () => {
       setLoading(true);
       try {
-        const res = await Promise.all([confirmPayment(), removeCart()]);
-        const payload = await res[0].json();
-
-        setCartItem([]);
+        const res = await fetch(`${API_URL}/orders/confirm`, {
+          method: "POST",
+          body: JSON.stringify({ checkout_session: session_id }),
+          headers: {
+            "Content-type": "application/json",
+          },
+        });
+        const payload = await res.json();
         setOrder(payload);
       } catch (error) {
         setOrder([]);
@@ -48,17 +35,41 @@ const useOrder = (session_id, token) => {
     fetchOrder();
   }, [session_id]);
 
+  useEffect(() => {
+    const clearCart = async () => {
+      try {
+        console.log("inside clearCart");
+        cartMutate((data) => {
+          console.log("data: ", data);
+        });
+        await fetch(`${API_URL}/carts/deletes`, {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      } catch (error) {
+        console.log("cannot clear cart, something went wrong");
+      }
+    };
+    clearCart();
+  }, [token]);
+
   return { order, loading };
 };
 
 export default function success() {
   const router = useRouter();
-  const { token } = useAuth();
-  const { session_id } = router.query;
+  const { token, getToken } = useAuth();
+  const queryKey = "session_id";
+  const session_id =
+    router.query[queryKey] ||
+    router.asPath.match(new RegExp(`[&?]${queryKey}=(.*)(&|$)`));
+
   const { order, loading } = useOrder(session_id, token);
 
   if (!token) return <div>Loading...</div>;
-
   return (
     <div>
       <Head>

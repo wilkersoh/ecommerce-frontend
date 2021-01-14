@@ -40,7 +40,7 @@ const useAuthProvider = (props) => {
 
   /**
    * Retrieves the Magic Issues Bearer Token
-   * This allows User to make authenticated requests
+   * This allows User to make a uthenticated requests
    * Do this after backend install strapi-plugin-magic and following step(add permission file)
    * This JWT Token only valid for 15min
    */

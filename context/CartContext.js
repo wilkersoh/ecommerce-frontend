@@ -1,7 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import useSWR from "swr";
 import { API_URL } from "../utils/urls";
-import fetcher from "../utils/fetcher";
 import { useAuth } from "./AuthContext";
 
 const CartContext = createContext();
@@ -19,27 +18,20 @@ export const useCart = () => {
 };
 
 const useCartProvider = () => {
-  const [cartItems, setCartItem] = useState([]);
+  const { user, token, getToken } = useAuth();
 
-  const { user, token } = useAuth();
-
-  const { data } = useSWR(user ? [`${API_URL}/carts`, token] : null, fetcher, {
-    revalidateOnFocus: false,
-  });
-
-  // console.log(data); re-render 7 time in index page
-  useEffect(() => {
-    if (Array.isArray(data)) {
-      setCartItem(data);
-    }
-  }, [data]);
+  const { data: cartItems, mutate: cartMutate } = useSWR(
+    user ? [`${API_URL}/carts`, token] : null,
+    { revalidateOnFocus: false }
+  );
 
   const getCurrentCartItem = (productID) => {
+    if (!Array.isArray(cartItems)) return;
     return cartItems.find((cart) => cart.product.id === productID) || {};
   };
 
   const createNewCart = async (productID, quantity) => {
-    console.log("hit create");
+    console.log("hit create: quantity > ", quantity);
     return await fetch(`${API_URL}/carts`, {
       method: "POST",
       body: JSON.stringify([{ productID, quantity }]),
@@ -55,6 +47,7 @@ const useCartProvider = () => {
    * @param {ArrayObject: [ {id, rest} ] } data
    */
   const updateCart = async (data) => {
+    const token = await getToken();
     return await fetch(`${API_URL}/carts/${data[0].id}`, {
       method: "PUT",
       body: JSON.stringify([...data]),
@@ -66,10 +59,7 @@ const useCartProvider = () => {
   };
 
   const removeCartItem = async (id) => {
-    setCartItem((prev) => {
-      const cart = cartItems.filter((item) => item.id != id);
-      return cart;
-    });
+    const token = await getToken();
     return await fetch(`${API_URL}/carts/${id}`, {
       method: "DELETE",
       headers: {
@@ -80,7 +70,7 @@ const useCartProvider = () => {
   };
 
   return {
-    setCartItem,
+    cartMutate,
     cartItems,
     createNewCart,
     updateCart,

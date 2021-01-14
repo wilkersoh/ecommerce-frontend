@@ -1,8 +1,9 @@
 import "../styles/globals.css";
-import useSWR, { SWRConfig } from "swr";
+import { SWRConfig } from "swr";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { AuthProvider } from "../context/AuthContext";
 import { CartProvider } from "../context/CartContext";
+import fetcher from "../utils/fetcher";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -21,13 +22,13 @@ function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider theme={theme}>
       <AuthProvider>
-        {/* <SWRConfig > */}
-        <CartProvider>
-          <Header />
-          <Component {...pageProps} />
-          <Footer />
-        </CartProvider>
-        {/* </SWRConfig> */}
+        <SWRConfig value={{ dedupingInterval: 5000, fetcher }}>
+          <CartProvider>
+            <Header />
+            <Component {...pageProps} />
+            <Footer />
+          </CartProvider>
+        </SWRConfig>
       </AuthProvider>
     </ChakraProvider>
   );
