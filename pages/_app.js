@@ -1,22 +1,15 @@
 import "../styles/globals.css";
 import { SWRConfig } from "swr";
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 import { AuthProvider } from "../context/AuthContext";
 import { CartProvider } from "../context/CartContext";
 import fetcher from "../utils/fetcher";
+import { theme } from "../styles/theme";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-const colors = {
-  brand: {
-    900: "#1a365d",
-    800: "#153e75",
-    700: "#2a69ac",
-  },
-};
-
-const theme = extendTheme({ colors });
+import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
   return (

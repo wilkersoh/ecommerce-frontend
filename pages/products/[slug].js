@@ -17,11 +17,11 @@ const Product = ({ product }) => {
     setCurrentProduct({ ...currentProduct, ...current });
   }, [cartItems, setCurrentProduct]);
 
-  const router = useRouter();
+  // const router = useRouter();
 
-  if (router.isFallback) {
-    return <div>Loading... sorry for watiing...</div>;
-  }
+  // if (router.isFallback) {
+  //   return <div>Loading... sorry for watiing...</div>;
+  // }
 
   return (
     <div>
@@ -32,7 +32,14 @@ const Product = ({ product }) => {
         )}
       </Head>
       <h3>{product.name}</h3>
-      <Image src={fromImageToUrl(product.image)} width={500} height={500} />
+      {product.images.map((image) => (
+        <Image
+          key={image.id}
+          src={fromImageToUrl(image)}
+          width={500}
+          height={500}
+        />
+      ))}
       <h3>{product.name}</h3>
       <div>
         <p>Quantity</p>
@@ -66,7 +73,7 @@ export async function getStaticPaths() {
     paths: products.map((product) => ({
       params: { slug: String(product.slug) },
     })),
-    fallback: true, // Tells to nextjs to show a 404 if the param is not found
+    fallback: false, // Tells to nextjs to show a 404 if the param is not found
   };
 }
 

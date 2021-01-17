@@ -4,6 +4,8 @@ import NextLink from "next/link";
 import { useAuth } from "../context/AuthContext";
 import { API_URL } from "../utils/urls";
 
+import { Box } from "@chakra-ui/react";
+
 const useOrders = (user, getToken) => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -57,12 +59,13 @@ export default function account() {
       <h2>Account page</h2>
       <h3>Your orders</h3>
       {loading && <p>Loading your orders</p>}
-      {orders.map((order) => (
-        <div key={order.id}>
-          {new Date(order.created_at).toLocaleDateString("en-En")}{" "}
-          {order.product.name} ${order.total} {order.status}
-        </div>
-      ))}
+      {Array.isArray(orders) &&
+        orders.map((order) => (
+          <div key={order.id}>
+            {new Date(order.created_at).toLocaleDateString("en-En")}{" "}
+            {order.product.name} ${order.total} {order.status}
+          </div>
+        ))}
       <p>Logged in as: {user.email}</p>
       <a href='#' onClick={logoutUser}>
         Logout

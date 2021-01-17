@@ -10,14 +10,14 @@ export default function BuyButton({
   ...porps
 }) {
   const router = useRouter();
-  const { cartItems, setCartItem } = useCart();
+  // const { cartItems, setCartItem } = useCart();
 
   const onCheckItem = () => {
     // isChecked is true
     const updated = cartItems.map((cart) =>
       cart.product.id === productID ? { ...cart, isChecked: true } : cart
     );
-    setCartItem([...updated]);
+    // setCartItem([...updated]);
 
     router.push("/cart");
   };

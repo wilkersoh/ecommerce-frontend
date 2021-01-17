@@ -2,10 +2,11 @@ import React from "react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { useAuth } from "../context/AuthContext";
-import { Link } from "@chakra-ui/react";
 
 import styles from "../styles/Header.module.css";
 import { useCart } from "../context/CartContext";
+
+import { Box, Link } from "@chakra-ui/react";
 
 export default function Header() {
   const router = useRouter();
@@ -18,52 +19,46 @@ export default function Header() {
     router.back();
   };
 
-  if (!Array.isArray(cartItems)) {
+  if (!user) {
     return (
-      <div className={styles.nav}>
-        {!isHome && (
-          <div>
-            <a onClick={goBack}>{"<"} Back</a>
-          </div>
-        )}
-
-        <div className={styles.title}>
+      <Box className={styles.nav}>
+        <Box className={styles.title}>
           <NextLink href='/'>
-            <a>
+            <Link>
               <h1>The E-Commerce</h1>
-            </a>
+            </Link>
           </NextLink>
-        </div>
-        <div>Cart Store </div>
+        </Box>
+        <Box>Cart Store </Box>
         <NextLink href='/login'>
-          <a>Login</a>
+          <Link>Login</Link>
         </NextLink>
-      </div>
+      </Box>
     );
   }
 
   return (
-    <div className={styles.nav}>
+    <Box className={styles.nav}>
       {!isHome && (
-        <div>
-          <a onClick={goBack}>{"<"} Back</a>
-        </div>
+        <Box>
+          <Link onClick={goBack}>{"<"} Back</Link>
+        </Box>
       )}
-      <div className={styles.title}>
+      <Box className={styles.title}>
         <NextLink href='/'>
-          <a>
+          <Link>
             <h1>The E-Commerce</h1>
-          </a>
+          </Link>
         </NextLink>
-      </div>
+      </Box>
       <NextLink href='/cart'>
-        <Link>Cart Store {cartItems.length} </Link>
+        <Link>Cart Store {cartItems?.length} </Link>
       </NextLink>
-      <div className={styles.auth}>
+      <Box className={styles.auth}>
         <NextLink href='/account'>
-          <a>{user.email}</a>
+          <Link>{user.email}</Link>
         </NextLink>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }

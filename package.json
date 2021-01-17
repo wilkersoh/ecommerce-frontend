@@ -9,6 +9,7 @@
     "pm2": "pm2"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^1.0.3",
     "@chakra-ui/react": "^1.0.4",
     "@emotion/react": "^11.1.4",
     "@emotion/styled": "^11.0.0",

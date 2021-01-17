@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Head from "next/head";
 import NextLink from "next/link";
 import Image from "next/image";
 import { useCart } from "../context/CartContext";
@@ -35,14 +36,6 @@ import {
 //   },
 //   [url, data, mutate]
 // );
-
-// function fetcher(url, username, password) {
-//   return fetch(url, {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({ username, password }),
-//   }).then((res) => res.json());
-// }
 
 export default function cart() {
   const { cartMutate, cartItems, updateCart, removeCartItem } = useCart();
@@ -105,6 +98,9 @@ export default function cart() {
 
   return (
     <div>
+      <Head>
+        <title>Your Shopping Cart - dayfruit</title>
+      </Head>
       <h1>I am cart</h1>
       {(cartValues || []).map((cart) => (
         <React.Fragment key={cart.id}>
@@ -162,3 +158,19 @@ export default function cart() {
     </div>
   );
 }
+
+// let orders = [
+//   { amount: 200 },
+//   { amount: 300 },
+//   { amount: 350 },
+//   { amount: 500 },
+// ];
+
+// let totalAmount = 0;
+// for(let i=0; i < orders.length; i++) {
+//   totalAmount+= orders[i].amount;
+// }
+
+// let totalAmount = orders.reduce(function(sum, order) {
+//   return sum + order.amount
+// }, 0)
