@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Magic } from "magic-sdk";
 import { MAGIC_PUBLIC_KEY } from "../utils/urls";
+import { parseCookies, setCookie } from "nookies";
 
 let magic;
 const AuthContext = createContext();
@@ -22,6 +23,41 @@ const useAuthProvider = (props) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const router = useRouter();
+
+  const authLogin = async (data) => {
+    const loginInfo = {
+      identifier: "admin@mail.io",
+      password: "password",
+    };
+    const res = await fetch(`${API_URL}/auth/local`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(loginInfo),
+    });
+    const payload = await res.json();
+    console.log(payload);
+  };
+
+  const authRegister = async () => {
+    const registerInfo = {
+      username: "yee",
+      email: "admin@mail.io",
+      password: "password",
+    };
+    const res = await fetch(`${API_URL}/auth/local/register`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(registerInfo),
+    });
+    const payload = await res.json();
+    console.log(payload);
+  };
 
   const checkUserLoggedIn = async () => {
     try {
