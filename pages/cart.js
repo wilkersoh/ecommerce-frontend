@@ -18,25 +18,6 @@ import {
   NumberDecrementStepper,
 } from "@chakra-ui/react";
 
-// const create = useCallback(
-//   async (newObject, shouldRevalidate = false) => {
-//     const response = await fetch(url, {
-//       body: newObject,
-//       method: "POST",
-//     });
-//     const result = response;
-//     if (data && mutate) {
-//       let newData = data;
-//       if (isArray(data)) {
-//         newData = data.concat(result);
-//       }
-//       await mutate([...new Set(newData)], shouldRevalidate);
-//     }
-//     return result;
-//   },
-//   [url, data, mutate]
-// );
-
 export default function cart() {
   const { cartMutate, cartItems, updateCart, removeCartItem } = useCart();
   const [cartValues, setCartValue] = useState([]);
@@ -158,19 +139,3 @@ export default function cart() {
     </div>
   );
 }
-
-// let orders = [
-//   { amount: 200 },
-//   { amount: 300 },
-//   { amount: 350 },
-//   { amount: 500 },
-// ];
-
-// let totalAmount = 0;
-// for(let i=0; i < orders.length; i++) {
-//   totalAmount+= orders[i].amount;
-// }
-
-// let totalAmount = orders.reduce(function(sum, order) {
-//   return sum + order.amount
-// }, 0)
