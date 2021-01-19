@@ -15,17 +15,15 @@ export default function Home({ categories = [], products = [] }) {
     };
     const res = await fetch(`${API_URL}/auth/local`, {
       method: "POST",
-      // credentials: "same-origin",
       credentials: "include",
-      mode: "no-cors",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(loginInfo),
     });
-    console.log(res);
-    // const payload = await res.json();
-    // console.log(payload);
+    console.log("hit functoon auth");
+    const payload = await res.json();
+    console.log(payload);
   };
 
   const authLogout = async () => {
@@ -48,8 +46,8 @@ export default function Home({ categories = [], products = [] }) {
    */
   const authRegister = async () => {
     const regsterInfo = {
-      username: "yee01",
-      email: "yee@mail.io",
+      username: "yee",
+      email: "admin@mail.io",
       password: "password",
     };
     const res = await fetch(`${API_URL}/auth/local/register`, {
