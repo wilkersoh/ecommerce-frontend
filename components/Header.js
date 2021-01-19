@@ -29,7 +29,10 @@ export default function Header() {
             </Link>
           </NextLink>
         </Box>
-        <Box>Cart Store </Box>
+        {/* <Box>Cart Store </Box> */}
+        <NextLink href='/cart'>
+          <Link>Cart Store {cartItems?.length} </Link>
+        </NextLink>
         <NextLink href='/login'>
           <Link>Login</Link>
         </NextLink>

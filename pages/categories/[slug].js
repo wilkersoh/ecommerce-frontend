@@ -1,6 +1,7 @@
 import React from "react";
 import NextLink from "next/link";
-import { API_URL } from "../../utils/urls";
+import Image from "next/image";
+import { API_URL, fromImageToUrl } from "../../utils/urls";
 import fetch from "isomorphic-unfetch";
 import {
   Box,
@@ -9,12 +10,13 @@ import {
   BreadcrumbLink,
   BreadcrumbSeparator,
   Text,
+  Link,
 } from "@chakra-ui/react";
 
 import { ChevronRightIcon } from "@chakra-ui/icons";
 
 export default function Category({ products, slug }) {
-  console.log("product: ", products);
+  console.log("product ss: ", products);
 
   return (
     <Box>
@@ -35,7 +37,26 @@ export default function Category({ products, slug }) {
           <Text fontSize='0.75em'>{slug}</Text>
         </BreadcrumbItem>
       </Breadcrumb>
-      <Box>I am stamps</Box>
+      <Box>
+        {products.map((product) => (
+          <NextLink href={`/categories/product/${product.slug}`}>
+            <Link>
+              <Box>
+                {product.images.map((image) => (
+                  <Box key={image.id}>
+                    <Image
+                      src={fromImageToUrl(image)}
+                      width={200}
+                      height={200}
+                    />
+                  </Box>
+                ))}
+                <Text>{product.brand}</Text>
+              </Box>
+            </Link>
+          </NextLink>
+        ))}
+      </Box>
     </Box>
   );
 }
@@ -44,7 +65,11 @@ export async function getServerSideProps(context) {
   const { slug } = context.query;
 
   const res = await fetch(`${API_URL}/products?category.slug=${slug}`);
-  const products = await res.json();
+  const productsWithPrivate = await res.json();
+  const products = productsWithPrivate.map((product) => {
+    const { carts, orders, ...rest } = product;
+    return rest;
+  });
 
   return {
     props: {

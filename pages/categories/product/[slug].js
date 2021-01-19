@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { API_URL, fromImageToUrl } from "../../utils/urls";
-import { twoDecimals } from "../../utils/format";
-import { Button } from "@chakra-ui/react";
-import AddCart from "../../components/AddCart";
-import { useCart } from "../../context/CartContext";
+import { API_URL, fromImageToUrl } from "../../../utils/urls";
+import { twoDecimals } from "../../../utils/format";
+import AddCart from "../../../components/AddCart";
+import { useCart } from "../../../context/CartContext";
+
+import { Button, Box } from "@chakra-ui/react";
 
 const Product = ({ product }) => {
   const { cartItems, getCurrentCartItem } = useCart();
@@ -31,14 +32,12 @@ const Product = ({ product }) => {
           <meta name='description' content={product.meta_description} />
         )}
       </Head>
+      <p>{product.brand}</p>
       <h3>{product.name}</h3>
       {product.images.map((image) => (
-        <Image
-          key={image.id}
-          src={fromImageToUrl(image)}
-          width={500}
-          height={500}
-        />
+        <Box key={image.id}>
+          <Image src={fromImageToUrl(image)} width={500} height={500} />
+        </Box>
       ))}
       <h3>{product.name}</h3>
       <div>
@@ -60,7 +59,7 @@ export async function getStaticProps({ params: { slug } }) {
     props: {
       product: found[0],
     },
-    revalidate: 3,
+    // revalidate: 3,
   };
 }
 
