@@ -21,6 +21,7 @@
     "nookies": "^2.5.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-hook-form": "^6.14.2",
     "swr": "^0.3.11"
   }
 }
