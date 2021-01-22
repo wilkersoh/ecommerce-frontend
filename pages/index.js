@@ -8,60 +8,6 @@ import { twoDecimals } from "../utils/format";
 import { Box, Text, Link, Button } from "@chakra-ui/react";
 
 export default function Home({ categories = [], products = [] }) {
-  const authLogin = async () => {
-    const loginInfo = {
-      identifier: "admin@mail.io",
-      password: "password",
-    };
-    const res = await fetch(`${API_URL}/auth/local`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(loginInfo),
-    });
-    console.log("hit functoon auth");
-    const payload = await res.json();
-    console.log(payload);
-  };
-
-  const authLogout = async () => {
-    const res = await fetch(`${API_URL}/logout`, {
-      method: "POST",
-    });
-  };
-
-  // auth ssr cannot save it in storage we need nookies npm
-  /**
-    import {setCookie} from "nookies";
-
-
-    _app.js
-    import {parseCookies} from 'nookies';
-    In side getStaticProps
-    const jwt = parseCookies(ctx).jwt
-
-
-   */
-  const authRegister = async () => {
-    const regsterInfo = {
-      username: "yee",
-      email: "admin@mail.io",
-      password: "password",
-    };
-    const res = await fetch(`${API_URL}/auth/local/register`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(regsterInfo),
-    });
-    const payload = await res.json();
-    console.log(payload);
-  };
-
   if (!categories.length) {
     return (
       <Box>
@@ -79,9 +25,6 @@ export default function Home({ categories = [], products = [] }) {
       </Head>
 
       <Box d='flex'>
-        <Button onClick={authRegister}>Click me to Regiser </Button>
-        <Button onClick={authLogin}>Click me to Login </Button>
-        <Button onClick={authLogout}>Click me to Logout </Button>
         {categories.map((category) => (
           <NextLink key={category.id} href={`/categories/${category.slug}`}>
             <Link>
@@ -106,30 +49,6 @@ export default function Home({ categories = [], products = [] }) {
           </NextLink>
         ))}
       </Box>
-      {/* {products.map((product) => (
-        <div key={product.name} className={styles.product}>
-          <NextLink href={`/products/${product.slug}`}>
-            <a>
-              <div className={styles.product__Row}>
-                {product.id}
-                <div className={styles.product__ColImg}>
-                  {product.images.map((image) => (
-                    <Image
-                      key={image.id}
-                      src={fromImageToUrl(image)}
-                      width={500}
-                      height={500}
-                    />
-                  ))}
-                </div>
-                <div className={styles.product__Col}>
-                  {product.name} ${twoDecimals(product.price)}
-                </div>
-              </div>
-            </a>
-          </NextLink>
-        </div>
-      ))} */}
     </Box>
   );
 }

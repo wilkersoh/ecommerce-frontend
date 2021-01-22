@@ -14,15 +14,15 @@ import "../styles/globals.css";
 function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider theme={theme}>
-      <AuthProvider>
-        <SWRConfig value={{ dedupingInterval: 5000, fetcher }}>
+      <SWRConfig value={{ dedupingInterval: 5000, fetcher }}>
+        <AuthProvider>
           <CartProvider>
             <Header />
             <Component {...pageProps} />
             <Footer />
           </CartProvider>
-        </SWRConfig>
-      </AuthProvider>
+        </AuthProvider>
+      </SWRConfig>
     </ChakraProvider>
   );
 }

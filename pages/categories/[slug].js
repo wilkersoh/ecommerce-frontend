@@ -39,7 +39,9 @@ export default function Category({ products, slug }) {
       </Breadcrumb>
       <Box>
         {products.map((product) => (
-          <NextLink href={`/categories/product/${product.slug}`}>
+          <NextLink
+            key={product.id}
+            href={`/categories/product/${product.slug}`}>
             <Link>
               <Box>
                 {product.images.map((image) => (

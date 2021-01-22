@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 
 export default function cart() {
-  const { cartMutate, cartItems, updateCart, removeCartItem } = useCart();
+  const { cartItems, cartMutate, updateCart, removeCartItem } = useCart();
   const [cartValues, setCartValue] = useState([]);
 
   useEffect(() => {
@@ -42,6 +42,7 @@ export default function cart() {
     try {
       const res = await updateCart(cartValues);
       const payload = await res.json();
+      console.log("payload:, ", payload);
       cartMutate(payload);
 
       /**
@@ -85,12 +86,13 @@ export default function cart() {
       <h1>I am cart</h1>
       {(cartValues || []).map((cart) => (
         <React.Fragment key={cart.id}>
-          <NextLink href={`/products/${cart.product.slug}`}>
+          <NextLink href={`/categories/product/${cart.product.slug}`}>
             <Link>
+              Testng
               <Image
-                src={fromImageToUrl(cart.product.image)}
-                width={300}
-                height={300}
+                src={fromImageToUrl(cart.product.images[0])}
+                width={500}
+                height={500}
               />
             </Link>
           </NextLink>

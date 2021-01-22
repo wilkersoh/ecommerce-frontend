@@ -6,10 +6,10 @@ import { API_URL } from "../utils/urls";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 
-const useOrder = (session_id, token) => {
+const useOrder = (session_id) => {
   const { cartMutate, cartItems } = useCart();
   const [order, setOrder] = useState([]);
-  const [loading, setLoading] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // to avoid server error
@@ -20,6 +20,7 @@ const useOrder = (session_id, token) => {
       try {
         const res = await fetch(`${API_URL}/orders/confirm`, {
           method: "POST",
+          credentials: "include",
           body: JSON.stringify({ checkout_session: session_id }),
           headers: {
             "Content-type": "application/json",
@@ -30,12 +31,10 @@ const useOrder = (session_id, token) => {
       } catch (error) {
         setOrder([]);
       }
+
       setLoading(false);
     };
-    fetchOrder();
-  }, [session_id]);
 
-  useEffect(() => {
     const clearCart = async () => {
       try {
         console.log("inside clearCart");
@@ -44,37 +43,39 @@ const useOrder = (session_id, token) => {
         });
         await fetch(`${API_URL}/carts/deletes`, {
           method: "POST",
+          credentials: "include",
           headers: {
             "Content-type": "application/json",
-            Authorization: `Bearer ${token}`,
           },
         });
       } catch (error) {
         console.log("cannot clear cart, something went wrong");
       }
     };
+    fetchOrder();
     clearCart();
-  }, [token]);
+  }, [session_id]);
 
   return { order, loading };
 };
 
 export default function success() {
   const router = useRouter();
-  const { token, getToken } = useAuth();
+  const { user } = useAuth();
   const queryKey = "session_id";
   const session_id =
     router.query[queryKey] ||
     router.asPath.match(new RegExp(`[&?]${queryKey}=(.*)(&|$)`));
 
-  const { order, loading } = useOrder(session_id, token);
+  const { order, loading } = useOrder(session_id);
 
-  if (!token) return <div>Loading...</div>;
   return (
     <div>
       <Head>
         <title>
-          {!token ? "Handling payment" : "Thank you for your purchase!"}
+          {loading
+            ? "We are handling your payment"
+            : "Thank you for your purchase!"}
         </title>
       </Head>
       <h2>Success!</h2>

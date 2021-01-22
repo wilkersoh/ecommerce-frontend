@@ -1,15 +1,13 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Magic } from "magic-sdk";
-import { MAGIC_PUBLIC_KEY } from "../utils/urls";
-import { parseCookies, setCookie } from "nookies";
+import { API_URL } from "../utils/urls";
+import useSWR from "swr";
 
-let magic;
 const AuthContext = createContext();
 
 export const AuthProvider = (props) => {
   const auth = useAuthProvider();
-
+  console.log("auth:", auth);
   return (
     <AuthContext.Provider value={auth}>{props.children}</AuthContext.Provider>
   );
@@ -21,108 +19,46 @@ export const useAuth = () => {
 
 const useAuthProvider = (props) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
   const router = useRouter();
 
-  const authLogin = async (data) => {
-    const loginInfo = {
-      identifier: "admin@mail.io",
-      password: "password",
-    };
-    const res = await fetch(`${API_URL}/auth/local`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(loginInfo),
-    });
-    const payload = await res.json();
-    console.log(payload);
-  };
-
-  const authRegister = async () => {
-    const registerInfo = {
-      username: "yee",
-      email: "admin@mail.io",
-      password: "password",
-    };
-    const res = await fetch(`${API_URL}/auth/local/register`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(registerInfo),
-    });
-    const payload = await res.json();
-    console.log(payload);
-  };
-
-  const checkUserLoggedIn = async () => {
-    try {
-      const isLoggedIn = await magic.user.isLoggedIn();
-      if (isLoggedIn) {
-        const { email } = await magic.user.getMetadata();
-        setUser({ email });
-
-        // Just for testing
-        const token = await getToken();
-        console.log(token);
-        setToken(token);
-      }
-    } catch (error) {}
-  };
-
-  /**
-   * Retrieves the Magic Issues Bearer Token
-   * This allows User to make a uthenticated requests
-   * Do this after backend install strapi-plugin-magic and following step(add permission file)
-   * This JWT Token only valid for 15min
-   */
-  const getToken = async () => {
-    try {
-      const token = await magic.user.getIdToken();
-      return token;
-    } catch (error) {}
-  };
+  const { data: me } = useSWR(`${API_URL}/users/me`);
 
   useEffect(() => {
-    magic = new Magic(MAGIC_PUBLIC_KEY);
-    checkUserLoggedIn();
-  }, []);
+    if (me?.statusCode === 400) return setUser(null);
+
+    setUser(me);
+  }, [me]);
 
   /**
-   * Adds email to user
-   * @param {string} email
+   * @param {Object} user
    */
-  const loginUser = async (email) => {
-    try {
-      await magic.auth.loginWithMagicLink({ email });
-      setUser({ email });
-    } catch (error) {
-      setUser(null);
-    }
+  const setLoginUser = async (user) => {
+    if (!user) setUser(null);
+    setUser(user);
 
     router.push("/");
   };
 
   const logoutUser = async () => {
     try {
-      await magic.user.logout();
       setUser(null);
-    } catch (error) {}
+      const res = await fetch(`${API_URL}/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+      const payload = await res.json();
+    } catch (error) {
+      // doing popup
+      console.log("logout faield");
+    }
 
     router.push("/");
   };
 
   return {
     user,
-    setUser,
-    loginUser,
+    setLoginUser,
     logoutUser,
-    getToken,
-    token,
   };
 };
 

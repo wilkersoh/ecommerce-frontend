@@ -6,11 +6,11 @@ import { useAuth } from "../context/AuthContext";
 import styles from "../styles/Header.module.css";
 import { useCart } from "../context/CartContext";
 
-import { Box, Link } from "@chakra-ui/react";
+import { Box, Link, Text, Stack, HStack } from "@chakra-ui/react";
 
 export default function Header() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, logoutUser } = useAuth();
   const { cartItems } = useCart();
 
   const isHome = router.pathname === "/";
@@ -29,12 +29,13 @@ export default function Header() {
             </Link>
           </NextLink>
         </Box>
-        {/* <Box>Cart Store </Box> */}
-        <NextLink href='/cart'>
-          <Link>Cart Store {cartItems?.length} </Link>
-        </NextLink>
-        <NextLink href='/login'>
+        <Box>Cart</Box>
+        <NextLink href='/account/login'>
           <Link>Login</Link>
+        </NextLink>
+        <Text px={4}>OR</Text>
+        <NextLink href='/account/register'>
+          <Link>Create account</Link>
         </NextLink>
       </Box>
     );
@@ -54,14 +55,22 @@ export default function Header() {
           </Link>
         </NextLink>
       </Box>
-      <NextLink href='/cart'>
-        <Link>Cart Store {cartItems?.length} </Link>
-      </NextLink>
-      <Box className={styles.auth}>
-        <NextLink href='/account'>
-          <Link>{user.email}</Link>
+      <HStack spacing='24px'>
+        <NextLink href='/cart'>
+          <Link>Cart Store {cartItems?.length} </Link>
         </NextLink>
-      </Box>
+        <Box>
+          <NextLink href='/account'>
+            <Link>My Account</Link>
+          </NextLink>
+        </Box>
+        <Box className={styles.auth}>
+          <Box onClick={logoutUser}>Logout</Box>
+        </Box>
+        <NextLink href='/cart'>
+          <Link>Cart {user.carts.length}</Link>
+        </NextLink>
+      </HStack>
     </Box>
   );
 }

@@ -1,17 +1,14 @@
 export const API_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
 
-export const MAGIC_PUBLIC_KEY =
-  process.env.NEXT_PUBLIC_MAGIC_PUBLIC_KEY || "pk_test_305BBD34596F2EE4";
-
 export const STRIPE_PK =
   process.env.NEXT_PUBLIC_STRIPE_PK ||
   "pk_test_51I1AY7KYvEtNNTweezFYgVHEeXZssEk3qOYAXQ0f2cutFmMceyeM0tzyy9rnXHeedQXZnOjW3QhKOFNXDs1hDYez00eLadC4a0";
 
 /**
  * Given an image return the Url
- * Works for local and deplyed strapis
- * @param {any} image
+ *
+ * @param {Object} image { id, name, url } single object
  */
 export const fromImageToUrl = (image) => {
   if (!image) {

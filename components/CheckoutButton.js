@@ -16,7 +16,7 @@ const stripePromise = loadStripe(STRIPE_PK);
  */
 export default function CheckoutButton() {
   const [isLoading, setIsLoading] = useState(false);
-  const { user, getToken } = useAuth();
+  const { user } = useAuth();
   const { cartItems } = useCart();
   const router = useRouter();
 
@@ -26,14 +26,13 @@ export default function CheckoutButton() {
 
   const handleCheckout = async () => {
     const stripe = await stripePromise;
-    const token = await getToken();
     setIsLoading(true);
     const res = await fetch(`${API_URL}/orders`, {
       method: "POST",
+      credentials: "include",
       body: JSON.stringify([...cartItems]),
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
     });
 

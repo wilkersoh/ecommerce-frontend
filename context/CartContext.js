@@ -18,10 +18,10 @@ export const useCart = () => {
 };
 
 const useCartProvider = () => {
-  const { user, token, getToken } = useAuth();
+  const { user } = useAuth();
 
   const { data: cartItems, mutate: cartMutate } = useSWR(
-    user ? [`${API_URL}/carts`, token] : null,
+    user ? [`${API_URL}/carts`] : null,
     { revalidateOnFocus: false }
   );
 
@@ -34,10 +34,10 @@ const useCartProvider = () => {
     console.log("hit create: quantity > ", quantity);
     return await fetch(`${API_URL}/carts`, {
       method: "POST",
+      credentials: "include",
       body: JSON.stringify([{ productID, quantity }]),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
     });
   };
@@ -47,24 +47,22 @@ const useCartProvider = () => {
    * @param {ArrayObject: [ {id, rest} ] } data
    */
   const updateCart = async (data) => {
-    const token = await getToken();
     return await fetch(`${API_URL}/carts/${data[0].id}`, {
       method: "PUT",
+      credentials: "include",
       body: JSON.stringify([...data]),
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
     });
   };
 
   const removeCartItem = async (id) => {
-    const token = await getToken();
     return await fetch(`${API_URL}/carts/${id}`, {
       method: "DELETE",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
     });
   };

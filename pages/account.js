@@ -1,52 +1,79 @@
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 import { useAuth } from "../context/AuthContext";
 import { API_URL } from "../utils/urls";
 
-import { Box } from "@chakra-ui/react";
+import {
+  Box,
+  Stack,
+  Skeleton,
+  SkeletonCircle,
+  SkeletonText,
+} from "@chakra-ui/react";
+import useSWR from "swr";
 
-const useOrders = (user, getToken) => {
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(false);
+// const useOrders = (user) => {
+//   const [orders, setOrders] = useState([]);
+//   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      if (user) {
-        try {
-          setLoading(true);
-          const token = await getToken();
-          const order_res = await fetch(`${API_URL}/orders`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          const data = await order_res.json();
-          setOrders(data);
-        } catch (error) {
-          setOrders([]);
-        }
-        setLoading(false);
-      }
-    };
-    fetchOrders();
-  }, [user]);
+//   useEffect(() => {
+//     const fetchOrders = async () => {
+//       if (user) {
+//         try {
+//           setLoading(true);
+//           const order_res = await fetch(`${API_URL}/orders`, {
+//             credentials: "include",
+//           });
+//           const data = await order_res.json();
+//           setOrders(data);
+//         } catch (error) {
+//           setOrders([]);
+//         }
+//         setLoading(false);
+//       }
+//     };
+//     fetchOrders();
+//   }, [user]);
 
-  return { orders, loading };
-};
+//   return { orders, loading };
+// };
 
 export default function account() {
-  const { logoutUser, user, getToken } = useAuth();
+  const { logoutUser, user } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
+  // const { orders, loading } = useOrders(user);
 
-  const { orders, loading } = useOrders(user, getToken);
+  const { data: orders } = useSWR(`${API_URL}/orders`);
+
+  useEffect(() => {
+    if (!orders) return setIsLoading(true);
+
+    setIsLoading(false);
+  }, [orders]);
+
   if (!user) {
     return (
       <div>
         <p>Please login or register</p>
+        <NextLink href='/account/login'>
+          <a>Login</a>
+        </NextLink>
         <NextLink href='/'>
           <a>Go Back</a>
         </NextLink>
       </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <Stack>
+        <Skeleton height='20px' />
+        <Skeleton height='20px' />
+        <Skeleton height='20px' />
+      </Stack>
     );
   }
 
@@ -58,7 +85,6 @@ export default function account() {
       </Head>
       <h2>Account page</h2>
       <h3>Your orders</h3>
-      {loading && <p>Loading your orders</p>}
       {Array.isArray(orders) &&
         orders.map((order) => (
           <div key={order.id}>
@@ -66,7 +92,7 @@ export default function account() {
             {order.product.name} ${order.total} {order.status}
           </div>
         ))}
-      <p>Logged in as: {user.email}</p>
+      <p>Logged in as: {user.username}</p>
       <a href='#' onClick={logoutUser}>
         Logout
       </a>
