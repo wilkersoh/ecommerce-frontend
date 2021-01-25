@@ -23,7 +23,7 @@ export default function register() {
     try {
       const res = await fetch(`${API_URL}/auth/local/register`, {
         method: "POST",
-        credentials: "include",
+        // credentials: "include",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
