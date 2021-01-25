@@ -38,7 +38,7 @@ export default function Category({ products, slug }) {
         </BreadcrumbItem>
       </Breadcrumb>
       <Box>
-        {products?.map((product) => (
+        {/* {products?.map((product) => (
           <NextLink
             key={product.id}
             href={`/categories/product/${product.slug}`}>
@@ -57,7 +57,7 @@ export default function Category({ products, slug }) {
               </Box>
             </Link>
           </NextLink>
-        ))}
+        ))} */}
       </Box>
     </Box>
   );
