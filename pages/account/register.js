@@ -30,7 +30,7 @@ export default function register() {
         },
         body: JSON.stringify(data),
       });
-
+      console.log("after await res return");
       const { user } = await res.json();
       console.log("user:::", user);
       // save in contextAuth
