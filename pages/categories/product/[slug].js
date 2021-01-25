@@ -69,7 +69,7 @@ export async function getStaticPaths() {
   const products = await products_res.json();
   // Return them to Nextjs context
   return {
-    paths: products.map((product) => ({
+    paths: (products || []).map((product) => ({
       params: { slug: String(product.slug) },
     })),
     fallback: false, // Tells to nextjs to show a 404 if the param is not found
