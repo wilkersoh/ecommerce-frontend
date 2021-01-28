@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useCart } from "../context/CartContext";
 import CheckoutButton from "../components/CheckoutButton";
 import { fromImageToUrl } from "../utils/urls";
-import { mutate } from "swr";
 
 import {
   Box,
@@ -20,27 +19,27 @@ import {
 
 export default function cart() {
   const { cartItems, cartMutate, updateCart, removeCartItem } = useCart();
-  const [cartValues, setCartValue] = useState([]);
+  const [checkoutItems, setCheckoutItem] = useState([]);
 
   useEffect(() => {
     if (!Array.isArray(cartItems)) return;
+
     // clone raw data for render
-    console.log("clone: ", cartItems);
     const sortCart = cartItems.reverse();
-    setCartValue(sortCart);
+    setCheckoutItem(sortCart);
   }, [cartItems]);
 
   const handleChange = (id, value) => {
-    const newCartValues = cartValues.map((item) =>
+    const newCartValues = checkoutItems.map((item) =>
       item.id == id ? { ...item, quantity: Number(value) } : item
     );
-
-    setCartValue(newCartValues);
+    console.log("newCartValues: ", newCartValues);
+    setCheckoutItem(newCartValues);
   };
 
   const onUpdateCart = async () => {
     try {
-      const res = await updateCart(cartValues);
+      const res = await updateCart(checkoutItems);
       const payload = await res.json();
       console.log("payload:, ", payload);
       cartMutate(payload);
@@ -65,8 +64,8 @@ export default function cart() {
       console.log(error);
     }
   };
-  console.log("cartValues:", cartValues);
-  if (!cartValues?.length) {
+  console.log("checkoutItems:", checkoutItems);
+  if (!checkoutItems?.length) {
     return (
       <div>
         <h1>Your Cart</h1>
@@ -84,7 +83,7 @@ export default function cart() {
         <title>Your Shopping Cart - dayfruit</title>
       </Head>
       <h1>I am cart</h1>
-      {(cartValues || []).map((cart) => (
+      {(checkoutItems || []).map((cart) => (
         <React.Fragment key={cart.id}>
           <NextLink href={`/categories/product/${cart.product.slug}`}>
             <Link>
@@ -137,7 +136,7 @@ export default function cart() {
         variant='outline'>
         Update Cart
       </Button>
-      <CheckoutButton />
+      <CheckoutButton checkoutItems={checkoutItems} />
     </div>
   );
 }

@@ -13,12 +13,13 @@ const stripePromise = loadStripe(STRIPE_PK);
 /**
  *
  * @param {ArrayObject} param
+ * Showhow checkoutItems pass from cart into Checkbutton became Object Array {[]}
  */
-export default function CheckoutButton() {
+export default function CheckoutButton({ checkoutItems }) {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
-  const { cartItems } = useCart();
   const router = useRouter();
+  const { updateCart } = useCart();
 
   const redirectToLogin = () => {
     router.push("/login");
@@ -27,10 +28,13 @@ export default function CheckoutButton() {
   const handleCheckout = async () => {
     const stripe = await stripePromise;
     setIsLoading(true);
+    // Update to Cart
+    await updateCart(checkoutItems);
+
     const res = await fetch(`${API_URL}/orders`, {
       method: "POST",
       credentials: "include",
-      body: JSON.stringify([...cartItems]),
+      body: JSON.stringify(checkoutItems), // [{},{}, {}]
       headers: {
         "Content-type": "application/json",
       },

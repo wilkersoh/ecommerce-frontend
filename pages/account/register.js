@@ -1,15 +1,14 @@
 import React, { useRef, useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import NextLink from "next/link";
-import { useForm } from "react-hook-form";
+import { useForm, ErrorMessage } from "react-hook-form";
 import { API_URL } from "../../utils/urls";
 
 import { Box, Button, Stack, Input, Text, Link } from "@chakra-ui/react";
 import { useAuth } from "../../context/AuthContext";
 
 export default function register() {
-  const { register, handleSubmit, watch, errors } = useForm();
-  const router = useRouter();
+  const { register, handleSubmit, errors } = useForm();
+  const [isError, setError] = useState("");
   const firstNameRef = useRef();
   const { setLoginUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -29,12 +28,19 @@ export default function register() {
         },
         body: JSON.stringify(data),
       });
-      console.log("after await res return");
-      const { user } = await res.json();
-      console.log("user:::", user);
+      const payload = await res.json();
+
+      if (payload.statusCode === 400) {
+        const msg = payload.message[0].messages[0].message;
+        setError(msg);
+        setIsLoading(false);
+        return;
+      }
+
       // save in contextAuth
-      setLoginUser(user);
+      setLoginUser(payload.user);
     } catch (error) {
+      console.log("register error: ", error);
       // doing popup handle error
     }
     // console.log(payload); // {status: "", user: {carts: [], orders:[], username: "wilker002" }}
@@ -51,29 +57,19 @@ export default function register() {
         Create Acount
       </Text>
       <Box>
-        <Text>{errors.firstname && <span>Hi firstName</span>}</Text>
-        <Text>{errors.lastname && <span>Hi lastName</span>}</Text>
+        <Text>{errors.first_name && <span>Hi firstName</span>}</Text>
+        <Text>{errors.last_name && <span>Hi lastName</span>}</Text>
         <Text>{errors.email && <span>Hi email</span>}</Text>
         <Text>{errors.password && <span>Hi password</span>}</Text>
+        <Text>{isError && isError}</Text>
       </Box>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={3}>
           <Input
             type='text'
-            name='username'
+            name='first_name'
             size='lg'
-            defaultValue='wilker001'
-            placeholder='User Name'
-            ref={(e) => {
-              register(e, { required: true });
-              firstNameRef.current = e;
-            }}
-          />
-          {/* <Input
-            type='text'
-            name='firstname'
-            size='lg'
-            defaultValue='wilker001'
+            defaultValue='yee'
             placeholder='First Name'
             ref={(e) => {
               register(e, { required: true });
@@ -82,12 +78,12 @@ export default function register() {
           />
           <Input
             type='text'
-            name='lastname'
+            name='last_name'
             size='lg'
-            defaultValue='dev001'
+            defaultValue='dev'
             placeholder='Last Name'
             ref={register({ required: true })}
-          /> */}
+          />
           <Input
             type='email'
             name='email'

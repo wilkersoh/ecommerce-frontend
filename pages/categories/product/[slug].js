@@ -12,6 +12,7 @@ import { Button, Box } from "@chakra-ui/react";
 const Product = ({ product }) => {
   const { cartItems, getCurrentCartItem } = useCart();
   const [currentProduct, setCurrentProduct] = useState({ quantity: 1 });
+  console.log(product);
 
   useEffect(() => {
     const current = getCurrentCartItem(product.id);
@@ -26,12 +27,7 @@ const Product = ({ product }) => {
 
   return (
     <div>
-      <Head>
-        {product.meta_title && <title>{product.meta_title}</title>}
-        {product.meta_description && (
-          <meta name='description' content={product.meta_description} />
-        )}
-      </Head>
+      <Head>{product.meta_title && <title>{product.meta_title}</title>}</Head>
       <p>{product.brand}</p>
       <h3>{product.name}</h3>
       {product.images.map((image) => (

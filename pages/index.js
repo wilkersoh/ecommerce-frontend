@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import NextLink from "next/link";
 import fetch from "isomorphic-unfetch";
@@ -7,7 +8,10 @@ import { fromImageToUrl, API_URL } from "../utils/urls";
 import { twoDecimals } from "../utils/format";
 import { Box, Text, Link, Button } from "@chakra-ui/react";
 
-export default function Home({ categories = [], products = [] }) {
+export default function Home({ categories = [], page }) {
+  const router = useRouter();
+
+  console.log("page:", page);
   if (!categories.length) {
     return (
       <Box>
@@ -53,16 +57,26 @@ export default function Home({ categories = [], products = [] }) {
   );
 }
 
+// export async function getServerSideProps({ query: { page = 1 } }) {
+//   const res = await fetch(`${API_URL}/categories`);
+//   const categories = await res.json();
+//   // console.log(categories);
+//   console.log(page);
+//   return {
+//     props: {
+//       categories,
+//       page: +page, // plus is turn it to number type
+//     },
+//   };
+// }
+
 export async function getStaticProps() {
   // Fetch products
-  const product_res = await fetch(`${API_URL}/products`);
-  const products = await product_res.json();
   const categories_res = await fetch(`${API_URL}/categories`);
   const categories = await categories_res.json();
 
   return {
     props: {
-      products,
       categories,
     },
   };

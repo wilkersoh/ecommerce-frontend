@@ -31,7 +31,6 @@ const useCartProvider = () => {
   };
 
   const createNewCart = async (productID, quantity) => {
-    console.log("hit create: quantity > ", quantity);
     return await fetch(`${API_URL}/carts`, {
       method: "POST",
       credentials: "include",
