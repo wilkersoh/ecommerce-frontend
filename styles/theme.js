@@ -10,9 +10,9 @@ const customise = {
     xl: "1200px",
   }),
   fonts: {
-    body: "Source Sans Pro, sans-serif",
-    heading: "Georgia, serif",
-    mono: "Menlo, monospace",
+    brand: "Work Sans, sans-serif",
+    body: "PT Serif, sans-serif",
+    heading: "Source Sans Pro, sans-serif",
   },
 };
 

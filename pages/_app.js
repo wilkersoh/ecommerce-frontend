@@ -8,12 +8,14 @@ import { theme } from "../styles/theme";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { Fonts } from "../styles/Fonts";
 
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider theme={theme}>
+      <Fonts />
       <SWRConfig value={{ dedupingInterval: 5000, fetcher }}>
         <AuthProvider>
           <CartProvider>
