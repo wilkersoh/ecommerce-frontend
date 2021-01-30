@@ -4,7 +4,8 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { API_URL } from "../utils/urls";
 import { useCart } from "../context/CartContext";
-import { useAuth } from "../context/AuthContext";
+
+const queryKey = "session_id";
 
 const useOrder = (session_id) => {
   const { cartMutate, cartItems } = useCart();
@@ -27,6 +28,7 @@ const useOrder = (session_id) => {
           },
         });
         const payload = await res.json();
+        console.log("payload from order: ", payload);
         setOrder(payload);
       } catch (error) {
         setOrder([]);
@@ -37,10 +39,6 @@ const useOrder = (session_id) => {
 
     const clearCart = async () => {
       try {
-        console.log("inside clearCart");
-        cartMutate((data) => {
-          console.log("data: ", data);
-        });
         await fetch(`${API_URL}/carts/deletes`, {
           method: "POST",
           credentials: "include",
@@ -48,6 +46,9 @@ const useOrder = (session_id) => {
             "Content-type": "application/json",
           },
         });
+
+        // clear all cartItems
+        cartMutate([]);
       } catch (error) {
         console.log("cannot clear cart, something went wrong");
       }
@@ -61,14 +62,14 @@ const useOrder = (session_id) => {
 
 export default function success() {
   const router = useRouter();
-  const { user } = useAuth();
-  const queryKey = "session_id";
+  const { cartMutate, cartItems } = useCart();
   const session_id =
     router.query[queryKey] ||
     router.asPath.match(new RegExp(`[&?]${queryKey}=(.*)(&|$)`));
 
   const { order, loading } = useOrder(session_id);
-
+  console.log("order: ", order);
+  console.log("cartItems in succeess: ", cartItems);
   return (
     <div>
       <Head>

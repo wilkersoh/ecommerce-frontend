@@ -42,7 +42,7 @@ export default function CheckoutButton({ checkoutItems }) {
 
     // session pass from stripe backend
     const session = await res.json();
-    console.log("session frontend:", session);
+
     const result = await stripe.redirectToCheckout({
       sessionId: session.id,
     });

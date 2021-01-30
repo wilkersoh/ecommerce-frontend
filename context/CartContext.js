@@ -26,7 +26,7 @@ const useCartProvider = () => {
   );
 
   const getCurrentCartItem = (productID) => {
-    if (!Array.isArray(cartItems)) return;
+    if (!Array.isArray(cartItems)) return; // is Object then return;
     return cartItems.find((cart) => cart.product.id === productID) || {};
   };
 

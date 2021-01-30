@@ -41,7 +41,7 @@ export default function cart() {
     try {
       const res = await updateCart(checkoutItems);
       const payload = await res.json();
-      console.log("payload:, ", payload);
+
       cartMutate(payload);
 
       /**
@@ -107,7 +107,7 @@ export default function cart() {
               step={1}
               value={cart.quantity}
               min={1}
-              max={cart.product.store}
+              max={cart.product.quantity_in_store}
               id={cart.id}
               onChange={(value) => handleChange(cart.id, value)}
               clampValueOnBlur={true}>
