@@ -68,8 +68,7 @@ export default function success() {
     router.asPath.match(new RegExp(`[&?]${queryKey}=(.*)(&|$)`));
 
   const { order, loading } = useOrder(session_id);
-  console.log("order: ", order);
-  console.log("cartItems in succeess: ", cartItems);
+
   return (
     <div>
       <Head>

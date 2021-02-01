@@ -1,5 +1,5 @@
 // 1. Import the utilities
-import { extendTheme } from "@chakra-ui/react";
+import { extendTheme, theme as chakraTheme } from "@chakra-ui/react";
 import { createBreakpoints } from "@chakra-ui/theme-tools";
 
 const customise = {
@@ -14,7 +14,14 @@ const customise = {
     body: "PT Serif, sans-serif",
     heading: "Source Sans Pro, sans-serif",
   },
+  colors: {
+    ...chakraTheme.colors,
+    green: {
+      0: "#c9d6cc",
+      ...chakraTheme.colors.green,
+    },
+  },
 };
 
 // 3. Extend the theme
-export const theme = extendTheme(customise);
+export const customTheme = extendTheme(customise);

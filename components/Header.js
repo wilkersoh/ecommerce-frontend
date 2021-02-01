@@ -5,8 +5,18 @@ import { useAuth } from "../context/AuthContext";
 
 import styles from "../styles/Header.module.css";
 import { useCart } from "../context/CartContext";
-
-import { Box, Link, Text, Stack, HStack } from "@chakra-ui/react";
+import DropdownMenu from "./DropdownMenu";
+import Cart from "../icons/Cart";
+import {
+  Box,
+  Link,
+  Text,
+  Flex,
+  Stack,
+  HStack,
+  Button,
+  Icon,
+} from "@chakra-ui/react";
 
 export default function Header() {
   const router = useRouter();
@@ -42,13 +52,33 @@ export default function Header() {
   }
 
   return (
-    <Box className={styles.nav}>
-      {!isHome && (
-        <Box>
-          <Link onClick={goBack}>{"<"} Back</Link>
-        </Box>
-      )}
-      <Box className={styles.title}>
+    <Box
+      as='header'
+      d='flex'
+      alignItems='center'
+      bgColor={"green.0"}
+      fontFamily={"subBody"}
+      justifyContent='space-between'>
+      <DropdownMenu />
+      <Box>
+        <NextLink href='/cart' passHref>
+          <Link>
+            <Flex align='center'>
+              <Box transform='scaleX(-1)'>
+                <Box
+                  as={Cart}
+                  className='blue'
+                  ml={{ sm: 2 }}
+                  w='35px'
+                  h='35px'
+                />
+              </Box>
+              <Text>Cart {cartItems?.length}</Text>
+            </Flex>
+          </Link>
+        </NextLink>
+      </Box>
+      {/* <Box>
         <NextLink href='/'>
           <Link>
             <h1>The E-Commerce</h1>
@@ -64,13 +94,42 @@ export default function Header() {
             <Link>My Account</Link>
           </NextLink>
         </Box>
-        <Box className={styles.auth}>
+        <Box>
           <Box onClick={logoutUser}>Logout</Box>
         </Box>
-        <NextLink href='/cart'>
-          <Link>Cart {user.carts.length}</Link>
-        </NextLink>
-      </HStack>
+      </HStack> */}
     </Box>
   );
+  // return (
+  //   <Box className={styles.nav}>
+  //     {!isHome && (
+  //       <Box>
+  //         <Link onClick={goBack}>{"<"} Back</Link>
+  //       </Box>
+  //     )}
+  //     <Box transform=''>
+  //       <Box as={Cart} h='40px' className='blue' w='24px' />
+  //     </Box>
+  //     <Box className={styles.title}>
+  //       <NextLink href='/'>
+  //         <Link>
+  //           <h1>The E-Commerce</h1>
+  //         </Link>
+  //       </NextLink>
+  //     </Box>
+  //     <HStack spacing='24px'>
+  //       <NextLink href='/cart'>
+  //         <Link>Cart Store {cartItems?.length} </Link>
+  //       </NextLink>
+  //       <Box>
+  //         <NextLink href='/account'>
+  //           <Link>My Account</Link>
+  //         </NextLink>
+  //       </Box>
+  //       <Box className={styles.auth}>
+  //         <Box onClick={logoutUser}>Logout</Box>
+  //       </Box>
+  //     </HStack>
+  //   </Box>
+  // );
 }

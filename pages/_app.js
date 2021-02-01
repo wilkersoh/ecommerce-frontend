@@ -4,7 +4,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { AuthProvider } from "../context/AuthContext";
 import { CartProvider } from "../context/CartContext";
 import fetcher from "../utils/fetcher";
-import { theme } from "../styles/theme";
+import { customTheme } from "../styles/theme";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -14,7 +14,7 @@ import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <ChakraProvider theme={theme}>
+    <ChakraProvider theme={customTheme}>
       <Fonts />
       <SWRConfig value={{ dedupingInterval: 5000, fetcher }}>
         <AuthProvider>
