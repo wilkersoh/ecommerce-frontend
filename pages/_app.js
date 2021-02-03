@@ -3,27 +3,26 @@ import { SWRConfig } from "swr";
 import { ChakraProvider } from "@chakra-ui/react";
 import { AuthProvider } from "../context/AuthContext";
 import { CartProvider } from "../context/CartContext";
+import { ShopProvider } from "../context/ShopContext";
 import fetcher from "../utils/fetcher";
-import { customTheme } from "../styles/theme";
+import overrides from "../theme";
 
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import { Fonts } from "../styles/Fonts";
+import { Fonts } from "../theme/customs/Fonts";
 
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <ChakraProvider theme={customTheme}>
+    <ChakraProvider theme={overrides}>
       <Fonts />
       <SWRConfig value={{ dedupingInterval: 5000, fetcher }}>
-        <AuthProvider>
-          <CartProvider>
-            <Header />
-            <Component {...pageProps} />
-            <Footer />
-          </CartProvider>
-        </AuthProvider>
+        <ShopProvider>
+          <AuthProvider>
+            <CartProvider>
+              <Component {...pageProps} />
+            </CartProvider>
+          </AuthProvider>
+        </ShopProvider>
       </SWRConfig>
     </ChakraProvider>
   );

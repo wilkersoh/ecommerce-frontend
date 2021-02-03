@@ -1,18 +1,29 @@
-// # my main theme entrypoint
+/**
+ * all default in github
+  https://github.com/chakra-ui/chakra-ui/blob/main/packages/theme/src/foundations/colors.ts
+*/
+
+// theme.js
 import { extendTheme } from "@chakra-ui/react";
 // Global style overrides
 import styles from "./styles";
+
 // Foundational style overrides
-import borders from "./foundations/borders";
+import breakpoints from "./foundations/breakpoints";
+import colors from "./foundations/colors";
+
 // Component style overrides
-import Button from "./components/button";
+import Link from "./components/link";
+import Heading from "./components/heading";
+
 const overrides = {
   styles,
-  borders,
-  // Other foundational style overrides go here
+  breakpoints,
+  colors,
   components: {
-    Button,
-    // Other components go here
+    Link,
+    Heading,
   },
 };
+
 export default extendTheme(overrides);
