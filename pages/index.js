@@ -30,7 +30,9 @@ export default function Home({ categories = [], page }) {
 
       <Box d='flex'>
         {categories.map((category) => (
-          <NextLink key={category.id} href={`/categories/${category.slug}`}>
+          <NextLink
+            key={category.id}
+            href={`/categories/${category.category_slug}`}>
             <Link>
               <Box d='flex' flexDir='column' textAlign='center'>
                 <Box

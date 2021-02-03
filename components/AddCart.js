@@ -3,7 +3,7 @@ import { Button } from "@chakra-ui/react";
 import { useCart } from "../context/CartContext";
 import { useRouter } from "next/router";
 
-export default function AddCart({ product, quantity = 1 }) {
+export default function AddCart({ productID, quantityInStore, quantity = 1 }) {
   const {
     cartMutate,
     cartItems,
@@ -15,13 +15,13 @@ export default function AddCart({ product, quantity = 1 }) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const onAddToCart = async (productID) => {
-    const hasObject = getCurrentCartItem(productID);
+  const onAddToCart = async (id) => {
+    const hasObject = getCurrentCartItem(id);
     setIsLoading(true);
 
     try {
       if (!Object.entries(hasObject).length) {
-        const res = await createNewCart(productID, quantity);
+        const res = await createNewCart(id, quantity);
         const newCartItem = await res.json();
         const _ = await cartMutate(newCartItem);
       } else {
@@ -54,9 +54,11 @@ export default function AddCart({ product, quantity = 1 }) {
     <div>
       <Button
         isLoading={isLoading}
-        colorScheme='teal'
-        onClick={() => onAddToCart(product.id)}>
-        Add To Cart
+        colorScheme={+quantityInStore ? "teal" : "gray"}
+        isDisabled={+quantityInStore}
+        isDisabled={!+quantityInStore}
+        onClick={() => onAddToCart(productID)}>
+        {+quantityInStore ? "Add To Cart" : "Sold Out"}
       </Button>
     </div>
   );
