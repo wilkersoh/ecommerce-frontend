@@ -5,6 +5,7 @@ import Facebook from "../icons/Facebook";
 import Instagram from "../icons/Instagram";
 import Visa from "../icons/Visa";
 import Master from "../icons/Master";
+import GooglePay from "../icons/GooglePay";
 import { Box, Link, Heading, List, ListItem, Text } from "@chakra-ui/react";
 import { useShop } from "../context/ShopContext";
 
@@ -84,8 +85,8 @@ const Payments = ({ shop }) => (
       Copyright &copy; {shop?.name}
     </Text>
     <List>
-      {[Visa, Master].map((card) => (
-        <ListItem d='inline-block' m='7.5px'>
+      {[Visa, Master, GooglePay].map((card, i) => (
+        <ListItem key={i} d='inline-block' m='7.5px'>
           <Box as={card} w='12' h='12' />
         </ListItem>
       ))}
