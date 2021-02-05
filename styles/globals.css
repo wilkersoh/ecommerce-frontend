@@ -2,12 +2,30 @@ html,
 body {
   padding: 0;
   margin: 0;
-  /* font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */
 }
 
 * {
   box-sizing: border-box;
+}
+
+.button_none-focus:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0) !important;
+}
+
+.category_product-hover:hover .category_product-hover-eye-show {
+  opacity: 1;
+}
+.category_product-hover:hover .category_product-hover-image-show {
+  z-index: 1;
+  opacity: 1;
+}
+.category_product-hover:hover .category_product-hover-button-show {
+  transform: translateY(-52px);
+}
+
+.h4 {
+  font-family: "Work Sans, sans-serif";
 }
 
 .blue {

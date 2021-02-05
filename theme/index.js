@@ -1,6 +1,6 @@
 /**
  * all default in github
-  https://github.com/chakra-ui/chakra-ui/blob/main/packages/theme/src/foundations/colors.ts
+  https://github.com/chakra-ui/chakra-ui/blob/main/packages/theme/src/
 */
 
 // theme.js

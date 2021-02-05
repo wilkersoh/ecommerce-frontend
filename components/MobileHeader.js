@@ -53,8 +53,8 @@ export default function MobileHeader({ cartItems }) {
           transition={"ease-in-out 350ms"}
           border='1px solid green.0'
           _active={{ bg: "teal" }}
-          _hover={{ bg: "transparent", border: "1px solid #ffffff29" }}
-          _focus={{ outline: "none" }}
+          _hover={{ bg: "transparent", border: "1px solid green.0" }}
+          _focus={{ outline: "none", borderColor: "1px solid green.0" }}
           variant='ghost'>
           <Text mt={1}>Menu</Text>
         </Button>
@@ -77,7 +77,7 @@ export default function MobileHeader({ cartItems }) {
         height={open ? "245px" : 0}
         overflow='hidden'
         bgColor='green.0'
-        transition={"ease-in-out 350ms"}
+        transition={"850ms cubic-bezier(0, 0.55, 0.45, 1)"}
         w='full'>
         <List fontFamily='heading'>
           {menuLists.map((list) => (
