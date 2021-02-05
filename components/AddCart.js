@@ -55,7 +55,8 @@ export default function AddCart({ productID, quantityInStore, quantity = 1 }) {
       <Button
         isLoading={isLoading}
         colorScheme={+quantityInStore ? "teal" : "gray"}
-        isDisabled={+quantityInStore}
+        fontWeight={600}
+        textTransform='uppercase'
         isDisabled={!+quantityInStore}
         onClick={() => onAddToCart(productID)}>
         {+quantityInStore ? "Add To Cart" : "Sold Out"}
