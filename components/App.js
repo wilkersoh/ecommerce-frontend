@@ -9,7 +9,7 @@ export default function App({ children, ...rest }) {
     <Box d='flex' flexDirection='column' minH='100vh'>
       <Header />
       <Box mx='auto' maxW='1030px' w='full'>
-        <Box as='main' {...rest}>
+        <Box as='main' px={4} {...rest}>
           {children}
         </Box>
       </Box>
