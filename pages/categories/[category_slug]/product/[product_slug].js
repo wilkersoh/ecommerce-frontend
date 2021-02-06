@@ -7,7 +7,7 @@ import { twoDecimals } from "../../../../utils/format";
 import AddCart from "../../../../components/AddCart";
 import { useCart } from "../../../../context/CartContext";
 
-import { Button, Box, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import App from "../../../../components/App";
 import PageNav from "../../../../components/PageNav";
 
