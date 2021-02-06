@@ -5,7 +5,6 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Button } from "@chakra-ui/react";
 import { STRIPE_PK, API_URL } from "../utils/urls";
 
-import styles from "../styles/BuyButton.module.css";
 import { useCart } from "../context/CartContext";
 
 const stripePromise = loadStripe(STRIPE_PK);
@@ -50,11 +49,7 @@ export default function CheckoutButton({ checkoutItems }) {
 
   return (
     <>
-      {!user && (
-        <Button className={styles.buy} onClick={redirectToLogin}>
-          Login to Buy
-        </Button>
-      )}
+      {!user && <Button onClick={redirectToLogin}>Login to Buy</Button>}
       {user && (
         <Button
           isLoading={isLoading}

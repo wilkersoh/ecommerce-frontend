@@ -65,7 +65,6 @@ export default function Header({ ...props }) {
         <Box
           d={{ sm: "none", lg: "flex" }}
           maxW='1030px'
-          className='blue'
           px={3}
           w='full'
           fontFamily={"heading"}
