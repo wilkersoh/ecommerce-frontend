@@ -42,7 +42,7 @@ const Product = ({ product }) => {
 
       <Box>
         <Head>{meta_title && <title>{meta_title}</title>}</Head>
-        <Text>{brand.name}</Text>
+        <Text>{brand?.name}</Text>
         <Text as='h3'>{name}</Text>
 
         {images.map((image) => (
