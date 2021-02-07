@@ -15,6 +15,7 @@ import {
   Input,
   InputLeftElement,
 } from "@chakra-ui/react";
+import { useAuth } from "../context/AuthContext";
 
 const menuLists = [
   { name: "home", path: "/" },
@@ -24,6 +25,7 @@ const menuLists = [
 ];
 
 export default function MobileHeader({ cartItems }) {
+  const { user } = useAuth();
   const [open, setOpen] = useState(false);
 
   const onMenuClick = () => {
@@ -68,7 +70,9 @@ export default function MobileHeader({ cartItems }) {
                 w='25px'
                 h='25px'
               />
-              <Text pt={1}>Cart ({cartItems?.length})</Text>
+              <Text pt={1}>
+                Cart {cartItems?.length ? `(${cartItems.length})` : null}
+              </Text>
             </Flex>
           </Link>
         </NextLink>
@@ -80,7 +84,7 @@ export default function MobileHeader({ cartItems }) {
         transition={"850ms cubic-bezier(0, 0.55, 0.45, 1)"}
         w='full'>
         <List fontFamily='heading'>
-          {menuLists.map((list) => (
+          {menuLists.map((list, i) => (
             <ListItem
               key={list.name}
               fontSize='0.8em'
@@ -93,7 +97,7 @@ export default function MobileHeader({ cartItems }) {
                   p={3}
                   _active={{ textDecor: "none" }}
                   _focus={{ outline: "none" }}>
-                  {list.name}
+                  {i == 2 && user ? "log out" : list.name}
                 </Link>
               </NextLink>
             </ListItem>

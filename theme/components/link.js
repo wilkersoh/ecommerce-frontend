@@ -9,7 +9,7 @@ const Link = {
       textDecoration: "none",
     },
     _focus: {
-      boxShadow: "outline",
+      boxShadow: "none",
     },
   },
 };

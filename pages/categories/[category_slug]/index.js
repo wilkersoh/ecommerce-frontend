@@ -34,6 +34,8 @@ export default function CategoryProducts({
     console.log("value :>> ", value);
   };
 
+  console.log("products :>> ", products);
+
   return (
     <App>
       <PageNav routeQuery={router.query} />
@@ -144,8 +146,6 @@ export async function getServerSideProps(context) {
       - type 的全部ID
       - tag 的全部ID > endpoint: products?categories.id=1&brand.id=1&tag.id=2
 
-
-
       /categories/[category_slug]
       * 從 category model query
       1.
@@ -160,9 +160,6 @@ export async function getServerSideProps(context) {
 
       * 從 product model query
       cannnot get categories[]
-
-
-
 
    */
 
@@ -183,9 +180,6 @@ export async function getServerSideProps(context) {
   const res_product = fetch(
     `${API_URL}/products?categories.category_slug=${category_slug}&_start=${start}&_limit=${pageSize}`
   );
-  // const res_product = fetch(
-  //   `${API_URL}/products?categories.category_slug=${category_slug}`
-  // );
 
   const [promise_product, promise_num] = await Promise.all([
     res_product,

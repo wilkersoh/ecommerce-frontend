@@ -7,7 +7,6 @@ import { useShop } from "../context/ShopContext";
 import Cart from "../icons/Cart";
 import MobileHeader from "./MobileHeader";
 
-import { Search2Icon } from "@chakra-ui/icons";
 import {
   Box,
   Flex,
@@ -24,34 +23,6 @@ export default function Header({ ...props }) {
   const { user, logoutUser } = useAuth();
   const { cartItems } = useCart();
   const { shop } = useShop();
-
-  const isHome = router.pathname === "/";
-  const goBack = (event) => {
-    event.preventDefault();
-    router.back();
-  };
-
-  if (!user) {
-    return (
-      <Flex as='header' direction='column' {...props}>
-        <Box>
-          <NextLink href='/'>
-            <Link>
-              <h1>The E-Commerce</h1>
-            </Link>
-          </NextLink>
-        </Box>
-        <Box>Cart</Box>
-        <NextLink href='/account/login'>
-          <Link>Login</Link>
-        </NextLink>
-        <Text px={4}>OR</Text>
-        <NextLink href='/account/register'>
-          <Link>Create account</Link>
-        </NextLink>
-      </Flex>
-    );
-  }
 
   return (
     <Flex as='header' direction='column' {...props}>
@@ -76,15 +47,28 @@ export default function Header({ ...props }) {
               <Image src={shop?.shop_icon.url} height='35px' width='35px' />
             </Link>
           </NextLink>
-          <Flex>
-            <Flex alignItems='center' mr={4}>
-              <NextLink href='/account/login' passHref>
-                <Link _hover={{ textDecor: "none" }}>Log in</Link>
-              </NextLink>
-              <Text px={3}>Or</Text>
-              <NextLink href='/account/register' passHref>
-                <Link>Create Account</Link>
-              </NextLink>
+          <Flex fontSize='0.8em'>
+            <Flex alignItems='center' mr={6}>
+              {!user ? (
+                <>
+                  <NextLink href='/account/login' passHref>
+                    <Link>Log in</Link>
+                  </NextLink>
+                  <Text px={3}>Or</Text>
+                  <NextLink href='/account/register' passHref>
+                    <Link>Create Account</Link>
+                  </NextLink>
+                </>
+              ) : (
+                <>
+                  <NextLink href='/account/' passHref>
+                    <Link>My Account</Link>
+                  </NextLink>
+                  <Box cursor='pointer' ml={3} onClick={logoutUser}>
+                    Log out
+                  </Box>
+                </>
+              )}
             </Flex>
             <NextLink href='/cart' passHref>
               <Link>

@@ -7,7 +7,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = (props) => {
   const auth = useAuthProvider();
-  // console.log("auth:", auth);
+
   return (
     <AuthContext.Provider value={auth}>{props.children}</AuthContext.Provider>
   );
@@ -30,7 +30,8 @@ const useAuthProvider = (props) => {
   }, [me]);
 
   /**
-   * @param {Object} user
+   * @param {Object} user,
+   * return null if there is not user
    */
   const setLoginUser = async (user) => {
     if (!user) setUser(null);
@@ -46,7 +47,7 @@ const useAuthProvider = (props) => {
         method: "POST",
         credentials: "include",
       });
-      const payload = await res.json();
+      const _ = await res.json();
     } catch (error) {
       // doing popup
       console.log("logout faield");
