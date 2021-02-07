@@ -12,7 +12,7 @@ export default function PageSize() {
       bg='#f6f6f6'>
       <Box
         fontWeight='700'
-        maxW='70px'
+        maxW='65px'
         px={3}
         as='label'
         m='auto'

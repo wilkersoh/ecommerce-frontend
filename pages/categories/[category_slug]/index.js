@@ -12,6 +12,9 @@ import PageSize from "../../../components/PageSize";
 import SortBy from "../../../components/SortBy";
 
 import { Box, Button, Flex, Grid, GridItem } from "@chakra-ui/react";
+import useSWR from "swr";
+
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 export default function CategoryProducts({
   products,
@@ -22,19 +25,19 @@ export default function CategoryProducts({
 }) {
   const router = useRouter();
   const lastPage = Math.ceil(totalProductLength / pageSize); // num is pageSize
-  // const initialValues = {
-  //   categories: query.caretories || "ALL",
-  //   brand: query.brand || "ALL",
-  //   type: query.type || "ALL",
-  //   tag: query.tag || "ALL",
-  // };
+  const { data, error } = useSWR(
+    `${API_URL}/products/getFilterList?category_slug=${category_slug}`,
+    fetcher
+  );
 
-  const handleBrand = async (value) => {
-    //
-    console.log("value :>> ", value);
+  const initialValues = {
+    brand: router.query.brand || "ALL",
+    type: router.query.type || "ALL",
+    tag: router.query.tag || "ALL",
   };
 
-  console.log("products :>> ", products);
+  console.log("data :>> ", data);
+  console.log("error :>> ", error);
 
   return (
     <App>
@@ -50,26 +53,27 @@ export default function CategoryProducts({
         </>
       )}
       <Grid gridTemplateColumns={{ md: "20% 1fr" }} gap={{ md: 4 }}>
-        <GridItem rowSpan={2}>
-          <Filter />
+        <GridItem rowSpan={3}>
+          {!data ? (
+            <Button isLoading={true}></Button>
+          ) : (
+            <Filter filterLists={data} />
+          )}
         </GridItem>
+
         <Grid
           mt={{ sm: 3, md: 0 }}
           mb={{ sm: 4, md: 2 }}
           columnGap={{ sm: 2, md: 6 }}
-          className='blue'
-          gridTemplateAreas={{ md: ". sort" }}
           gridTemplateColumns={{
             sm: "repeat(4, 1fr)",
-            md: "none",
+            md: "repeat(5, 1fr)",
           }}>
-          <GridItem gridArea={{ md: "sort" }}>
+          <GridItem gridColumn={{ sm: "1 / 2", md: "3 / 4" }}>
             <PageSize />
           </GridItem>
-          <GridItem colSpan={{ sm: 3, md: 0 }} gridArea={{ md: "sort" }}>
-            <Box ml={{ md: 40 }} w={{ md: "200px" }}>
-              <SortBy />
-            </Box>
+          <GridItem gridColumn={{ sm: "2 / -1", md: "4 / -1" }}>
+            <SortBy />
           </GridItem>
         </Grid>
 
@@ -110,7 +114,7 @@ export default function CategoryProducts({
 
 export async function getServerSideProps(context) {
   // variable page is customise created.
-  const { category_slug, page = 1, pageSize = 4 } = context.query;
+  const { category_slug, page = 1, pageSize = 3 } = context.query;
 
   /**
     context.query > {
