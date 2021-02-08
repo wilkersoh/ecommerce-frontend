@@ -2,9 +2,10 @@ import React, { useRef, useEffect, useState } from "react";
 import NextLink from "next/link";
 import { useForm, ErrorMessage } from "react-hook-form";
 import { API_URL } from "../../utils/urls";
-
-import { Box, Button, Stack, Input, Text, Link } from "@chakra-ui/react";
+import App from "../../components/App";
+import Messages from "../../components/Messages";
 import { useAuth } from "../../context/AuthContext";
+import { Box, Button, Stack, Input, Text, Link } from "@chakra-ui/react";
 
 export default function register() {
   const { register, handleSubmit, errors } = useForm();
@@ -19,7 +20,9 @@ export default function register() {
 
   const onSubmit = async (data) => {
     setIsLoading(true);
+    console.log("hit submit");
     try {
+      console.log("hit 1");
       const res = await fetch(`${API_URL}/auth/local/register`, {
         method: "POST",
         credentials: "include",
@@ -28,10 +31,13 @@ export default function register() {
         },
         body: JSON.stringify(data),
       });
+      console.log("hit 2");
       const payload = await res.json();
 
+      console.log("hit 3");
       if (payload.statusCode === 400) {
         const msg = payload.message[0].messages[0].message;
+        console.log(payload);
         setError(msg);
         setIsLoading(false);
         return;
@@ -43,74 +49,85 @@ export default function register() {
       console.log("register error: ", error);
       // doing popup handle error
     }
-    // console.log(payload); // {status: "", user: {carts: [], orders:[], username: "wilker002" }}
+    console.log(payload); // {status: "", user: {carts: [], orders:[], username: "wilker002" }}
   };
 
-  console.log(errors);
+  console.log(isError);
 
   return (
-    <Box>
-      <Text fontWeight={700} fontSize='1.8em'>
-        自由文創
-      </Text>
-      <Text as='h1' fontWeight={700} fontSize='1.8em'>
-        Create Acount
-      </Text>
+    <App>
       <Box>
-        <Text>{errors.first_name && <span>Hi firstName</span>}</Text>
-        <Text>{errors.last_name && <span>Hi lastName</span>}</Text>
-        <Text>{errors.email && <span>Hi email</span>}</Text>
-        <Text>{errors.password && <span>Hi password</span>}</Text>
-        <Text>{isError && isError}</Text>
-      </Box>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack spacing={3}>
-          <Input
-            type='text'
-            name='first_name'
-            size='lg'
-            defaultValue='yee'
-            placeholder='First Name'
-            ref={(e) => {
-              register(e, { required: true });
-              firstNameRef.current = e;
-            }}
-          />
-          <Input
-            type='text'
-            name='last_name'
-            size='lg'
-            defaultValue='dev'
-            placeholder='Last Name'
-            ref={register({ required: true })}
-          />
-          <Input
-            type='email'
-            name='email'
-            size='lg'
-            defaultValue='selfpaths@gmail.com'
-            placeholder='Email'
-            ref={register({ required: true })}
-          />
-          <Input
-            type='password'
-            name='password'
-            size='lg'
-            defaultValue='password'
-            placeholder='Password'
-            ref={register({ required: true })}
-          />
+        <Text mb={8} as='h1' fontWeight={700}>
+          Create Acount
+        </Text>
 
-          <Button type='submit' isLoading={isLoading} colorScheme='teal' py={4}>
-            Create
-          </Button>
-        </Stack>
-      </form>
-      <Box>
-        <NextLink href='/'>
-          <Link>Return to store</Link>
-        </NextLink>
+        {errors.length && <Messages status={"errors"} messages={errors} />}
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Stack spacing={3}>
+            <Input
+              type='text'
+              name='first_name'
+              size='lg'
+              placeholder='First Name'
+              ref={(e) => {
+                register(e, {
+                  required: true,
+                  maxLength: { value: 16, message: "First name is too long." },
+                });
+                firstNameRef.current = e;
+              }}
+            />
+
+            <Input
+              type='text'
+              name='last_name'
+              size='lg'
+              placeholder='Last Name'
+              ref={register({
+                required: true,
+                maxLength: { value: 16, message: "Last name is too long." }, // space also counted as length
+              })}
+            />
+            <Input
+              type='email'
+              name='email'
+              size='lg'
+              placeholder='Email'
+              ref={register({ required: true })}
+            />
+            <Input
+              type='password'
+              name='password'
+              size='lg'
+              placeholder='Password'
+              ref={register({
+                required: true,
+                minLength: { value: 6, message: "Password is too short" },
+              })}
+            />
+            <Box textAlign='center' mb={4}>
+              <Button
+                size='md'
+                type='submit'
+                w='100px'
+                isLoading={isLoading}
+                bgColor='green.1'
+                color='white'
+                _active={{ bgColor: "green.1" }}
+                _hover={{ bgColor: "green.1" }}
+                py={5}>
+                Create
+              </Button>
+            </Box>
+          </Stack>
+        </form>
+        <Box textAlign='center' color='green.1' fontWeight='500'>
+          <NextLink href='/'>
+            <Link>Return to store</Link>
+          </NextLink>
+        </Box>
       </Box>
-    </Box>
+    </App>
   );
 }
