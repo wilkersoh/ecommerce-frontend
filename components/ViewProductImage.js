@@ -95,6 +95,7 @@ const HoverImage = ({ image }) => (
     bottom={0}
     left={0}
     right={0}
+    opacity={0}
     zIndex={-1}>
     <Image
       src={fromImageToUrl(image)}

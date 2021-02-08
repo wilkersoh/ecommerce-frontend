@@ -17,6 +17,7 @@ import {
   List,
   ListItem,
 } from "@chakra-ui/react";
+import GlobalSearch from "./GlobalSearch";
 
 export default function Header({ ...props }) {
   const router = useRouter();
@@ -47,8 +48,8 @@ export default function Header({ ...props }) {
               <Image src={shop?.shop_icon.url} height='35px' width='35px' />
             </Link>
           </NextLink>
-          <Flex fontSize='0.8em'>
-            <Flex alignItems='center' mr={6}>
+          <Flex fontSize='0.8em' alignItems='center'>
+            <Flex alignItems='center'>
               {!user ? (
                 <>
                   <NextLink href='/account/login' passHref>
@@ -71,7 +72,7 @@ export default function Header({ ...props }) {
               )}
             </Flex>
             <NextLink href='/cart' passHref>
-              <Link>
+              <Link mx={6}>
                 <Flex align='center'>
                   <Box transform='scaleX(-1)'>
                     <Box as={Cart} ml={{ sm: 2 }} w='20px' h='20px' />
@@ -80,6 +81,7 @@ export default function Header({ ...props }) {
                 </Flex>
               </Link>
             </NextLink>
+            <GlobalSearch maxW={"160px"} />
           </Flex>
         </Box>
       </Flex>

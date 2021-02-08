@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import NextLink from "next/link";
-
+import { useAuth } from "../context/AuthContext";
+import GlobalSearch from "./GlobalSearch";
 import Cart from "../icons/Cart";
-import { HamburgerIcon, Search2Icon, CloseIcon } from "@chakra-ui/icons";
+
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -11,11 +13,7 @@ import {
   Text,
   List,
   ListItem,
-  InputGroup,
-  Input,
-  InputLeftElement,
 } from "@chakra-ui/react";
-import { useAuth } from "../context/AuthContext";
 
 const menuLists = [
   { name: "home", path: "/" },
@@ -103,14 +101,7 @@ export default function MobileHeader({ cartItems }) {
             </ListItem>
           ))}
           <ListItem p={3} borderTop='1px solid rgba(0, 0, 0, 0.2)'>
-            <InputGroup bgColor='#fff' borderRadius='6px'>
-              <InputLeftElement
-                pointerEvents='none'
-                color='#000'
-                children={<Search2Icon color='gray.300' />}
-              />
-              <Input type='text' placeholder='Search' />
-            </InputGroup>
+            <GlobalSearch />
           </ListItem>
         </List>
       </Box>
