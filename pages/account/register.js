@@ -3,13 +3,13 @@ import NextLink from "next/link";
 import { useForm, ErrorMessage } from "react-hook-form";
 import { API_URL } from "../../utils/urls";
 import App from "../../components/App";
-import Messages from "../../components/Messages";
+import { ClientMessage, ServerMessage } from "../../components/Messages";
 import { useAuth } from "../../context/AuthContext";
 import { Box, Button, Stack, Input, Text, Link } from "@chakra-ui/react";
 
 export default function register() {
   const { register, handleSubmit, errors } = useForm();
-  const [isError, setError] = useState("");
+  const [hasErrors, setErrors] = useState({});
   const firstNameRef = useRef();
   const { setLoginUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -20,9 +20,7 @@ export default function register() {
 
   const onSubmit = async (data) => {
     setIsLoading(true);
-    console.log("hit submit");
     try {
-      console.log("hit 1");
       const res = await fetch(`${API_URL}/auth/local/register`, {
         method: "POST",
         credentials: "include",
@@ -31,37 +29,37 @@ export default function register() {
         },
         body: JSON.stringify(data),
       });
-      console.log("hit 2");
-      const payload = await res.json();
 
-      console.log("hit 3");
+      const payload = await res.json();
       if (payload.statusCode === 400) {
-        const msg = payload.message[0].messages[0].message;
-        console.log(payload);
-        setError(msg);
-        setIsLoading(false);
-        return;
+        throw new Error(payload.message[0].messages[0].message);
       }
 
       // save in contextAuth
       setLoginUser(payload.user);
     } catch (error) {
-      console.log("register error: ", error);
+      setIsLoading(false);
       // doing popup handle error
+      setErrors({ email: { type: "duplicated", message: error } });
     }
-    console.log(payload); // {status: "", user: {carts: [], orders:[], username: "wilker002" }}
+    // console.log(payload); // {status: "", user: {carts: [], orders:[], username: "wilker002" }}
   };
 
-  console.log(isError);
+  console.log("errors :>> ", errors);
 
   return (
     <App>
-      <Box>
+      <Box w={{ md: "50%" }}>
         <Text mb={8} as='h1' fontWeight={700}>
           Create Acount
         </Text>
 
-        {errors.length && <Messages status={"errors"} messages={errors} />}
+        {Object.keys(errors).length ? (
+          <ClientMessage status={"error"} messages={errors} />
+        ) : null}
+        {Object.keys(hasErrors).length ? (
+          <ServerMessage messages={hasErrors} />
+        ) : null}
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={3}>
@@ -69,6 +67,8 @@ export default function register() {
               type='text'
               name='first_name'
               size='lg'
+              isInvalid={errors?.first_name && true}
+              errorBorderColor='red.300'
               placeholder='First Name'
               ref={(e) => {
                 register(e, {
@@ -83,6 +83,8 @@ export default function register() {
               type='text'
               name='last_name'
               size='lg'
+              isInvalid={errors?.last_name && true}
+              errorBorderColor='red.300'
               placeholder='Last Name'
               ref={register({
                 required: true,
@@ -93,6 +95,8 @@ export default function register() {
               type='email'
               name='email'
               size='lg'
+              isInvalid={hasErrors?.email && true}
+              errorBorderColor='red.300'
               placeholder='Email'
               ref={register({ required: true })}
             />
@@ -100,13 +104,15 @@ export default function register() {
               type='password'
               name='password'
               size='lg'
+              isInvalid={errors?.password && true}
+              errorBorderColor='red.300'
               placeholder='Password'
               ref={register({
                 required: true,
                 minLength: { value: 6, message: "Password is too short" },
               })}
             />
-            <Box textAlign='center' mb={4}>
+            <Box textAlign={{ sm: "center", md: "left" }} mb={4}>
               <Button
                 size='md'
                 type='submit'
@@ -122,7 +128,10 @@ export default function register() {
             </Box>
           </Stack>
         </form>
-        <Box textAlign='center' color='green.1' fontWeight='500'>
+        <Box
+          textAlign={{ sm: "center", md: "left" }}
+          color='green.1'
+          fontWeight='500'>
           <NextLink href='/'>
             <Link>Return to store</Link>
           </NextLink>

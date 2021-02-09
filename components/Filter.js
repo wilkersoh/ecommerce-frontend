@@ -1,4 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import useSWR from "swr";
+import FilterList from "./FilterList";
+import { API_URL } from "../utils/urls";
+import FilterSkeleton from "./FilterSkeleton";
+
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import {
   Box,
   useDisclosure,
@@ -9,13 +15,47 @@ import {
   Icon,
   Button,
 } from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
-import FilterList from "./FilterList";
 
-export default function Filter({ filterLists }) {
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
+
+export default function Filter({ category_slug }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [filterLists, setFilterList] = useState({});
+  const { data, error } = useSWR(
+    `${API_URL}/products/getFilterList?category_slug=${category_slug}`,
+    fetcher
+  );
+
+  useEffect(() => {
+    const result = (data || []).reduce(
+      (acc, obj) => {
+        if (!acc["types"][obj["type_name"]]) {
+          if (obj["type_name"])
+            acc["types"][obj["type_name"].replace(" ", "_")] = obj["typeCount"];
+        }
+
+        if (!acc["brands"][obj["brand_name"]]) {
+          if (obj["brand_name"])
+            acc["brands"][obj["brand_name"].replace(" ", "_")] =
+              obj["brandCount"];
+        }
+
+        if (!acc["tags"][obj["tag_name"]]) {
+          if (obj["tag_name"])
+            acc["tags"][obj["tag_name"].replace(" ", "_")] = obj["tagCount"];
+        }
+
+        return acc;
+      },
+      { brands: {}, types: {}, tags: {} }
+    );
+
+    setFilterList(result);
+  }, [data]);
 
   const handleClose = () => onClose();
+
+  if (!data) return <FilterSkeleton />;
 
   return (
     <Box>
@@ -24,6 +64,7 @@ export default function Filter({ filterLists }) {
           onClick={onOpen}
           w='full'
           bg='black'
+          h='40px'
           _hover={{ bgColor: "rgba(0,0,0,0.85)" }}
           _active={{ bgColor: "black" }}>
           <Box color='white' d='flex' w='full' alignItems='center'>
@@ -46,13 +87,14 @@ export default function Filter({ filterLists }) {
                 <Icon as={CloseIcon} w={7} h={7} />
               </Box>
             </Box>
-
-            <FilterList />
+            {/* mobile filterList*/}
+            <FilterList lists={filterLists} />
           </DrawerContent>
         </Drawer>
       </Box>
-
-      <FilterList />
+      <Box d={{ sm: "none", md: "block" }}>
+        <FilterList lists={filterLists} />
+      </Box>
     </Box>
   );
 }

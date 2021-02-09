@@ -21,6 +21,7 @@ select {
   opacity: 1;
 }
 .category_product-hover:hover .category_product-hover-image-show {
+  display: block;
   z-index: 1;
   opacity: 1;
 }

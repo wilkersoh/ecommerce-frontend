@@ -1,6 +1,5 @@
 import React from "react";
 import { useRouter } from "next/router";
-import NextLink from "next/link";
 import fetch from "isomorphic-unfetch";
 import { API_URL } from "../../../utils/urls";
 import ReactMarkdown from "react-markdown";
@@ -12,9 +11,6 @@ import PageSize from "../../../components/PageSize";
 import SortBy from "../../../components/SortBy";
 
 import { Box, Button, Flex, Grid, GridItem } from "@chakra-ui/react";
-import useSWR from "swr";
-
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 export default function CategoryProducts({
   products,
@@ -25,19 +21,6 @@ export default function CategoryProducts({
 }) {
   const router = useRouter();
   const lastPage = Math.ceil(totalProductLength / pageSize); // num is pageSize
-  const { data, error } = useSWR(
-    `${API_URL}/products/getFilterList?category_slug=${category_slug}`,
-    fetcher
-  );
-
-  const initialValues = {
-    brand: router.query.brand || "ALL",
-    type: router.query.type || "ALL",
-    tag: router.query.tag || "ALL",
-  };
-
-  console.log("data :>> ", data);
-  console.log("error :>> ", error);
 
   return (
     <App>
@@ -54,11 +37,7 @@ export default function CategoryProducts({
       )}
       <Grid gridTemplateColumns={{ md: "20% 1fr" }} gap={{ md: 4 }}>
         <GridItem rowSpan={3}>
-          {!data ? (
-            <Button isLoading={true}></Button>
-          ) : (
-            <Filter filterLists={data} />
-          )}
+          <Filter category_slug={category_slug} />
         </GridItem>
 
         <Grid
