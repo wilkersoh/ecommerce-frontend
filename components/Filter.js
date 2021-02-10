@@ -27,6 +27,7 @@ export default function Filter({ category_slug }) {
   );
 
   useEffect(() => {
+    if (!Array.isArray(data)) return; // return {500 error}, to avoid popup page error
     const result = (data || []).reduce(
       (acc, obj) => {
         if (!acc["types"][obj["type_name"]]) {
@@ -44,6 +45,15 @@ export default function Filter({ category_slug }) {
           if (obj["tag_name"])
             acc["tags"][obj["tag_name"].replace(" ", "_")] = obj["tagCount"];
         }
+
+        /** example data can be use in jsbin
+        let originData = [
+          {brand_name: 'SARASA', brandCount: 2, type_name: "Stationery", typeCount: 2},
+          {brand_name: "YZ 創意文創", brandCount: 1, type_name: "Sticky Notes", typeCount: 1},
+          {brand_name: "MILDLINER", brandCount: 1, type_name: null, typeCount: 0}
+        ]
+
+         */
 
         return acc;
       },
@@ -88,12 +98,12 @@ export default function Filter({ category_slug }) {
               </Box>
             </Box>
             {/* mobile filterList*/}
-            <FilterList lists={filterLists} />
+            <FilterList lists={filterLists} category_slug={category_slug} />
           </DrawerContent>
         </Drawer>
       </Box>
       <Box d={{ sm: "none", md: "block" }}>
-        <FilterList lists={filterLists} />
+        <FilterList lists={filterLists} category_slug={category_slug} />
       </Box>
     </Box>
   );

@@ -25,13 +25,13 @@ export default function ResetPassword({ children, ...rest }) {
   };
 
   return (
-    <Box {...rest}>
+    <Box w={{ md: "50%" }} {...rest}>
       <Text mb={8} as='h1' fontWeight={700} fontSize='1.8em'>
         Reset your password
       </Text>
       <Text>We will send you an email to reset your password.</Text>
       <Input ref={refInput} my={4} type='email' placeholder='Email' />
-      <Box textAlign='center' mb={5}>
+      <Box textAlign={{ sm: "center", md: "left" }} mb={5}>
         <Button
           onClick={handleSubmit}
           size='md'
@@ -42,7 +42,10 @@ export default function ResetPassword({ children, ...rest }) {
           Submit
         </Button>
       </Box>
-      <Box textAlign='center' color='green.1' fontWeight='500'>
+      <Box
+        textAlign={{ sm: "center", md: "left" }}
+        color='green.1'
+        fontWeight='500'>
         {children}
       </Box>
     </Box>

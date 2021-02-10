@@ -91,6 +91,7 @@ const HoverImage = ({ image }) => (
   <Box
     className='category_product-hover-image-show'
     position='absolute'
+    d='none'
     top={0}
     bottom={0}
     left={0}

@@ -43,7 +43,7 @@ export default function PageNav() {
           <NextLink href='/' passHref>
             <BreadcrumbLink
               _focus={{ outline: "none" }}
-              _hover={{ color: "#59756f" }}
+              _hover={{ color: "green.1" }}
               fontSize='0.75em'>
               Home
             </BreadcrumbLink>
@@ -53,7 +53,7 @@ export default function PageNav() {
           <BreadcrumbItem key={slugKey}>
             <NextLink href={pageHref(slugKey, query)} passHref>
               <BreadcrumbLink
-                _hover={{ color: "#59756f" }}
+                _hover={{ color: "green.1" }}
                 isCurrentPage={array.length === +i + 1}
                 _focus={{ outline: "none" }}
                 fontSize='0.75em'>
