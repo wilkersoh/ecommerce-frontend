@@ -23,7 +23,7 @@ const menuLists = [
 ];
 
 export default function MobileHeader({ cartItems }) {
-  const { user } = useAuth();
+  const { user, logoutUser } = useAuth();
   const [open, setOpen] = useState(false);
 
   const onMenuClick = () => {
@@ -89,15 +89,27 @@ export default function MobileHeader({ cartItems }) {
               fontWeight='700'
               textTransform='uppercase'
               borderTop='1px solid rgba(0, 0, 0, 0.2)'>
-              <NextLink href={list.path} passHref>
-                <Link
-                  d='block'
-                  p={3}
-                  _active={{ textDecor: "none" }}
-                  _focus={{ outline: "none" }}>
-                  {i == 2 && user ? "log out" : list.name}
-                </Link>
-              </NextLink>
+              {i == 2 && user ? (
+                <NextLink href='#' passHref>
+                  <Link
+                    d='block'
+                    p={3}
+                    _active={{ textDecor: "none" }}
+                    _focus={{ outline: "none" }}>
+                    <Box onClick={logoutUser}>log out</Box>
+                  </Link>
+                </NextLink>
+              ) : (
+                <NextLink href={list.path} passHref>
+                  <Link
+                    d='block'
+                    p={3}
+                    _active={{ textDecor: "none" }}
+                    _focus={{ outline: "none" }}>
+                    {i == 2 && user ? "log out" : list.name}
+                  </Link>
+                </NextLink>
+              )}
             </ListItem>
           ))}
           <ListItem p={3} borderTop='1px solid rgba(0, 0, 0, 0.2)'>
