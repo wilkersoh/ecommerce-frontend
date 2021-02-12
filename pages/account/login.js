@@ -89,6 +89,7 @@ export default function Login() {
                 bgColor='green.1'
                 color='white'
                 _active={{ bgColor: "green.1" }}
+                _hover={{ bgColor: "green.1" }}
                 py={5}>
                 Sign in
               </Button>

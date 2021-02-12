@@ -106,7 +106,7 @@ export default function MobileHeader({ cartItems }) {
                     p={3}
                     _active={{ textDecor: "none" }}
                     _focus={{ outline: "none" }}>
-                    {i == 2 && user ? "log out" : list.name}
+                    {list.name}
                   </Link>
                 </NextLink>
               )}

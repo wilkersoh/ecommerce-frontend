@@ -20,6 +20,9 @@ const styles = {
       fontSize: "0.9em",
       fontWeight: 700,
     },
+    ul: {
+      listStylePosition: "inside",
+    }
   },
 };
 

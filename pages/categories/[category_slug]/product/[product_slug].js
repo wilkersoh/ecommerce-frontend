@@ -1,19 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Head from "next/head";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { API_URL, fromImageToUrl } from "../../../../utils/urls";
+import ReactMarkdown from "react-markdown";
+import { API_URL } from "../../../../utils/urls";
+import App from "../../../../components/App";
+import PageNav from "../../../../components/PageNav";
+import GroupProductImage from "../../../../components/GroupProductImage";
 import { twoDecimals } from "../../../../utils/format";
 import AddCart from "../../../../components/AddCart";
 import { useCart } from "../../../../context/CartContext";
 
-import { Box, Text } from "@chakra-ui/react";
-import App from "../../../../components/App";
-import PageNav from "../../../../components/PageNav";
+import {
+  Box,
+  Grid,
+  Text,
+  Heading,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+} from "@chakra-ui/react";
 
 const Product = ({ product }) => {
   const { cartItems, getCurrentCartItem } = useCart();
   const [currentProduct, setCurrentProduct] = useState({ quantity: 1 });
+  const [quantity, setQuanity] = useState(1);
 
   const {
     meta_title,
@@ -25,6 +36,11 @@ const Product = ({ product }) => {
     price,
     content,
   } = product;
+
+  const onChangeQuantity = (value) => {
+    const precision = parseFloat(value).toFixed(0);
+    setQuanity(precision);
+  };
 
   // useEffect(() => {
   //   const current = getCurrentCartItem(product.id);
@@ -38,27 +54,64 @@ const Product = ({ product }) => {
 
   return (
     <App>
+      <Head>{meta_title && <title>{meta_title}</title>}</Head>
       <PageNav />
 
-      <Box>
-        <Head>{meta_title && <title>{meta_title}</title>}</Head>
-        <Text>{brand?.name}</Text>
-        <Text as='h3'>{name}</Text>
+      <Grid templateColumns={{ md: "50% 50%" }} columnGap={4}>
+        <GroupProductImage images={images} name={name} />
 
-        {images.map((image) => (
-          <Box key={image.id}>
-            <Image src={fromImageToUrl(image)} width={500} height={500} />
+        <Box as='section' mt={4}>
+          <Box mb={3}>
+            <Heading as='h3' fontSize='1.2em'>
+              {brand?.name}
+            </Heading>
+            <Heading as='h1'>{name}</Heading>
+            <Heading
+              as='h3'
+              mt={2}
+              color='green.1'
+              fontSize='1.5em'
+              fontWeight='700'>
+              RM {twoDecimals(price)}
+            </Heading>
           </Box>
-        ))}
-        <Text as='h3'>{name}</Text>
-        <Box>
-          <Text>Quantity</Text>
-          <Box>In Store - {quantity_in_store}</Box>
+          <Box>
+            <Text>Quantity</Text>
+
+            <NumberInput
+              onChange={(valueString) => onChangeQuantity(valueString)}
+              defaultValue={1}
+              min={1}
+              max={quantity_in_store}
+              precision={0}
+              step={1}
+              keepWithinRange={false}
+              clampValueOnBlur={false}>
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+            <Box>In Store - {quantity_in_store}</Box>
+          </Box>
+          <AddCart
+            productID={id}
+            quantityInStore={quantity_in_store}
+            quantity={quantity}
+            w='full'
+            variant='outline'
+            mt={6}
+            isDisabled={quantity > quantity_in_store ? true : false}
+            _hover={{ bgColor: "transparent" }}
+            className='h2'
+            fontSize='0.9em'
+          />
+          <Box mt={6} mb={3}>
+            <ReactMarkdown children={content} />
+          </Box>
         </Box>
-        <AddCart productID={id} quantityInStore={quantity_in_store} />
-        <Text>${twoDecimals(price)}</Text>
-        <Text>{content}</Text>
-      </Box>
+      </Grid>
     </App>
   );
 };

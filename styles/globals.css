@@ -12,6 +12,14 @@ select {
   border-color: transparent !important;
 }
 
+.h2 {
+  font-family: "Source Sans Pro, sans-serif";
+}
+
+.h4 {
+  font-family: "Work Sans, sans-serif";
+}
+
 .button_none-focus:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(66, 153, 225, 0) !important;
@@ -27,10 +35,6 @@ select {
 }
 .category_product-hover:hover .category_product-hover-button-show {
   transform: translateY(-52px);
-}
-
-.h4 {
-  font-family: "Work Sans, sans-serif";
 }
 
 .blue {
