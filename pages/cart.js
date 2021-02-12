@@ -124,15 +124,15 @@ export default function cart() {
       ))}
       <NextLink href='/'>
         <Link>
-          <Button colorScheme='#59756f' color={"#59756f"} variant='outline'>
+          <Button colorScheme='green.1' color={"green.1"} variant='outline'>
             Continue shopping
           </Button>
         </Link>
       </NextLink>
       <Button
         onClick={onUpdateCart}
-        colorScheme='#59756f'
-        color={"#59756f"}
+        colorScheme='green.1'
+        color={"green.1"}
         variant='outline'>
         Update Cart
       </Button>

@@ -29,7 +29,8 @@ const pageHref = (slug, query) => {
 };
 
 export default function PageNav() {
-  const { query } = useRouter();
+  const router = useRouter();
+  const { page, ...mainQuery } = router.query;
 
   return (
     <>
@@ -49,9 +50,9 @@ export default function PageNav() {
             </BreadcrumbLink>
           </NextLink>
         </BreadcrumbItem>
-        {Object.entries(query).map(([slugKey, path], i, array) => (
+        {Object.entries(mainQuery).map(([slugKey, path], i, array) => (
           <BreadcrumbItem key={slugKey}>
-            <NextLink href={pageHref(slugKey, query)} passHref>
+            <NextLink href={pageHref(slugKey, mainQuery)} passHref>
               <BreadcrumbLink
                 _hover={{ color: "green.1" }}
                 isCurrentPage={array.length === +i + 1}

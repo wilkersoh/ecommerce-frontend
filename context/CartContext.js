@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext } from "react";
 import useSWR from "swr";
 import { API_URL } from "../utils/urls";
 import { useAuth } from "./AuthContext";
