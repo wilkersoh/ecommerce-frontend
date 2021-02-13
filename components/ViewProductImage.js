@@ -51,7 +51,7 @@ export default function ViewProductImage({ product }) {
 
 const DetailCard = ({ product }) => {
   const { brand, name, price, quantity_in_store, id, categories } = product;
-  console.log("product 11:>> ", product);
+
   return (
     <Box
       textAlign='center'

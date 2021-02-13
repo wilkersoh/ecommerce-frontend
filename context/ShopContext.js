@@ -1,11 +1,9 @@
 import { createContext, useContext } from "react";
 import { API_URL } from "../utils/urls";
 import useSWR from "swr";
-import fetch from "isomorphic-unfetch";
+import noAuthFetcher from "../utils/noAuthFetcher";
 
 const ShopContext = createContext();
-
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 export const ShopProvider = (props) => {
   const shop = useShopProvider();
@@ -18,7 +16,7 @@ export const ShopProvider = (props) => {
 export const useShop = () => useContext(ShopContext);
 
 const useShopProvider = () => {
-  const { data } = useSWR(`${API_URL}/shop-details`, fetcher);
+  const { data } = useSWR(`${API_URL}/shop-details`, noAuthFetcher);
 
   return {
     shop: data,

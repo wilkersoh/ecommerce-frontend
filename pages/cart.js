@@ -8,6 +8,7 @@ import { useCart } from "../context/CartContext";
 import CheckoutButton from "../components/CheckoutButton";
 import { twoDecimals } from "../utils/format";
 import { fromImageToUrl } from "../utils/urls";
+import noAuthFetcher from "../utils/noAuthFetcher";
 
 import {
   Box,
@@ -29,7 +30,7 @@ export default function cart() {
   const [checkoutItems, setCheckoutItem] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
-  // const {data} = useSWR();
+  // const {data} = useSWR("", noAuthFetcher);
 
   useEffect(() => {
     if (!Array.isArray(cartItems)) return;
