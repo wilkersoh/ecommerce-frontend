@@ -30,11 +30,11 @@ const useCartProvider = () => {
     return cartItems.find((cart) => cart.product.id === productID) || {};
   };
 
-  const createNewCart = async (productID, quantity) => {
+  const createNewCart = async (productID, quantity, category_slug) => {
     return await fetch(`${API_URL}/carts`, {
       method: "POST",
       credentials: "include",
-      body: JSON.stringify([{ productID, quantity }]),
+      body: JSON.stringify([{ productID, quantity, category_slug }]),
       headers: {
         "Content-Type": "application/json",
       },

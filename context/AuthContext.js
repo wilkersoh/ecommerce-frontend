@@ -21,8 +21,10 @@ const useAuthProvider = (props) => {
   const [user, setUser] = useState(null);
   const router = useRouter();
 
+  /**
+    Auto login after refresh
+  */
   const { data: me } = useSWR(`${API_URL}/users/me`);
-
   useEffect(() => {
     if (me?.statusCode === 400) return setUser(null);
 
@@ -43,6 +45,7 @@ const useAuthProvider = (props) => {
   const logoutUser = async () => {
     try {
       setUser(null);
+
       const res = await fetch(`${API_URL}/logout`, {
         method: "POST",
         credentials: "include",
@@ -56,10 +59,21 @@ const useAuthProvider = (props) => {
     router.push("/");
   };
 
+  const isLogin = () => {
+    let allCookies = document.cookie;
+    let arrayCookies = allCookies.split("; ");
+    if (arrayCookies.length >= 1) {
+      let hasView = arrayCookies.find((row) => row.startsWith("viewToken"));
+      if (hasView) return true; //  result = hasView.split('=')[1]
+    }
+    return false;
+  };
+
   return {
     user,
     setLoginUser,
     logoutUser,
+    isLogin,
   };
 };
 

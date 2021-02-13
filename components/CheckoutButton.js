@@ -14,7 +14,7 @@ const stripePromise = loadStripe(STRIPE_PK);
  * @param {ArrayObject} param
  * Showhow checkoutItems pass from cart into Checkbutton became Object Array {[]}
  */
-export default function CheckoutButton({ checkoutItems }) {
+export default function CheckoutButton({ checkoutItems, ...props }) {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
   const router = useRouter();
@@ -54,9 +54,11 @@ export default function CheckoutButton({ checkoutItems }) {
         <Button
           isLoading={isLoading}
           onClick={handleCheckout}
-          bgColor='#59756f'
+          bgColor='green.1'
           color='#fff'
-          variant='solid'>
+          borderRadius={0}
+          variant='solid'
+          {...props}>
           Check Out
         </Button>
       )}

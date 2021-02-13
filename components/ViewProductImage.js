@@ -5,7 +5,7 @@ import Image from "next/image";
 import AddCart from "./AddCart";
 import { fromImageToUrl } from "../utils/urls";
 import { twoDecimals } from "../utils/format";
-import { ViewIcon, AddIcon } from "@chakra-ui/icons";
+import { ViewIcon } from "@chakra-ui/icons";
 import { Box, Link, Text, GridItem } from "@chakra-ui/react";
 
 export default function ViewProductImage({ product }) {
@@ -50,8 +50,8 @@ export default function ViewProductImage({ product }) {
 }
 
 const DetailCard = ({ product }) => {
-  const { brand, name, price, quantity_in_store, id } = product;
-
+  const { brand, name, price, quantity_in_store, id, categories } = product;
+  console.log("product 11:>> ", product);
   return (
     <Box
       textAlign='center'
@@ -80,7 +80,11 @@ const DetailCard = ({ product }) => {
       </Box>
       <Box position='absolute' d='flex' w='full' bottom={"-45px"}>
         <Box mx='auto'>
-          <AddCart productID={id} quantityInStore={quantity_in_store} />
+          <AddCart
+            productID={id}
+            quantityInStore={quantity_in_store}
+            category_slug={categories[0].category_slug}
+          />
         </Box>
       </Box>
     </Box>
