@@ -3,7 +3,7 @@ import useSWR from "swr";
 import FilterList from "./FilterList";
 import { API_URL } from "../utils/urls";
 import FilterSkeleton from "./FilterSkeleton";
-
+import noAuthFetcher from "../utils/noAuthFetcher";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import {
   Box,
@@ -16,14 +16,17 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
-
-export default function Filter({ category_slug }) {
+export default function Filter({
+  category_slug,
+  setSearchValue,
+  setFilterList,
+  filterLists,
+}) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [filterLists, setFilterList] = useState({});
+  // const [filterLists, setFilterList] = useState({});
   const { data, error } = useSWR(
     `${API_URL}/products/getFilterList?category_slug=${category_slug}`,
-    fetcher
+    noAuthFetcher
   );
 
   useEffect(() => {
@@ -45,15 +48,6 @@ export default function Filter({ category_slug }) {
           if (obj["tag_name"])
             acc["tags"][obj["tag_name"].replace(" ", "_")] = obj["tagCount"];
         }
-
-        /** example data can be use in jsbin
-        let originData = [
-          {brand_name: 'SARASA', brandCount: 2, type_name: "Stationery", typeCount: 2},
-          {brand_name: "YZ 創意文創", brandCount: 1, type_name: "Sticky Notes", typeCount: 1},
-          {brand_name: "MILDLINER", brandCount: 1, type_name: null, typeCount: 0}
-        ]
-
-         */
 
         return acc;
       },
@@ -97,13 +91,15 @@ export default function Filter({ category_slug }) {
                 <Icon as={CloseIcon} w={7} h={7} />
               </Box>
             </Box>
-            {/* mobile filterList*/}
-            <FilterList lists={filterLists} category_slug={category_slug} />
+            <FilterList
+              filterLists={filterLists}
+              setSearchValue={setSearchValue}
+            />
           </DrawerContent>
         </Drawer>
       </Box>
       <Box d={{ sm: "none", md: "block" }}>
-        <FilterList lists={filterLists} category_slug={category_slug} />
+        <FilterList filterLists={filterLists} setSearchValue={setSearchValue} />
       </Box>
     </Box>
   );
