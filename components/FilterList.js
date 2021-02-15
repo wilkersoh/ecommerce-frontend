@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFilter } from "../context/FilterContext";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
@@ -13,15 +13,33 @@ import {
 } from "@chakra-ui/react";
 
 export default function FilterList() {
-  const { updateSearchValue, filterLists } = useFilter();
+  const {
+    updateSearchValue,
+    filterLists,
+    hanldeMoblieCheckbox,
+    mobileCheckboxItems,
+  } = useFilter();
   const { brands, types, tags } = filterLists;
   const [brandsTitle, typesTitle, tagsTitle] = Object.keys(filterLists); // ["brands", "types", "tags"]
 
   const handleCheckbox = (title, e) => {
     if (e.target.value) {
-      const spaceValue = e.target.value.replace("_", " ");
-
+      const value = e.target.value;
+      const spaceValue = value.replace("_", " ");
       updateSearchValue(title, spaceValue);
+      hanldeMoblieCheckbox(value);
+      // setCheckedItems((prev) => {
+      //   const clonePrev = [...prev];
+      //   if (clonePrev.includes(value)) {
+      //     const index = clonePrev.indexOf(value);
+      //     const _ = clonePrev.splice(index, 1);
+      //     return clonePrev;
+      //   }
+
+      //   clonePrev.push(value);
+
+      //   return clonePrev;
+      // });
     }
   };
 
@@ -37,13 +55,14 @@ export default function FilterList() {
           items={values[0]}
           title={values[1]}
           onClick={handleCheckbox}
+          mobileCheckboxItems={mobileCheckboxItems}
         />
       ))}
     </Box>
   );
 }
 
-const Listing = ({ title, items, onClick }) => {
+const Listing = ({ title, items, onClick, mobileCheckboxItems }) => {
   return (
     <Box
       minH={"100px"}
@@ -66,13 +85,12 @@ const Listing = ({ title, items, onClick }) => {
         Object.entries(items).map(([name, number], i) => (
           <List key={i} spacing={3} maxHeight='140px' overflow='auto'>
             <ListItem ml={1}>
-              <CheckboxGroup fontSize='0.8em' colorScheme='green'>
+              <CheckboxGroup
+                fontSize='0.8em'
+                colorScheme='green'
+                value={mobileCheckboxItems}>
                 <VStack align='stretch'>
-                  <Checkbox
-                    value={name}
-                    onClick={(e) => onClick(title, e)}
-                    // onClick={(e) => handleCheckbox(title, e)}
-                  >
+                  <Checkbox value={name} onClick={(e) => onClick(title, e)}>
                     {name.replace("_", " ")} ({number})
                   </Checkbox>
                 </VStack>

@@ -20,6 +20,7 @@ const useFilterProvider = (category_slug) => {
   const [filterLists, setFilterList] = useState({});
   const [searchValue, setSearchValue] = useState({});
   const [onlyFirstFilter, setOnlyFirstFilter] = useState(true);
+  const [mobileCheckboxItems, setMobileCheckboxItems] = useState([]); // only use for mobile version
 
   const { data: filterListData } = useSWR(
     `${API_URL}/products/getFilterList?category_slug=${category_slug}`,
@@ -133,8 +134,25 @@ const useFilterProvider = (category_slug) => {
     });
   };
 
+  const hanldeMoblieCheckbox = (value) => {
+    setMobileCheckboxItems((prev) => {
+      const clonePrev = [...prev];
+      if (clonePrev.includes(value)) {
+        const index = clonePrev.indexOf(value);
+        const _ = clonePrev.splice(index, 1);
+        return clonePrev;
+      }
+
+      clonePrev.push(value);
+
+      return clonePrev;
+    });
+  };
+
   return {
     updateSearchValue,
+    hanldeMoblieCheckbox,
+    mobileCheckboxItems,
     showFilterData,
     searchValue,
     filterLists,

@@ -48,12 +48,7 @@ const CategoryProducts = ({
 
       <Grid gridTemplateColumns={{ md: "20% 1fr" }} gap={{ md: 4 }}>
         <GridItem rowSpan={3}>
-          <Filter
-          // setSearchValue={setSearchValue}
-          // setFilterList={setFilterList}
-          // filterLists={filterLists}
-          // category_slug={category_slug}
-          />
+          <Filter />
         </GridItem>
 
         <Grid
@@ -71,13 +66,14 @@ const CategoryProducts = ({
             <SortBy />
           </GridItem>
         </Grid>
-
-        <Grid
-          templateColumns={{ sm: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }}
-          gap={6}>
-          {showFilterData?.map((product) => (
-            <ViewProductImage key={product.productID} product={product} />
-          ))}
+        <Grid templateRows={{ lg: "minmax(640px, 1fr)" }}>
+          <Grid
+            templateColumns={{ sm: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }}
+            gap={6}>
+            {showFilterData?.map((product) => (
+              <ViewProductImage key={product.productID} product={product} />
+            ))}
+          </Grid>
         </Grid>
       </Grid>
 
