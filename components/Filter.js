@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import useSWR from "swr";
+import React from "react";
 import FilterList from "./FilterList";
 import { API_URL } from "../utils/urls";
+import { useFilter } from "../context/FilterContext";
 import FilterSkeleton from "./FilterSkeleton";
-import noAuthFetcher from "../utils/noAuthFetcher";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import {
   Box,
@@ -16,50 +15,12 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-export default function Filter({
-  category_slug,
-  setSearchValue,
-  setFilterList,
-  filterLists,
-}) {
+export default function Filter() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // const [filterLists, setFilterList] = useState({});
-  const { data, error } = useSWR(
-    `${API_URL}/products/getFilterList?category_slug=${category_slug}`,
-    noAuthFetcher
-  );
-
-  useEffect(() => {
-    if (!Array.isArray(data)) return; // return {500 error}, to avoid popup page error
-    const result = (data || []).reduce(
-      (acc, obj) => {
-        if (!acc["types"][obj["type_name"]]) {
-          if (obj["type_name"])
-            acc["types"][obj["type_name"].replace(" ", "_")] = obj["typeCount"];
-        }
-
-        if (!acc["brands"][obj["brand_name"]]) {
-          if (obj["brand_name"])
-            acc["brands"][obj["brand_name"].replace(" ", "_")] =
-              obj["brandCount"];
-        }
-
-        if (!acc["tags"][obj["tag_name"]]) {
-          if (obj["tag_name"])
-            acc["tags"][obj["tag_name"].replace(" ", "_")] = obj["tagCount"];
-        }
-
-        return acc;
-      },
-      { brands: {}, types: {}, tags: {} }
-    );
-
-    setFilterList(result);
-  }, [data]);
-
+  const { filterLists } = useFilter();
   const handleClose = () => onClose();
 
-  if (!data) return <FilterSkeleton />;
+  if (!Object.keys(filterLists).length) return <FilterSkeleton />;
 
   return (
     <Box>
@@ -91,15 +52,12 @@ export default function Filter({
                 <Icon as={CloseIcon} w={7} h={7} />
               </Box>
             </Box>
-            <FilterList
-              filterLists={filterLists}
-              setSearchValue={setSearchValue}
-            />
+            <FilterList />
           </DrawerContent>
         </Drawer>
       </Box>
       <Box d={{ sm: "none", md: "block" }}>
-        <FilterList filterLists={filterLists} setSearchValue={setSearchValue} />
+        <FilterList />
       </Box>
     </Box>
   );

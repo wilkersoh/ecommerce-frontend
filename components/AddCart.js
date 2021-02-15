@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, CircularProgressLabel } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { useCart } from "../context/CartContext";
 import { useRouter } from "next/router";
 

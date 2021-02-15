@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useFilter } from "../context/FilterContext";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Box,
@@ -9,43 +10,18 @@ import {
   CheckboxGroup,
   ListItem,
   List,
-  CircularProgressLabel,
 } from "@chakra-ui/react";
 
-export default function FilterList({ filterLists, setSearchValue }) {
-  const [onlyFirstFilter, setOnlyFirstFilter] = useState(true);
+export default function FilterList() {
+  const { updateSearchValue, filterLists } = useFilter();
   const { brands, types, tags } = filterLists;
   const [brandsTitle, typesTitle, tagsTitle] = Object.keys(filterLists); // ["brands", "types", "tags"]
 
   const handleCheckbox = (title, e) => {
     if (e.target.value) {
-      if (onlyFirstFilter) setOnlyFirstFilter(false);
       const spaceValue = e.target.value.replace("_", " ");
 
-      setSearchValue((prevState) => {
-        const clonePrev = JSON.parse(JSON.stringify(prevState));
-
-        if (onlyFirstFilter) {
-          const resetValue = {
-            brands: [],
-            tags: [],
-            types: [],
-            [title]: [spaceValue],
-          };
-
-          return resetValue;
-        }
-
-        if (clonePrev[title].includes(spaceValue)) {
-          // remove value
-          const index = clonePrev[title].indexOf(spaceValue);
-          clonePrev[title].splice(index, 1);
-          return clonePrev;
-        }
-
-        clonePrev[title].push(spaceValue);
-        return clonePrev;
-      });
+      updateSearchValue(title, spaceValue);
     }
   };
 
