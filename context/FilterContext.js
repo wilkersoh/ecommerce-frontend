@@ -20,7 +20,9 @@ const useFilterProvider = (category_slug) => {
   const [filterLists, setFilterList] = useState({});
   const [searchValue, setSearchValue] = useState({});
   const [onlyFirstFilter, setOnlyFirstFilter] = useState(true);
-  const [mobileCheckboxItems, setMobileCheckboxItems] = useState([]); // only use for mobile version
+  const [mobileCheckboxItems, setMobileCheckboxItems] = useState([]);
+  const [pageSize, setPageSize] = useState("1");
+  const [offsetValue, setOffsetValue] = useState(0); // default value: 0
 
   const { data: filterListData } = useSWR(
     `${API_URL}/products/getFilterList?category_slug=${category_slug}`,
@@ -40,49 +42,32 @@ const useFilterProvider = (category_slug) => {
     const tagsData = arrayObjectToObj(tags);
 
     const result = { ...brandsData, ...typesData, ...tagsData };
-
-    const apiQueryFormat = Object.entries(result).reduce((acc, values) => {
-      if (!acc[0]) acc[values[0]] = Object.keys(values[1]);
-      return acc;
-    }, {});
-
-    setFilterList(result);
-
-    /* Initial Filter Values (all filtered list)
-      {
-        brands: ["value", "value"],
-        types: ["value"]
-      }
-    */
-    setSearchValue(apiQueryFormat);
-  }, [filterListData]);
-
-  // showFiltered?types=value&types=value&brands=value
-  const { data: showFilterData, error } = useSWR(
-    `${API_URL}/products/showFiltered?category_slug=${category_slug}&${objToQueryStr(
-      searchValue
-    )}`,
-    noAuthFetcher,
-    {
-      dedupingInterval: 60000,
-    }
-  );
-
-  // useEffect(() => {
-  /**
+    /**
      * Initial Filter Values (all filtered list)
       {
         brands: ["value", "value"],
         types: ["value"]
       }
     */
-  // const apiQueryFormat = Object.entries(filterLists).reduce((acc, values) => {
-  //   if (!acc[0]) acc[values[0]] = Object.keys(values[1]);
-  //   return acc;
-  // }, {});
+    const apiQueryFormat = Object.entries(filterLists).reduce((acc, values) => {
+      if (!acc[0]) acc[values[0]] = Object.keys(values[1]);
+      return acc;
+    }, {});
 
-  // setSearchValue(apiQueryFormat);
-  // }, [filterLists]);
+    setFilterList(result);
+    setSearchValue(apiQueryFormat);
+  }, [filterListData]);
+
+  // ## EndPoint: Trigger it when value changes ##
+  const { data: showFilterData, error } = useSWR(
+    `${API_URL}/products/showFiltered?category_slug=${category_slug}&${objToQueryStr(
+      searchValue
+    )}&limit=${pageSize}&offset=${offsetValue}`,
+    noAuthFetcher,
+    {
+      dedupingInterval: 60000,
+    }
+  );
 
   const updateSearchValue = (title, value) => {
     if (onlyFirstFilter) setOnlyFirstFilter(false);
@@ -128,12 +113,19 @@ const useFilterProvider = (category_slug) => {
     });
   };
 
+  const onClickPagination = (offset) => setOffsetValue(offset);
+
   return {
     updateSearchValue,
     hanldeMoblieCheckbox,
     mobileCheckboxItems,
     showFilterData,
     searchValue,
+    setPageSize,
     filterLists,
+    pageSize,
+    onClickPagination,
+    offsetValue,
+    pageSize,
   };
 };

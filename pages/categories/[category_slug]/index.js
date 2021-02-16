@@ -11,20 +11,15 @@ import PageSize from "../../../components/PageSize";
 import SortBy from "../../../components/SortBy";
 import { API_URL } from "../../../utils/urls";
 
-import { Box, Button, Flex, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
+import PaginationControl from "../../../components/PaginationControl";
 
-const CategoryProducts = ({
-  products,
-  totalProductLength,
-  category_slug,
-  page,
-  pageSize,
-}) => {
+const CategoryProducts = ({ products, totalProductLength, pageSize }) => {
   const router = useRouter();
   const lastPage = Math.ceil(totalProductLength / pageSize); // num is pageSize
   const { showFilterData } = useFilter();
 
-  // if (!data) {
+  // if (!showFilterData) {
   //   return (
   //     <App>
   //       <PageNav routeQuery={router.query} />
@@ -66,7 +61,11 @@ const CategoryProducts = ({
             <SortBy />
           </GridItem>
         </Grid>
-        <Grid templateRows={{ lg: "minmax(640px, 1fr)" }}>
+        <Grid
+          templateRows={{
+            sm: "minmax(343px, auto)",
+            md: "minmax(640px, 1fr)",
+          }}>
           <Grid
             templateColumns={{ sm: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }}
             gap={6}>
@@ -78,34 +77,16 @@ const CategoryProducts = ({
       </Grid>
 
       <Flex mt={10}>
-        <Button
-          colorScheme='teal'
-          isDisabled={page === 1}
-          onClick={() =>
-            router.push(
-              `/categories/${router.query.category_slug}?page=${page - 1}`
-            )
-          }>
-          Previous
-        </Button>
-        <Button
-          colorScheme='teal'
-          isDisabled={page >= lastPage}
-          onClick={() =>
-            router.push(
-              `/categories/${router.query.category_slug}?page=${page + 1}`
-            )
-          }>
-          Next
-        </Button>
+        <PaginationControl totalProductLength={totalProductLength} />
       </Flex>
     </App>
   );
 };
 
 const FilterProviderComponent = (props) => {
+  const { category_slug } = props;
   return (
-    <FilterProvider category_slug={props.category_slug}>
+    <FilterProvider category_slug={category_slug}>
       <CategoryProducts {...props} />
     </FilterProvider>
   );
@@ -124,16 +105,12 @@ export async function getServerSideProps(context) {
     _limit = pageSize too
 
    */
-  const start = +page === 1 ? 0 : (+page - 1) * pageSize;
 
   // get total product item number
   const res_products_length = fetch(
     `${API_URL}/products/count?categories.category_slug=${category_slug}`
   );
 
-  // const res_product = fetch(
-  //   `${API_URL}/products?categories.category_slug=${category_slug}&_start=${start}&_limit=${pageSize}`
-  // );
   const res_product = fetch(
     `${API_URL}/products?categories.category_slug=${category_slug}`
   );
@@ -151,36 +128,7 @@ export async function getServerSideProps(context) {
       products,
       totalProductLength,
       category_slug,
-      page: +page, // plus is turn string type into number type
       pageSize,
     },
   };
 }
-
-/**
-
-
-    /**
-        1. get filter via query category_slug
-        2.
-     */
-
-// return knex
-//   .select(knex.raw("brand, count(*) as total_brand"))
-//   .from("products")
-//   .groupBy("brand");
-
-// return knex
-//   .select("name")
-//   .from("products")
-//   .whereIn("category.id", subquery);
-/*
-    SELECT *
-    FROM cars
-    WHERE (@make is NULL OR @make = make)
-    AND (@model is NULL OR @model = model)
-    AND (@minPrice is NULL OR @minPrice < price)
-    LIMIT 3 OFFSET 6
-
-
-*/
