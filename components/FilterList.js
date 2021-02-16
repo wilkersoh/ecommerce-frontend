@@ -19,6 +19,7 @@ export default function FilterList() {
     hanldeMoblieCheckbox,
     mobileCheckboxItems,
   } = useFilter();
+
   const { brands, types, tags } = filterLists;
   const [brandsTitle, typesTitle, tagsTitle] = Object.keys(filterLists); // ["brands", "types", "tags"]
 
@@ -28,18 +29,6 @@ export default function FilterList() {
       const spaceValue = value.replace("_", " ");
       updateSearchValue(title, spaceValue);
       hanldeMoblieCheckbox(value);
-      // setCheckedItems((prev) => {
-      //   const clonePrev = [...prev];
-      //   if (clonePrev.includes(value)) {
-      //     const index = clonePrev.indexOf(value);
-      //     const _ = clonePrev.splice(index, 1);
-      //     return clonePrev;
-      //   }
-
-      //   clonePrev.push(value);
-
-      //   return clonePrev;
-      // });
     }
   };
 

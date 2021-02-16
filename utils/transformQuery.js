@@ -1,3 +1,33 @@
+/**
+  arrayObj - [ {brand_name: "", brandCount: "1"} ]
+  Transform TO:
+  let result = {
+    brands: {
+      SARASA: 2,
+      YZ_創意文創: 1
+    }
+  }
+*/
+export const arrayObjectToObj = (arrayObj) => {
+  const [name, count] = Object.keys(arrayObj[0]);
+  const objKeyName = name.split("_")[0] + "s";
+
+  const result = arrayObj.reduce(
+    (acc, obj) => {
+      if (!obj[name]) return acc;
+
+      const key = obj[name].replace(" ", "_");
+      [acc[objKeyName][key]] = obj[count];
+      console.log("am i here?");
+      console.log(acc);
+      return acc;
+    },
+    { [objKeyName]: {} }
+  );
+
+  return result;
+};
+
 export const objToQueryStr = (obj) => {
   if (obj === undefined || !Object.keys(obj).length) return;
 
