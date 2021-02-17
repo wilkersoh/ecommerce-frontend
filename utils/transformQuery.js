@@ -18,8 +18,6 @@ export const arrayObjectToObj = (arrayObj) => {
 
       const key = obj[name].replace(" ", "_");
       [acc[objKeyName][key]] = obj[count];
-      console.log("am i here?");
-      console.log(acc);
       return acc;
     },
     { [objKeyName]: {} }

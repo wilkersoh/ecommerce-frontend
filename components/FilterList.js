@@ -18,16 +18,19 @@ export default function FilterList() {
     filterLists,
     hanldeMoblieCheckbox,
     mobileCheckboxItems,
+    updateTotalLength,
   } = useFilter();
 
   const { brands, types, tags } = filterLists;
   const [brandsTitle, typesTitle, tagsTitle] = Object.keys(filterLists); // ["brands", "types", "tags"]
 
-  const handleCheckbox = (title, e) => {
+  const handleCheckbox = (title, count, e) => {
     if (e.target.value) {
       const value = e.target.value;
       const spaceValue = value.replace("_", " ");
+
       updateSearchValue(title, spaceValue);
+      updateTotalLength(+count, value);
       hanldeMoblieCheckbox(value);
     }
   };
@@ -79,7 +82,9 @@ const Listing = ({ title, items, onClick, mobileCheckboxItems }) => {
                 colorScheme='green'
                 value={mobileCheckboxItems}>
                 <VStack align='stretch'>
-                  <Checkbox value={name} onClick={(e) => onClick(title, e)}>
+                  <Checkbox
+                    value={name}
+                    onClick={(e) => onClick(title, number, e)}>
                     {name.replace("_", " ")} ({number})
                   </Checkbox>
                 </VStack>

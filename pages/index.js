@@ -1,16 +1,15 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
 import Image from "next/image";
 import NextLink from "next/link";
 import fetch from "isomorphic-unfetch";
 import { API_URL, fromImageToUrl } from "../utils/urls";
 import { Box, Text, Link, Grid } from "@chakra-ui/react";
 import App from "../components/App";
+import { useShop } from "../context/ShopContext";
 
-export default function Home({ categories = [], page }) {
-  const router = useRouter();
+export default function Home({ categories = [] }) {
+  const { shop } = useShop();
 
-  console.log("page:", page);
   if (!categories.length) {
     return (
       <Box>
@@ -22,7 +21,7 @@ export default function Home({ categories = [], page }) {
   return (
     <App>
       <Head>
-        <title>Create Next App</title>
+        <title>Home - {shop?.name}</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <Grid

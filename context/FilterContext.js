@@ -22,6 +22,10 @@ const useFilterProvider = (category_slug) => {
   const [onlyFirstFilter, setOnlyFirstFilter] = useState(true);
   const [mobileCheckboxItems, setMobileCheckboxItems] = useState([]);
   const [pageSize, setPageSize] = useState("1");
+  const [totalProductLength, setTotalProductLength] = useState({
+    init: null, // load value after load page
+    total: null,
+  });
   const [offsetValue, setOffsetValue] = useState(0); // default value: 0
 
   const { data: filterListData } = useSWR(
@@ -68,10 +72,16 @@ const useFilterProvider = (category_slug) => {
       dedupingInterval: 60000,
     }
   );
-
+  console.log("pageSize :>> ", pageSize);
+  console.log("offsetValue :>> ", offsetValue);
+  /**
+    saerchValue: {
+      brands: [value, value],
+      tags: [value, value]
+    }
+  */
   const updateSearchValue = (title, value) => {
     if (onlyFirstFilter) setOnlyFirstFilter(false);
-
     setSearchValue((prevState) => {
       const clonePrev = JSON.parse(JSON.stringify(prevState));
 
@@ -95,6 +105,40 @@ const useFilterProvider = (category_slug) => {
 
       clonePrev[title].push(value);
       return clonePrev;
+    });
+  };
+
+  const updateTotalLength = (count, name) => {
+    // Reset to page 1, every click
+    setOffsetValue(0);
+    /**
+      {
+        init: 6,
+        total: all sum except init number,
+        midliner: 1,
+        Classiky: 0,
+      }
+    */
+    let newObjItem = {};
+    if (!totalProductLength[name]) newObjItem[name] = count;
+    else {
+      // remove object, it is toggle checkbox
+      const { [name]: remove, init, total, ...rest } = totalProductLength;
+      const sum = Object.values(rest).reduce((acc, num) => acc + num, 0);
+
+      setTotalProductLength({ init, ...rest, total: sum });
+      return;
+    }
+
+    const { total, init, ...rest } = totalProductLength;
+    const mergeWithNew = { ...rest, ...newObjItem };
+
+    const sum = Object.values(mergeWithNew).reduce((acc, num) => acc + num, 0);
+
+    setTotalProductLength({
+      ...totalProductLength,
+      ...mergeWithNew,
+      total: sum,
     });
   };
 
@@ -122,10 +166,12 @@ const useFilterProvider = (category_slug) => {
     showFilterData,
     searchValue,
     setPageSize,
-    filterLists,
     pageSize,
+    filterLists,
     onClickPagination,
     offsetValue,
-    pageSize,
+    updateTotalLength,
+    setTotalProductLength,
+    totalProductLength,
   };
 };
