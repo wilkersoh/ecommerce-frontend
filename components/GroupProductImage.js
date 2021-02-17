@@ -38,7 +38,7 @@ const ImageComponent = ({ children, showImage }) => {
     <Grid templateColumns='85% 1fr' gridAutoRows='minmax(260px, auto)' gap={2}>
       <Grid gridRow={"1 / -1"}>
         <Box w='full'>
-          {showImage && <Image src={showImage} width={500} height={500} />}
+          {showImage && <Image src={showImage} width={650} height={650} />}
         </Box>
       </Grid>
       <Box>{children}</Box>

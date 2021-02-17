@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import NextLink from "next/link";
 import Image from "next/image";
 import AddCart from "./AddCart";
-import { fromImageToUrl } from "../utils/urls";
 import { twoDecimals } from "../utils/format";
 import { ViewIcon } from "@chakra-ui/icons";
 import { Box, Link, Text, GridItem } from "@chakra-ui/react";
@@ -22,7 +21,8 @@ export default function ViewProductImage({ product }) {
       <Box overflow='hidden' position='relative'>
         <ViewEye />
         <NextLink
-          href={`/categories/${router.query.category_slug}/product/${product.product_slug}`}>
+          href={`/categories/${router.query.category_slug}/product/${product.product_slug}`}
+          passHref>
           <Link>
             <Box>
               {images?.split(",").map((url, i) => {
@@ -41,22 +41,6 @@ export default function ViewProductImage({ product }) {
                   <HoverImage key={i} image={url} />
                 );
               })}
-              {/* {product.images.map((image, i) => {
-                if (i >= 2) return;
-                return !i ? (
-                  <Box key={image.id}>
-                    <Image
-                      src={fromImageToUrl(image)}
-                      alt={product.name}
-                      height={330}
-                      width={330}
-                      layout='responsive'
-                    />
-                  </Box>
-                ) : (
-                  <HoverImage key={image.id} image={image} />
-                );
-              })} */}
             </Box>
             <DetailCard product={product} />
           </Link>

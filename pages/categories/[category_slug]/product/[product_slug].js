@@ -48,10 +48,6 @@ const Product = ({ product }) => {
   //   setCurrentProduct({ ...currentProduct, ...current });
   // }, [cartItems, setCurrentProduct]);
 
-  // if (router.isFallback) {
-  //   return <div>Loading... sorry for watiing...</div>;
-  // }
-
   return (
     <App>
       <Head>{meta_title && <title>{meta_title}</title>}</Head>
@@ -98,11 +94,12 @@ const Product = ({ product }) => {
           <AddCart
             productID={id}
             quantityInStore={quantity_in_store}
+            category_slug={product.categories[0].category_slug}
             quantity={quantity}
             w='full'
             variant='outline'
             mt={6}
-            isDisabled={quantity > quantity_in_store ? true : false}
+            isDisabled={+quantity > +quantity_in_store ? true : false}
             _hover={{ bgColor: "transparent" }}
             className='h2'
             fontSize='0.9em'
@@ -128,7 +125,7 @@ export async function getStaticProps({
     props: {
       product: found[0],
     },
-    // revalidate: 3,
+    revalidate: 20,
   };
 }
 
@@ -146,7 +143,7 @@ export async function getStaticPaths() {
             category_slug: product.categories[0].category_slug,
           },
         })),
-    fallback: false,
+    fallback: "blocking", // blocking || false || true
   };
 }
 
