@@ -67,14 +67,22 @@ const FollowUs = () => (
       Follow Us
     </Heading>
     <Box alignSelf='center'>
-      <Box
-        as={Facebook}
-        _first={{ mr: 4 }}
-        d='inline-block'
-        w='20px'
-        h='20px'
-      />
-      <Box as={Instagram} d='inline-block' w='20px' h='20px' />
+      <NextLink href='https://www.facebook.com/yongyee.soh/' passHref>
+        <Link target='_blank'>
+          <Box
+            as={Facebook}
+            _first={{ mr: 4 }}
+            d='inline-block'
+            w='20px'
+            h='20px'
+          />
+        </Link>
+      </NextLink>
+      <NextLink href='https://www.instagram.com/hello__yz/' passHref>
+        <Link target='_blank'>
+          <Box as={Instagram} d='inline-block' w='20px' h='20px' />
+        </Link>
+      </NextLink>
     </Box>
   </Box>
 );
