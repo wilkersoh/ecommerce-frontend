@@ -14,9 +14,8 @@ import { API_URL } from "../../../utils/urls";
 import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 import PaginationControl from "../../../components/PaginationControl";
 
-const CategoryProducts = ({ products, totalProductLength, pageSize }) => {
+const CategoryProducts = ({ products, totalProductLength }) => {
   const router = useRouter();
-  const lastPage = Math.ceil(totalProductLength / pageSize); // num is pageSize
   const { showFilterData } = useFilter();
 
   // if (!showFilterData) {
@@ -96,7 +95,7 @@ export default FilterProviderComponent;
 
 export async function getServerSideProps(context) {
   // variable page is customise created.
-  const { category_slug, page = 1, pageSize = 3 } = context.query;
+  const { category_slug } = context.query;
 
   /**
     _start= which next paganition item you would to start, if input number 2, then next page will show number 3
@@ -128,7 +127,6 @@ export async function getServerSideProps(context) {
       products,
       totalProductLength,
       category_slug,
-      pageSize,
     },
   };
 }

@@ -11,14 +11,14 @@ export default function GlobalSearch({ ...rest }) {
         color='#000'
         children={<Search2Icon color='gray.300' />}
       />
-      <Input list='ice-cream-flavors' type='text' placeholder='Search' />
-      <Box as='datalist' id='ice-cream-flavors'>
+      <Input list='test' type='text' placeholder='Search' />
+      {/* <Box as='datalist' id='test'>
         <option value='Chocolate' />
         <option value='Coconut' />
         <option value='Mint' />
         <option value='Strawberry' />
         <option value='Vanilla' />
-      </Box>
+      </Box> */}
     </InputGroup>
   );
 }
