@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import fetch from "isomorphic-unfetch";
 import ReactMarkdown from "react-markdown";
@@ -14,9 +14,13 @@ import { API_URL } from "../../../utils/urls";
 import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 import PaginationControl from "../../../components/PaginationControl";
 
-const CategoryProducts = ({ products, totalProductLength }) => {
+const CategoryProducts = ({ products, initialTotalProductLength }) => {
   const router = useRouter();
-  const { showFilterData } = useFilter();
+  const { showFilterData, setTotalProductLength } = useFilter();
+
+  useEffect(() => {
+    setTotalProductLength({ init: initialTotalProductLength, total: null });
+  }, []);
 
   // if (!showFilterData) {
   //   return (
@@ -25,7 +29,7 @@ const CategoryProducts = ({ products, totalProductLength }) => {
   //     </App>
   //   );
   // }
-
+  console.log("showFilterData :>> ", showFilterData);
   return (
     <App>
       <PageNav routeQuery={router.query} />
@@ -63,7 +67,7 @@ const CategoryProducts = ({ products, totalProductLength }) => {
         <Grid
           templateRows={{
             sm: "minmax(343px, auto)",
-            md: "minmax(640px, 1fr)",
+            md: "minmax(420px, 1fr)",
           }}>
           <Grid
             templateColumns={{ sm: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }}
@@ -74,10 +78,7 @@ const CategoryProducts = ({ products, totalProductLength }) => {
           </Grid>
         </Grid>
       </Grid>
-
-      <Flex mt={10}>
-        <PaginationControl totalProductLength={totalProductLength} />
-      </Flex>
+      <PaginationControl />
     </App>
   );
 };
@@ -96,7 +97,6 @@ export default FilterProviderComponent;
 export async function getServerSideProps(context) {
   // variable page is customise created.
   const { category_slug } = context.query;
-
   /**
     _start= which next paganition item you would to start, if input number 2, then next page will show number 3
 
@@ -114,19 +114,19 @@ export async function getServerSideProps(context) {
     `${API_URL}/products?categories.category_slug=${category_slug}`
   );
 
-  const [promise_product, promise_num] = await Promise.all([
+  const [promise_product, promise_productLength] = await Promise.all([
     res_product,
     res_products_length,
   ]);
 
   const products = await promise_product.json();
-  const totalProductLength = await promise_num.json();
+  const initialTotalProductLength = await promise_productLength.json();
 
   return {
     props: {
       products,
-      totalProductLength,
       category_slug,
+      initialTotalProductLength,
     },
   };
 }

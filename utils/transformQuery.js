@@ -9,6 +9,7 @@
   }
 */
 export const arrayObjectToObj = (arrayObj) => {
+  if (!arrayObj.length) return;
   const [name, count] = Object.keys(arrayObj[0]);
   const objKeyName = name.split("_")[0] + "s";
 

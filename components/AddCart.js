@@ -22,10 +22,11 @@ export default function AddCart({
   const router = useRouter();
 
   const onAddToCart = async () => {
+    // redirect if user didn't login
+
     let hasObject = getCurrentCartItem(productID);
     if (hasObject === undefined) hasObject = {};
 
-    // redirect if user didn't login
     setIsLoading(true);
 
     try {
@@ -74,7 +75,6 @@ export default function AddCart({
       fontWeight={600}
       textTransform='uppercase'
       isDisabled={!+quantityInStore}
-      // onClick={() => onAddToCart(productID)}
       onClick={onAddToCart}
       {...props}>
       {+quantityInStore ? "Add To Cart" : "Sold Out"}

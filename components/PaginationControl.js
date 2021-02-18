@@ -12,14 +12,15 @@ export default function PaginationControl() {
   } = useFilter();
 
   return (
-    <Box d='flex' w='full' justifyContent='center' color='green.600'>
+    <Box d='flex' mt={4} justifyContent='center' color='green.1'>
       <Pagination
         limit={pageSize}
         offset={offsetValue}
         total={totalProductLength.total || totalProductLength.init}
-        size={"large"}
+        size={"medium"}
         currentPageColor='inherit'
-        style={{ border: "1px solid #929292", borderRadius: "4px" }}
+        reduced={true}
+        // style={{ borderRadius: "4px" }}
         onClick={(e, offset) => onClickPagination(offset)}
       />
     </Box>

@@ -94,8 +94,14 @@ export default function cart() {
         <Heading as='h1'>Your Cart</Heading>
         <Divider my={4} />
         <p>Your cart is currently empty.</p>
-        <NextLink href='/'>
-          <Link>Continue browsing here.</Link>
+        <NextLink href='/' passHref>
+          <Link cursor='pointer'>
+            Continue browsing{" "}
+            <Box d='inline-block' textDecor='underline'>
+              here
+            </Box>
+            .
+          </Link>
         </NextLink>
       </App>
     );

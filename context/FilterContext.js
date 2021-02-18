@@ -22,6 +22,7 @@ const useFilterProvider = (category_slug) => {
   const [onlyFirstFilter, setOnlyFirstFilter] = useState(true);
   const [mobileCheckboxItems, setMobileCheckboxItems] = useState([]);
   const [pageSize, setPageSize] = useState("1");
+  const [sortBy, setSortBy] = useState("sortBys=p.name&sortBys=asc");
   const [totalProductLength, setTotalProductLength] = useState({
     init: null, // load value after load page
     total: null,
@@ -66,14 +67,13 @@ const useFilterProvider = (category_slug) => {
   const { data: showFilterData, error } = useSWR(
     `${API_URL}/products/showFiltered?category_slug=${category_slug}&${objToQueryStr(
       searchValue
-    )}&limit=${pageSize}&offset=${offsetValue}`,
+    )}&limit=${pageSize}&offset=${offsetValue}&${sortBy}`,
     noAuthFetcher,
     {
       dedupingInterval: 60000,
     }
   );
-  console.log("pageSize :>> ", pageSize);
-  console.log("offsetValue :>> ", offsetValue);
+
   /**
     saerchValue: {
       brands: [value, value],
@@ -157,6 +157,12 @@ const useFilterProvider = (category_slug) => {
     });
   };
 
+  const updateSortBy = (value) => {
+    const array = value.split(",");
+    let sortApiQuery = array.map((str) => `sortBys=${str}`).join("&");
+    setSortBy(sortApiQuery);
+  };
+
   const onClickPagination = (offset) => setOffsetValue(offset);
 
   return {
@@ -173,5 +179,6 @@ const useFilterProvider = (category_slug) => {
     updateTotalLength,
     setTotalProductLength,
     totalProductLength,
+    updateSortBy,
   };
 };
