@@ -6,9 +6,10 @@ import { useRouter } from "next/router";
 import { API_URL } from "../utils/urls";
 import App from "../components/App";
 import { useCart } from "../context/CartContext";
+import SkeletonLoading from "../components/SkeletonLoading";
+import { twoDecimals } from "../utils/format";
 
 import { Box, Text, Heading, Link } from "@chakra-ui/react";
-import { twoDecimals } from "../utils/format";
 
 const queryKey = "cancel_id";
 
@@ -55,12 +56,15 @@ export default function cancel() {
   if (loading || !cartItems)
     return (
       <App>
+        <Head>
+          <title>Cancelling your order</title>
+        </Head>
+
         <Head>We are cancelling your payment</Head>
-        <Text>Wating a momnet... we are handling your payment.</Text>
+        <Text>Wating a moment... we are handling your payment.</Text>
+        <SkeletonLoading />
       </App>
     );
-
-  console.log("cartItems :>> ", cartItems);
 
   return (
     <App>
