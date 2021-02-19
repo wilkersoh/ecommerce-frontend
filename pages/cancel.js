@@ -115,7 +115,7 @@ export default function cancel() {
                 RM {twoDecimals(cart.product.price)} / each
               </Text>
               <Text mt={3} as='h3'>
-                Quantity - {cart.quantity}
+                Quantity: {cart.quantity}
               </Text>
               <Text mt={3}>
                 Total:{" "}
