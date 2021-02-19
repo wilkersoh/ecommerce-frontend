@@ -115,7 +115,10 @@ export default function search() {
           />
         </InputGroup>
       </Box>
-      <Box as='section' d={searchStatus.status ? "block" : "none"}>
+      <Box
+        as='section'
+        minH={{ sm: "150px", lg: "405px" }}
+        d={searchStatus.status ? "block" : "none"}>
         {data[0]?.map((product) => (
           <Box key={product.productID} d='flex' mb={4}>
             <Box w={{ sm: "20%" }} mr={6}>

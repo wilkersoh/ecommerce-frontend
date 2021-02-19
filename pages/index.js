@@ -21,7 +21,7 @@ export default function Home({ categories = [] }) {
   return (
     <App>
       <Head>
-        <title>Home - {shop?.name}</title>
+        <title>Home {shop && `- ${shop.name}`}</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <Grid

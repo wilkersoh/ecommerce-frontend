@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { useFilter } from "../context/FilterContext";
-import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Box,
   Heading,
@@ -67,7 +66,6 @@ const Listing = ({ title, items, onClick, mobileCheckboxItems }) => {
         size='sm'
         variant='none'
         className='button_none-focus'
-        // leftIcon={<ChevronDownIcon />}
         px={0}>
         <Heading as='h3' fontSize='1.1em' textTransform='capitalize'>
           {title}
@@ -93,8 +91,7 @@ const Listing = ({ title, items, onClick, mobileCheckboxItems }) => {
           </List>
         ))
       ) : (
-        <Box></Box>
-        // <Box>Not included {title}</Box>
+        <Box>No {title}</Box>
       )}
     </Box>
   );

@@ -6,7 +6,10 @@ import { Search2Icon } from "@chakra-ui/icons";
 export default function GlobalSearch({ ...rest }) {
   const router = useRouter();
   const inputRef = useRef();
-  const onSubmit = () => router.replace(`/search?q=${inputRef.current.value}`);
+  const onSubmit = (e) => {
+    e.preventDefault();
+    router.push(`/search?q=${inputRef.current.value}`);
+  };
 
   return (
     <Box as='form' onSubmit={onSubmit}>
