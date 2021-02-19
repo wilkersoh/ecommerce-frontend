@@ -81,7 +81,6 @@ export default function success() {
     router.asPath.match(new RegExp(`[&?]${queryKey}=(.*)(&|$)`));
 
   const { orders, loading } = useOrder(session_id);
-  console.log("orders :>> ", orders);
 
   useEffect(() => {
     if (!orders.length) return;
@@ -116,7 +115,7 @@ export default function success() {
       </Heading>
 
       <Box mb={3} d='flex' flexDir={{ sm: "column", lg: "row" }}>
-        <Box>
+        <Box mr={{ lg: 8 }}>
           <Text>
             Your order is confirmed with order number:{" "}
             <Box
@@ -141,11 +140,11 @@ export default function success() {
               />
             </Box>
           </Text>
+          <Heading fontSize='15px' my={2}>
+            Total: RM {twoDecimals(trackNumber.totalPrice)}
+          </Heading>
         </Box>
         <AddressComponent orders={orders} />
-        <Heading fontSize='15px' my={2}>
-          Total: RM {twoDecimals(trackNumber.totalPrice)}
-        </Heading>
       </Box>
 
       {orders.map((order) => (
@@ -199,7 +198,7 @@ const AddressComponent = ({ orders }) => {
   const [_, name] = userInfo;
 
   return (
-    <Box mt={2}>
+    <Box mt={{ sm: 2, lg: 0 }}>
       <Heading as='h2' fontWeight='500' fontSize='16px'>
         {name}
       </Heading>
