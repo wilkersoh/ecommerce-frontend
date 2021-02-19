@@ -237,19 +237,17 @@ export default function cart() {
             </Button>
           </Link>
         </NextLink>
-        <Button
-          borderRadius={0}
-          onClick={onUpdateCart}
-          colorScheme='green.1'
-          color={"green.1"}
-          variant='outline'>
-          Update Cart
-        </Button>
-        <CheckoutButton
-          checkoutItems={checkoutItems}
-          ml={2}
-          mt={{ sm: 2, md: 0 }}
-        />
+        <Box mb={{ sm: 2, md: 0 }} d='inline-block'>
+          <Button
+            borderRadius={0}
+            onClick={onUpdateCart}
+            colorScheme='green.1'
+            color={"green.1"}
+            variant='outline'>
+            Update Cart
+          </Button>
+        </Box>
+        <CheckoutButton checkoutItems={checkoutItems} ml={2} />
       </Box>
     </App>
   );
