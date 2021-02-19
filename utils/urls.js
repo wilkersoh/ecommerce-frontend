@@ -14,7 +14,6 @@ export const fromImageToUrl = (image) => {
   if (!image) {
     return "/vercel.svg";
   }
-  console.log("image :>> ", image);
   if (image.url.indexOf("/") === 0) {
     // this this in local public folder
     return `${API_URL}${image.url}`;

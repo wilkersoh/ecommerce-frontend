@@ -32,7 +32,13 @@ const useAuthProvider = (props) => {
     setUser(me);
   }, [me]);
 
+  console.log("me :>> ", me);
+
   useEffect(() => {
+    console.log(
+      'document.cookie.includes("viewToken") :>> ',
+      document.cookie.includes("viewToken")
+    );
     if (document.cookie.includes("viewToken")) setHasTokenCookie(true);
   }, []);
 
