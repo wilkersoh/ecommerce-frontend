@@ -19,33 +19,43 @@ export const useAuth = () => {
 
 const useAuthProvider = (props) => {
   const [user, setUser] = useState(null);
+  const [hasTokenCookie, setHasTokenCookie] = useState(false);
   const router = useRouter();
 
   /**
     Auto login after refresh
   */
-  const { data: me } = useSWR(`${API_URL}/users/me`);
+  const { data: me } = useSWR(hasTokenCookie ? `${API_URL}/users/me` : null);
   useEffect(() => {
     if (me?.statusCode === 400) return setUser(null);
 
     setUser(me);
   }, [me]);
 
+  useEffect(() => {
+    if (document.cookie.includes("viewToken")) setHasTokenCookie(true);
+  }, []);
+
   /**
    * @param {Object} user,
    * return null if there is not user
    */
   const setLoginUser = async (user) => {
-    if (!user) setUser(null);
+    if (!user) {
+      setUser(null);
+      setHasTokenCookie(false);
+    }
     setUser(user);
+    setHasTokenCookie(true);
 
-    router.push("/");
+    router.back();
+    // router.push("/");
   };
 
   const logoutUser = async () => {
     try {
       setUser(null);
-
+      setHasTokenCookie(false);
       const res = await fetch(`${API_URL}/logout`, {
         method: "POST",
         credentials: "include",
@@ -74,6 +84,7 @@ const useAuthProvider = (props) => {
     setLoginUser,
     logoutUser,
     isLogin,
+    hasTokenCookie,
   };
 };
 

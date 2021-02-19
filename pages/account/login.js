@@ -1,25 +1,59 @@
 import React, { useState, useRef, useEffect } from "react";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 import App from "../../components/App";
 import { useForm } from "react-hook-form";
 import { API_URL } from "../../utils/urls";
 import { useAuth } from "../../context/AuthContext";
-import { ClientMessage, ServerMessage } from "../../components/Messages";
 import ResetPassword from "../../components/ResetPassword";
-import { Box, Text, Input, Stack, Button, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Input,
+  Stack,
+  Button,
+  Link,
+  Alert,
+  AlertIcon,
+} from "@chakra-ui/react";
 
 export default function Login() {
-  const { setLoginUser } = useAuth();
+  const router = useRouter();
+  const { setLoginUser, hasTokenCookie } = useAuth();
   const { register, handleSubmit, errors } = useForm();
   const [isLoading, setIsLoading] = useState(false);
+  const [isFailLogin, setIsFailLogin] = useState(false);
   const [showForgot, setShowForgot] = useState(false);
   const emailRef = useRef();
 
   useEffect(() => {
+    if (hasTokenCookie) return router.replace("/");
     emailRef.current.focus();
   }, []);
 
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      console.log(
+        `App is changing to ${url} ${
+          "shallow" ? "with" : "without"
+        } shallow routing`
+      );
+      window.scroll({
+        top: 0,
+        left: 0,
+      });
+    };
+    router.events.on("routeChangeComplete", handleRouteChange);
+
+    // If the component is unmounted, unsubscribe
+    // from the event with the `off` method:
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, []);
+
   const onSubmit = async (data) => {
+    setIsLoading(true);
     const res = await fetch(`${API_URL}/auth/local`, {
       method: "POST",
       credentials: "include",
@@ -29,6 +63,12 @@ export default function Login() {
       body: JSON.stringify(data),
     });
     const { user } = await res.json();
+    // handle unregister
+    if (!user) {
+      setIsFailLogin(true);
+      setIsLoading(false);
+      return;
+    }
     setLoginUser(user);
   };
 
@@ -57,7 +97,10 @@ export default function Login() {
         <Text mb={8} as='h1' fontWeight={700}>
           Login
         </Text>
-
+        <Alert status='error' mb={3} d={isFailLogin ? "flex" : "none"}>
+          <AlertIcon />
+          Incorrect email or password.
+        </Alert>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={3}>
             <Input
