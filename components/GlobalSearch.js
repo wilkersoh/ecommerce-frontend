@@ -1,24 +1,23 @@
-import React from "react";
-
+import React, { useRef } from "react";
+import { useRouter } from "next/router";
 import { Box, InputGroup, InputLeftElement, Input } from "@chakra-ui/react";
 import { Search2Icon } from "@chakra-ui/icons";
 
 export default function GlobalSearch({ ...rest }) {
+  const router = useRouter();
+  const inputRef = useRef();
+  const onSubmit = () => router.replace(`/search?q=${inputRef.current.value}`);
+
   return (
-    <InputGroup bgColor='#fff' borderRadius='6px' {...rest}>
-      <InputLeftElement
-        pointerEvents='none'
-        color='#000'
-        children={<Search2Icon color='gray.300' />}
-      />
-      <Input list='test' type='text' placeholder='Search' />
-      {/* <Box as='datalist' id='test'>
-        <option value='Chocolate' />
-        <option value='Coconut' />
-        <option value='Mint' />
-        <option value='Strawberry' />
-        <option value='Vanilla' />
-      </Box> */}
-    </InputGroup>
+    <Box as='form' onSubmit={onSubmit}>
+      <InputGroup bgColor='#fff' borderRadius='6px' {...rest}>
+        <InputLeftElement
+          pointerEvents='none'
+          color='#000'
+          children={<Search2Icon color='gray.300' />}
+        />
+        <Input ref={inputRef} type='text' placeholder='Search' />
+      </InputGroup>
+    </Box>
   );
 }

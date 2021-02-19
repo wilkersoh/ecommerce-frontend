@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "@chakra-ui/react";
 import { useCart } from "../context/CartContext";
 import { useRouter } from "next/router";
+import { useAuth } from "../context/AuthContext";
 
 export default function AddCart({
   productID,
@@ -20,14 +21,23 @@ export default function AddCart({
 
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { hasTokenCookie } = useAuth();
 
-  const onAddToCart = async () => {
+  const onAddToCart = async (e) => {
     // redirect if user didn't login
+    setIsLoading(true);
+    if (!hasTokenCookie) {
+      // await new Promise((res) =>
+      //   setTimeout(router.replace("/account/login"), 2000)
+      // );
+      setTimeout(() => {
+        return router.push("/account/login");
+      }, 2000);
+      return;
+    }
 
     let hasObject = getCurrentCartItem(productID);
     if (hasObject === undefined) hasObject = {};
-
-    setIsLoading(true);
 
     try {
       if (!Object.entries(hasObject).length) {

@@ -8,6 +8,7 @@ import Master from "../icons/Master";
 import GooglePay from "../icons/GooglePay";
 import { Box, Link, Heading, List, ListItem, Text } from "@chakra-ui/react";
 import { useShop } from "../context/ShopContext";
+import Newsletter from "./Newsletter";
 
 const linkLists = [
   { name: "Search", path: "/search" },
@@ -33,9 +34,10 @@ export default function Footer() {
       textAlign='center'
       mt={6}
       py={6}>
-      <Box d={{ lg: "flex" }} justifyContent='center'>
+      <Box d={{ lg: "flex" }} justifyContent='space-between'>
         <Links />
         <FollowUs />
+        <Newsletter />
       </Box>
       <Payments shop={shop} />
     </Box>

@@ -51,7 +51,6 @@ export default function ViewProductImage({ product }) {
 }
 
 const DetailCard = ({ product }) => {
-  // const { brand, name, price, quantity_in_store, id, categories } = product;
   const {
     brand_name,
     product_name,
@@ -62,41 +61,6 @@ const DetailCard = ({ product }) => {
   } = product;
 
   return (
-    // <Box
-    //   textAlign='center'
-    //   className='category_product-hover-button-show'
-    //   bg='white'
-    //   position='relative'
-    //   transition='350ms ease-in-out'
-    //   transform='translateY(0px)'
-    //   zIndex={1}
-    //   py={4}>
-    //   <Box mb={4}>
-    //     <Text className='h4' color={"gray.1"} fontSize='0.8em' fontWeight='300'>
-    //       {brand.name || null}
-    //     </Text>
-    //     <Text
-    //       py={1}
-    //       className='h4'
-    //       fontWeight='500'
-    //       fontSize='0.9em'
-    //       color={"gray.0"}>
-    //       {name}
-    //     </Text>
-    //     <Text as='span' className='h4' fontSize='1.15em' fontWeight='600'>
-    //       RM {twoDecimals(price)}
-    //     </Text>
-    //   </Box>
-    //   <Box position='absolute' d='flex' w='full' bottom={"-45px"}>
-    //     <Box mx='auto'>
-    //       <AddCart
-    //         productID={id}
-    //         quantityInStore={quantity_in_store}
-    //         category_slug={categories[0].category_slug}
-    //       />
-    //     </Box>
-    //   </Box>
-    // </Box>
     <Box
       textAlign='center'
       className='category_product-hover-button-show'
@@ -104,7 +68,7 @@ const DetailCard = ({ product }) => {
       position='relative'
       transition='350ms ease-in-out'
       transform='translateY(0px)'
-      zIndex={1}
+      zIndex={2}
       py={4}>
       <Box mb={4}>
         <Text className='h4' color={"gray.1"} fontSize='0.8em' fontWeight='300'>
