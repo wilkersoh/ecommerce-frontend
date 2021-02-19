@@ -34,7 +34,7 @@ export default function Footer() {
       textAlign='center'
       mt={6}
       py={6}>
-      <Box d={{ lg: "flex" }} justifyContent='space-between'>
+      <Box d={{ lg: "flex" }} mx={{ lg: 20 }} justifyContent='space-between'>
         <Links />
         <FollowUs />
         <Newsletter />

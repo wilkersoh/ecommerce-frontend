@@ -17,7 +17,7 @@ import {
 
 const menuLists = [
   { name: "home", path: "/" },
-  { name: "list", path: "/categories" },
+  { name: "list", path: "/products/all" },
   { name: "log in", path: "/account/login" },
   { name: "create account", path: "/account/register" },
 ];
@@ -26,9 +26,7 @@ export default function MobileHeader({ cartItems }) {
   const { user, logoutUser } = useAuth();
   const [open, setOpen] = useState(false);
 
-  const onMenuClick = () => {
-    setOpen(!open);
-  };
+  const onMenuClick = () => setOpen(!open);
 
   return (
     <Box
