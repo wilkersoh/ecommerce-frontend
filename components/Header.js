@@ -102,7 +102,7 @@ export default function Header({ ...props }) {
             </NextLink>
           </ListItem>
           <ListItem>
-            <NextLink href='/categories' passHref>
+            <NextLink href='/products/all' passHref>
               <Link fontWeight='600'>Menu</Link>
             </NextLink>
           </ListItem>

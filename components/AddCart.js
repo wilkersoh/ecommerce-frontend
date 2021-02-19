@@ -24,12 +24,10 @@ export default function AddCart({
   const { hasTokenCookie } = useAuth();
 
   const onAddToCart = async (e) => {
-    // redirect if user didn't login
     setIsLoading(true);
     if (!hasTokenCookie) {
-      // await new Promise((res) =>
-      //   setTimeout(router.replace("/account/login"), 2000)
-      // );
+      // redirect if user didn't login
+      // Trick of not trigger the link tag (Button inside link tag)
       setTimeout(() => {
         return router.push("/account/login");
       }, 2000);
@@ -43,10 +41,6 @@ export default function AddCart({
       if (!Object.entries(hasObject).length) {
         const res = await createNewCart(productID, quantity, category_slug);
         const newCartItem = await res.json();
-        console.log("newCartItem :>> ", newCartItem);
-        // if(!newCartItem.user) {
-        //   //
-        // }
 
         const _ = await cartMutate(newCartItem);
       } else {

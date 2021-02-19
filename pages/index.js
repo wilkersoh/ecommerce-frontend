@@ -42,7 +42,7 @@ export default function Home({ categories = [] }) {
                   width={330}
                   layout='responsive'
                 />
-                <Text fontSize='0.9em' fontWeight='700' mb={"5px"}>
+                <Text fontSize='0.9em' fontWeight='700' mt={1} mb={"5px"}>
                   {category.name}
                 </Text>
               </Box>
@@ -63,5 +63,6 @@ export async function getStaticProps() {
     props: {
       categories,
     },
+    revalidate: 1, // In seconds
   };
 }

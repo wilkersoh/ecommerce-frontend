@@ -21,7 +21,11 @@ export default function ViewProductImage({ product }) {
       <Box overflow='hidden' position='relative'>
         <ViewEye />
         <NextLink
-          href={`/categories/${router.query.category_slug}/product/${product.product_slug}`}
+          href={
+            router.query.category_slug
+              ? `/categories/${router.query.category_slug}/product/${product.product_slug}`
+              : `/products/${product.product_slug}`
+          }
           passHref>
           <Link>
             <Box>
@@ -112,23 +116,6 @@ const HoverImage = ({ image }) => (
     zIndex={-1}>
     <Image src={image} layout='responsive' height={330} width={330} />
   </Box>
-  // <Box
-  //   className='category_product-hover-image-show'
-  //   position='absolute'
-  //   d='none'
-  //   top={0}
-  //   bottom={0}
-  //   left={0}
-  //   right={0}
-  //   opacity={0}
-  //   zIndex={-1}>
-  //   <Image
-  //     src={fromImageToUrl(image)}
-  //     layout='responsive'
-  //     height={330}
-  //     width={330}
-  //   />
-  // </Box>
 );
 
 const ViewEye = () => (

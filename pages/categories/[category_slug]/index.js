@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useRouter } from "next/router";
+import React from "react";
 import fetch from "isomorphic-unfetch";
 import ReactMarkdown from "react-markdown";
 import { FilterProvider, useFilter } from "../../../context/FilterContext";
@@ -11,16 +10,15 @@ import PageSize from "../../../components/PageSize";
 import SortBy from "../../../components/SortBy";
 import { API_URL } from "../../../utils/urls";
 
-import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Grid, GridItem } from "@chakra-ui/react";
 import PaginationControl from "../../../components/PaginationControl";
 
-const CategoryProducts = ({ products, initialTotalProductLength }) => {
-  const router = useRouter();
+const CategoryProducts = ({ products }) => {
   const { showFilterData, setTotalProductLength } = useFilter();
 
-  useEffect(() => {
-    setTotalProductLength({ init: initialTotalProductLength, total: null });
-  }, []);
+  // useEffect(() => {
+  //   setTotalProductLength({ init: initialTotalProductLength, total: null });
+  // }, []);
 
   // if (!showFilterData) {
   //   return (
@@ -29,10 +27,10 @@ const CategoryProducts = ({ products, initialTotalProductLength }) => {
   //     </App>
   //   );
   // }
-  console.log("showFilterData :>> ", showFilterData);
+
   return (
     <App>
-      <PageNav routeQuery={router.query} />
+      <PageNav />
 
       {products[0]?.categories[0].meta_title && (
         <>
@@ -106,27 +104,24 @@ export async function getServerSideProps(context) {
    */
 
   // get total product item number
-  const res_products_length = fetch(
-    `${API_URL}/products/count?categories.category_slug=${category_slug}`
-  );
+  // const res_products_length = fetch(
+  //   `${API_URL}/products/count?categories.category_slug=${category_slug}`
+  // );
 
   const res_product = fetch(
-    `${API_URL}/products?categories.category_slug=${category_slug}`
+    `${API_URL}/products?categories.category_slug=${category_slug}&_limit=1`
   );
 
-  const [promise_product, promise_productLength] = await Promise.all([
-    res_product,
-    res_products_length,
-  ]);
+  const [promise_product] = await Promise.all([res_product]);
 
   const products = await promise_product.json();
-  const initialTotalProductLength = await promise_productLength.json();
+  // const initialTotalProductLength = await promise_productLength.json();
 
   return {
     props: {
       products,
       category_slug,
-      initialTotalProductLength,
+      // initialTotalProductLength,
     },
   };
 }

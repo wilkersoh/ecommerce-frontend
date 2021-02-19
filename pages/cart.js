@@ -2,13 +2,11 @@ import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import NextLink from "next/link";
 import Image from "next/image";
-import useSWR from "swr";
 import App from "../components/App";
 import { useCart } from "../context/CartContext";
 import CheckoutButton from "../components/CheckoutButton";
 import { twoDecimals } from "../utils/format";
 import { fromImageToUrl } from "../utils/urls";
-import noAuthFetcher from "../utils/noAuthFetcher";
 
 import {
   Box,
@@ -84,7 +82,7 @@ export default function cart() {
       console.log(error);
     }
   };
-  console.log("checkoutItems :>> ", checkoutItems);
+
   if (!checkoutItems?.length) {
     return (
       <App>
@@ -93,7 +91,19 @@ export default function cart() {
         </Head>
         <Heading as='h1'>Your Cart</Heading>
         <Divider my={4} />
-        <p>Your cart is currently empty.</p>
+        <Text>
+          Your cart is currently empty. Please{" "}
+          <NextLink href='/account/login' passHref>
+            <Link
+              cursor='pointer'
+              d='inline-block'
+              fontWeight='500'
+              textDecor='underline'>
+              login
+            </Link>
+          </NextLink>{" "}
+          to view your cart.
+        </Text>{" "}
         <NextLink href='/' passHref>
           <Link cursor='pointer'>
             Continue browsing{" "}
@@ -124,7 +134,11 @@ export default function cart() {
           <Box as='section' w='full' d='flex'>
             <Box w={{ sm: "130px", md: "240px" }}>
               <NextLink
-                href={`/categories/${cart.category_slug}/product/${cart.product.product_slug}`}
+                href={
+                  cart.category_slug
+                    ? `/categories/${cart.category_slug}/product/${cart.product.product_slug}`
+                    : `/products/${cart.product.product_slug}`
+                }
                 passHref>
                 <Link>
                   <Image
@@ -138,14 +152,18 @@ export default function cart() {
             <Box ml={4} w='full'>
               <Box mb={2}>
                 <NextLink
-                  href={`/categories/${cart.category_slug}/product/${cart.product.product_slug}`}
+                  href={
+                    cart.category_slug
+                      ? `/categories/${cart.category_slug}/product/${cart.product.product_slug}`
+                      : `/products/${cart.product.product_slug}`
+                  }
                   passHref>
                   <Link className='h2' fontWeight='700' color='green.1'>
                     {cart.product.name}
                   </Link>
                 </NextLink>
               </Box>
-              <Box mb={2}>Product selection</Box>
+              {/* <Box mb={2}>Product selection</Box> */}
               <Box
                 d='inline-block'
                 color='green.1'

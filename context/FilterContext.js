@@ -21,7 +21,7 @@ const useFilterProvider = (category_slug) => {
   const [searchValue, setSearchValue] = useState({});
   const [onlyFirstFilter, setOnlyFirstFilter] = useState(true);
   const [mobileCheckboxItems, setMobileCheckboxItems] = useState([]);
-  const [pageSize, setPageSize] = useState("1");
+  const [pageSize, setPageSize] = useState("12");
   const [sortBy, setSortBy] = useState("sortBys=p.name&sortBys=asc");
   const [totalProductLength, setTotalProductLength] = useState({
     init: null, // load value after load page
@@ -40,7 +40,7 @@ const useFilterProvider = (category_slug) => {
   useEffect(() => {
     if (!Array.isArray(filterListData)) return; // return {500 error}, to avoid popup page error
 
-    const [brands, types, tags] = filterListData;
+    const [brands, types, tags, totalLengthArray] = filterListData;
 
     const brandsData = arrayObjectToObj(brands);
     const typesData = arrayObjectToObj(types);
@@ -61,6 +61,10 @@ const useFilterProvider = (category_slug) => {
 
     setFilterList(result);
     setSearchValue(apiQueryFormat);
+    setTotalProductLength({
+      init: totalLengthArray[0].totalLength,
+      total: null,
+    });
   }, [filterListData]);
 
   // ## EndPoint: Trigger it when value changes ##

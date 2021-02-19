@@ -29,12 +29,12 @@ export default function PageSize() {
         borderRadius={0}
         _focus={{ borderRadius: 0 }}
         onChange={handlePageSize}>
-        {/* <option value='12'>12</option>
+        <option value='12'>12</option>
         <option value='24'>24</option>
-        <option value='48'>48</option> */}
-        <option value='1'>1</option>
+        <option value='48'>48</option>
+        {/* <option value='1'>1</option>
         <option value='2'>2</option>
-        <option value='3'>3</option>
+        <option value='3'>3</option> */}
       </Select>
     </Box>
   );

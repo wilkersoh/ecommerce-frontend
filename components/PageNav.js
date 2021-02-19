@@ -30,7 +30,7 @@ const pageHref = (slug, query) => {
 
 export default function PageNav() {
   const router = useRouter();
-  const { page, ...mainQuery } = router.query;
+  const { ...mainQuery } = router.query;
 
   return (
     <>
