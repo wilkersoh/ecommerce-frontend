@@ -19,6 +19,7 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Select,
 } from "@chakra-ui/react";
 
 const Product = ({ product }) => {
@@ -35,18 +36,23 @@ const Product = ({ product }) => {
     id,
     price,
     content,
+    option_name,
+    options,
   } = product;
 
   const onChangeQuantity = (value) => {
     const precision = parseFloat(value).toFixed(0);
     setQuanity(precision);
   };
-
   // useEffect(() => {
   //   const current = getCurrentCartItem(product.id);
   //   console.log("current: ", current);
   //   setCurrentProduct({ ...currentProduct, ...current });
   // }, [cartItems, setCurrentProduct]);
+
+  const onSelectOption = (e) => {
+    console.log("e :>> ", e.target.value);
+  };
 
   return (
     <App>
@@ -71,15 +77,19 @@ const Product = ({ product }) => {
               RM {twoDecimals(price)}
             </Heading>
           </Box>
+          {/* <SelectOption
+            name={option_name}
+            options={options}
+            onChange={onSelectOption}
+          /> */}
           <Box>
             <Text>Quantity</Text>
-
             <NumberInput
               onChange={(valueString) => onChangeQuantity(valueString)}
               defaultValue={1}
               min={1}
+              borderRadius={0}
               max={quantity_in_store}
-              precision={0}
               step={1}
               keepWithinRange={false}
               clampValueOnBlur={false}>
@@ -103,6 +113,7 @@ const Product = ({ product }) => {
             _hover={{ bgColor: "transparent" }}
             className='h2'
             fontSize='0.9em'
+            w={{ sm: "full", lg: "200px" }}
           />
           <Box mt={6} mb={3}>
             <ReactMarkdown children={content} />
@@ -110,6 +121,26 @@ const Product = ({ product }) => {
         </Box>
       </Grid>
     </App>
+  );
+};
+
+const SelectOption = ({ name, options, onChange }) => {
+  if (!name || !options) return;
+  const arrayOptions = options.trim().split(",");
+
+  return (
+    <Box mb={3}>
+      <Text>{name}</Text>
+      <Box border='1px solid #E2E8F0' borderRadius={4}>
+        <Select onChange={onChange}>
+          {arrayOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </Select>
+      </Box>
+    </Box>
   );
 };
 

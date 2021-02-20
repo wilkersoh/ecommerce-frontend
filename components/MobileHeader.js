@@ -22,6 +22,13 @@ const menuLists = [
   { name: "create account", path: "/account/register" },
 ];
 
+const menuListsAuth = [
+  { name: "home", path: "/" },
+  { name: "list", path: "/products/all" },
+  { name: "my account", path: "/account" },
+  { name: "log out", path: "#" },
+];
+
 export default function MobileHeader({ cartItems }) {
   const { user, logoutUser } = useAuth();
   const [open, setOpen] = useState(false);
@@ -80,36 +87,8 @@ export default function MobileHeader({ cartItems }) {
         transition={"850ms cubic-bezier(0, 0.55, 0.45, 1)"}
         w='full'>
         <List fontFamily='heading'>
-          {menuLists.map((list, i) => (
-            <ListItem
-              key={list.name}
-              fontSize='0.8em'
-              fontWeight='700'
-              textTransform='uppercase'
-              borderTop='1px solid rgba(0, 0, 0, 0.2)'>
-              {i == 2 && user ? (
-                <NextLink href='#' passHref>
-                  <Link
-                    d='block'
-                    p={3}
-                    _active={{ textDecor: "none" }}
-                    _focus={{ outline: "none" }}>
-                    <Box onClick={logoutUser}>log out</Box>
-                  </Link>
-                </NextLink>
-              ) : (
-                <NextLink href={list.path} passHref>
-                  <Link
-                    d='block'
-                    p={3}
-                    _active={{ textDecor: "none" }}
-                    _focus={{ outline: "none" }}>
-                    {list.name}
-                  </Link>
-                </NextLink>
-              )}
-            </ListItem>
-          ))}
+          {user ? <AuthUserList logoutUser={logoutUser} /> : <NoAuthList />}
+
           <ListItem p={3} borderTop='1px solid rgba(0, 0, 0, 0.2)'>
             <GlobalSearch />
           </ListItem>
@@ -118,3 +97,61 @@ export default function MobileHeader({ cartItems }) {
     </Box>
   );
 }
+
+const AuthUserList = ({ logoutUser }) => {
+  {
+    return menuListsAuth.map((list, i) => (
+      <ListItem
+        key={list.name}
+        fontSize='0.8em'
+        fontWeight='700'
+        textTransform='uppercase'
+        borderTop='1px solid rgba(0, 0, 0, 0.2)'>
+        {i == 3 ? (
+          <NextLink href='#' passHref>
+            <Link
+              d='block'
+              p={3}
+              _active={{ textDecor: "none" }}
+              _focus={{ outline: "none" }}>
+              <Box onClick={logoutUser}>log out</Box>
+            </Link>
+          </NextLink>
+        ) : (
+          <NextLink href={list.path} passHref>
+            <Link
+              d='block'
+              p={3}
+              _active={{ textDecor: "none" }}
+              _focus={{ outline: "none" }}>
+              {list.name}
+            </Link>
+          </NextLink>
+        )}
+      </ListItem>
+    ));
+  }
+};
+
+const NoAuthList = () => {
+  {
+    return menuLists.map((list) => (
+      <ListItem
+        key={list.name}
+        fontSize='0.8em'
+        fontWeight='700'
+        textTransform='uppercase'
+        borderTop='1px solid rgba(0, 0, 0, 0.2)'>
+        <NextLink href={list.path} passHref>
+          <Link
+            d='block'
+            p={3}
+            _active={{ textDecor: "none" }}
+            _focus={{ outline: "none" }}>
+            {list.name}
+          </Link>
+        </NextLink>
+      </ListItem>
+    ));
+  }
+};
