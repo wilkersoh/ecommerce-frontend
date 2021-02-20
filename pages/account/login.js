@@ -31,27 +31,6 @@ export default function Login() {
     emailRef.current.focus();
   }, []);
 
-  useEffect(() => {
-    const handleRouteChange = (url) => {
-      console.log(
-        `App is changing to ${url} ${
-          "shallow" ? "with" : "without"
-        } shallow routing`
-      );
-      window.scroll({
-        top: 0,
-        left: 0,
-      });
-    };
-    router.events.on("routeChangeComplete", handleRouteChange);
-
-    // If the component is unmounted, unsubscribe
-    // from the event with the `off` method:
-    return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
-    };
-  }, []);
-
   const onSubmit = async (data) => {
     setIsLoading(true);
     const res = await fetch(`${API_URL}/auth/local`, {

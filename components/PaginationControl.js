@@ -11,18 +11,26 @@ export default function PaginationControl() {
     totalProductLength,
   } = useFilter();
 
+  const moveToTop = () => {
+    window.scroll({
+      top: 1,
+      left: 1,
+    });
+  };
+
   return (
     <Box d='flex' mt={4} justifyContent='center' color='green.1'>
-      <Pagination
-        limit={pageSize}
-        offset={offsetValue}
-        total={totalProductLength.total || totalProductLength.init}
-        size={"medium"}
-        currentPageColor='inherit'
-        reduced={true}
-        // style={{ borderRadius: "4px" }}
-        onClick={(e, offset) => onClickPagination(offset)}
-      />
+      <Box mx='auto' onClick={moveToTop}>
+        <Pagination
+          limit={pageSize}
+          offset={offsetValue}
+          total={totalProductLength.total || totalProductLength.init}
+          size={"medium"}
+          currentPageColor='inherit'
+          reduced={true}
+          onClick={(e, offset) => onClickPagination(offset)}
+        />
+      </Box>
     </Box>
   );
 }

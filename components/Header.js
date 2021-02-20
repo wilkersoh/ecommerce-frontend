@@ -1,6 +1,5 @@
 import React from "react";
 import NextLink from "next/link";
-import { useRouter } from "next/router";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { useShop } from "../context/ShopContext";
@@ -20,7 +19,6 @@ import {
 import GlobalSearch from "./GlobalSearch";
 
 export default function Header({ ...props }) {
-  const router = useRouter();
   const { user, logoutUser } = useAuth();
   const { cartItems } = useCart();
   const { shop } = useShop();
