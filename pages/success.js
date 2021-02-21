@@ -114,7 +114,11 @@ export default function success() {
         Thank you. Your ordered:
       </Heading>
 
-      <Box mb={3} d='flex' flexDir={{ sm: "column", lg: "row" }}>
+      <Box
+        mb={3}
+        d='flex'
+        flexDir={{ sm: "column", lg: "row" }}
+        justifyContent={{ lg: "space-between" }}>
         <Box mr={{ lg: 8 }}>
           <Text>
             Your order is confirmed with order number:{" "}
