@@ -17,7 +17,7 @@ export const useShop = () => useContext(ShopContext);
 
 const useShopProvider = () => {
   const { data } = useSWR(`${API_URL}/shop-details`, noAuthFetcher, {
-    dedupingInterval: 60000,
+    dedupingInterval: 600000,
   });
 
   return {

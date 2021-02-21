@@ -53,7 +53,6 @@ export default function search() {
 
   const onSearchButton = () => {
     const value = inputRef.current.value;
-    console.log("value :>> ", value);
     setSearchStatus({ status: true, offset: 0, value });
   };
 

@@ -16,5 +16,4 @@ export const register = async (value) => {
     body: JSON.stringify(regsterInfo),
   });
   const payload = await res.json();
-  console.log(payload);
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import NextLink from "next/link";
+import Image from "next/image";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { useShop } from "../context/ShopContext";
@@ -12,7 +13,6 @@ import {
   Heading,
   Link,
   Text,
-  Image,
   List,
   ListItem,
 } from "@chakra-ui/react";
@@ -42,8 +42,10 @@ export default function Header({ ...props }) {
           fontWeight='900'
           justifyContent='space-between'>
           <NextLink href='/' passHref>
-            <Link>
-              <Image src={shop?.shop_icon.url} height='35px' width='35px' />
+            <Link mt='3px'>
+              {shop?.shop_icon && (
+                <Image src={shop?.shop_icon?.url} height={30} width={30} />
+              )}
             </Link>
           </NextLink>
           <Flex fontSize='0.8em' alignItems='center'>

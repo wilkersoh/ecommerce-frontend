@@ -45,8 +45,6 @@ export default function register() {
     // console.log(payload); // {status: "", user: {carts: [], orders:[], username: "wilker002" }}
   };
 
-  console.log("errors :>> ", errors);
-
   return (
     <App>
       <Box w={{ md: "50%" }}>

@@ -77,6 +77,7 @@ const Listing = ({ title, items, onClick, mobileCheckboxItems }) => {
             <ListItem ml={1}>
               <CheckboxGroup
                 fontSize='0.8em'
+                _focus={{ boxShadow: "0" }}
                 colorScheme='green'
                 value={mobileCheckboxItems}>
                 <VStack align='stretch'>
