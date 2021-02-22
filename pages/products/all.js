@@ -8,11 +8,11 @@ import PageSize from "../../components/PageSize";
 import SortBy from "../../components/SortBy";
 import { FilterProvider, useFilter } from "../../context/FilterContext";
 
-import { Box, Heading, Grid, GridItem } from "@chakra-ui/react";
+import { Heading, Grid, GridItem } from "@chakra-ui/react";
 import { API_URL } from "../../utils/urls";
 
 const All = () => {
-  const { showFilterData, setTotalProductLength } = useFilter();
+  const { showFilterData } = useFilter();
 
   return (
     <App>

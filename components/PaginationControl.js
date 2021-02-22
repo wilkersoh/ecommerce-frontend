@@ -1,5 +1,6 @@
 import Pagination from "material-ui-flat-pagination";
 import { useFilter } from "../context/FilterContext";
+import { moveToTop } from "../utils/moveToTop";
 
 import { Box } from "@chakra-ui/react";
 
@@ -10,13 +11,6 @@ export default function PaginationControl() {
     pageSize,
     totalProductLength,
   } = useFilter();
-
-  const moveToTop = () => {
-    window.scroll({
-      top: 1,
-      left: 1,
-    });
-  };
 
   return (
     <Box d='flex' mt={4} justifyContent='center' color='green.1'>

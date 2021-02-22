@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { API_URL } from "../../utils/urls";
 import { useAuth } from "../../context/AuthContext";
 import ResetPassword from "../../components/ResetPassword";
+import { moveToTop } from "../../utils/moveToTop";
 import {
   Box,
   Text,
@@ -27,6 +28,7 @@ export default function Login() {
   const emailRef = useRef();
 
   useEffect(() => {
+    moveToTop();
     if (hasTokenCookie) return router.replace("/");
     emailRef.current.focus();
   }, []);

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import App from "../components/App";
 import { useRouter } from "next/router";
+import NextLink from "next/link";
 import Image from "next/image";
 import useSWR from "swr";
 import Pagination from "material-ui-flat-pagination";
@@ -16,6 +17,7 @@ import {
   InputRightElement,
   Input,
   Text,
+  Link,
 } from "@chakra-ui/react";
 
 export default function search() {
@@ -121,16 +123,22 @@ export default function search() {
         {data[0]?.map((product) => (
           <Box key={product.productID} d='flex' mb={4}>
             <Box w={{ sm: "20%" }} mr={6}>
-              <Image
-                src={product.images.split(",")[0]}
-                width={200}
-                height={200}
-                layout='responsive'
-              />
+              <NextLink href={`/products/${product.product_slug}`} passHref>
+                <Link>
+                  <Image
+                    src={product.images.split(",")[0]}
+                    width={200}
+                    height={200}
+                    layout='responsive'
+                  />
+                </Link>
+              </NextLink>
             </Box>
             <Box w={{ sm: "80%" }}>
               <Heading as='h2' fontSize='1.29em' color='green.1'>
-                {product.productName}
+                <NextLink href={`/products/${product.product_slug}`} passHref>
+                  <Link>{product.productName}</Link>
+                </NextLink>
               </Heading>
               <Box fontSize='17px'>
                 <Text as='h3' mt={3} fontWeight='400'>

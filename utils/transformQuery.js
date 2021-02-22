@@ -10,15 +10,15 @@
 */
 export const arrayObjectToObj = (arrayObj) => {
   if (!arrayObj.length) return;
-  const [name, count] = Object.keys(arrayObj[0]);
+  const [name, countName] = Object.keys(arrayObj[0]);
+
   const objKeyName = name.split("_")[0] + "s";
 
   const result = arrayObj.reduce(
     (acc, obj) => {
-      if (!obj[name]) return acc;
-
+      if (!obj[name]) return acc; // countNum is null
       const key = obj[name].replace(" ", "_");
-      [acc[objKeyName][key]] = obj[count];
+      acc[objKeyName][key] = obj[countName];
       return acc;
     },
     { [objKeyName]: {} }

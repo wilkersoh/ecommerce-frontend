@@ -7,6 +7,7 @@ import { useCart } from "../context/CartContext";
 import CheckoutButton from "../components/CheckoutButton";
 import { twoDecimals } from "../utils/format";
 import { fromImageToUrl } from "../utils/urls";
+import { useAuth } from "../context/AuthContext";
 
 import {
   Box,
@@ -25,6 +26,7 @@ import {
 
 export default function cart() {
   const { cartItems, cartMutate, updateCart, removeCartItem } = useCart();
+  const { hasTokenCookie } = useAuth();
   const [checkoutItems, setCheckoutItem] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -51,7 +53,6 @@ export default function cart() {
     const newCartValues = checkoutItems.map((item) =>
       item.id == id ? { ...item, quantity: Number(value) } : item
     );
-    console.log("newCartValues: ", newCartValues);
     setCheckoutItem(newCartValues);
   };
 
@@ -91,19 +92,23 @@ export default function cart() {
         </Head>
         <Heading as='h1'>Your Cart</Heading>
         <Divider my={4} />
-        <Text>
-          Your cart is currently empty. Please{" "}
-          <NextLink href='/account/login' passHref>
-            <Link
-              cursor='pointer'
-              d='inline-block'
-              fontWeight='500'
-              textDecor='underline'>
-              login
-            </Link>
-          </NextLink>{" "}
-          to view your cart.
-        </Text>{" "}
+        {hasTokenCookie ? (
+          <Text>You cart is empty.</Text>
+        ) : (
+          <Text>
+            Your cart is currently empty. Please{" "}
+            <NextLink href='/account/login' passHref>
+              <Link
+                cursor='pointer'
+                d='inline-block'
+                fontWeight='500'
+                textDecor='underline'>
+                login
+              </Link>
+            </NextLink>{" "}
+            to view your cart.
+          </Text>
+        )}
         <NextLink href='/' passHref>
           <Link cursor='pointer'>
             Continue browsing{" "}
