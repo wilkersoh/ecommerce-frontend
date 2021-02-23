@@ -58,13 +58,12 @@ const useFilterProvider = (category_slug) => {
       if (!acc[0]) acc[values[0]] = Object.keys(values[1]);
       return acc;
     }, {});
-
+    /**
+     * Initial setup value
+     */
     setFilterList(result);
     setSearchValue(apiQueryFormat);
-    setTotalProductLength({
-      init: totalLengthArray[0].totalLength,
-      total: null,
-    });
+    setTotalProductLength({ total: null });
   }, [filterListData]);
 
   // ## EndPoint: Trigger it when value changes ##
@@ -78,6 +77,12 @@ const useFilterProvider = (category_slug) => {
     }
   );
 
+  useEffect(() => {
+    if (!showFilterData || !Array.isArray(showFilterData)) return;
+
+    updateTotalLength();
+  }, [showFilterData]);
+
   /**
     saerchValue: {
       brands: [value, value],
@@ -85,6 +90,9 @@ const useFilterProvider = (category_slug) => {
     }
   */
   const updateSearchValue = (title, value) => {
+    // reset to page 1
+    setOffsetValue(0);
+
     if (onlyFirstFilter) setOnlyFirstFilter(false);
     setSearchValue((prevState) => {
       const clonePrev = JSON.parse(JSON.stringify(prevState));
@@ -112,38 +120,10 @@ const useFilterProvider = (category_slug) => {
     });
   };
 
-  const updateTotalLength = (count, name) => {
-    // Reset to page 1, every click
-    setOffsetValue(0);
-    /**
-      {
-        init: 6,
-        total: all sum except init number,
-        midliner: 1,
-        Classiky: 0,
-      }
-    */
-    let newObjItem = {};
-    if (!totalProductLength[name]) newObjItem[name] = count;
-    else {
-      // remove object, it is toggle checkbox
-      const { [name]: remove, init, total, ...rest } = totalProductLength;
-      const sum = Object.values(rest).reduce((acc, num) => acc + num, 0);
+  const updateTotalLength = () => {
+    const total = showFilterData[1] ? showFilterData[1][0].totalLength : null;
 
-      setTotalProductLength({ init, ...rest, total: sum });
-      return;
-    }
-
-    const { total, init, ...rest } = totalProductLength;
-    const mergeWithNew = { ...rest, ...newObjItem };
-
-    const sum = Object.values(mergeWithNew).reduce((acc, num) => acc + num, 0);
-
-    setTotalProductLength({
-      ...totalProductLength,
-      ...mergeWithNew,
-      total: sum,
-    });
+    setTotalProductLength({total});
   };
 
   const hanldeMoblieCheckbox = (value) => {
@@ -180,7 +160,6 @@ const useFilterProvider = (category_slug) => {
     filterLists,
     onClickPagination,
     offsetValue,
-    updateTotalLength,
     setTotalProductLength,
     totalProductLength,
     updateSortBy,

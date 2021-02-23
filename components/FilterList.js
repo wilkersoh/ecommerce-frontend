@@ -17,7 +17,6 @@ export default function FilterList() {
     filterLists,
     hanldeMoblieCheckbox,
     mobileCheckboxItems,
-    updateTotalLength,
   } = useFilter();
 
   const { brands, types, tags } = filterLists;
@@ -29,7 +28,6 @@ export default function FilterList() {
       const spaceValue = value.replace("_", " ");
 
       updateSearchValue(title, spaceValue);
-      updateTotalLength(+count, value);
       hanldeMoblieCheckbox(value);
     }
   };
@@ -76,7 +74,6 @@ const Listing = ({ title, items, onClick, mobileCheckboxItems }) => {
           <List key={i} spacing={3} maxHeight='140px' overflow='auto'>
             <ListItem ml={1}>
               <CheckboxGroup
-                fontSize='0.8em'
                 _focus={{ boxShadow: "0" }}
                 colorScheme='green'
                 value={mobileCheckboxItems}>

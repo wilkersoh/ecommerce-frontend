@@ -21,7 +21,7 @@ export default function Filter() {
   const handleClose = () => onClose();
 
   if (!Object.keys(filterLists).length) return <FilterSkeleton />;
-  console.log("filterLists :>> ", filterLists);
+
   return (
     <Box>
       <Box d={{ sm: "block", md: "none" }}>

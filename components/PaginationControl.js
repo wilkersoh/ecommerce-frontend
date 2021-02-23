@@ -18,7 +18,7 @@ export default function PaginationControl() {
         <Pagination
           limit={pageSize}
           offset={offsetValue}
-          total={totalProductLength.total || totalProductLength.init}
+          total={totalProductLength.total}
           size={"medium"}
           currentPageColor='inherit'
           reduced={true}
