@@ -40,7 +40,7 @@ const useFilterProvider = (category_slug) => {
   useEffect(() => {
     if (!Array.isArray(filterListData)) return; // return {500 error}, to avoid popup page error
 
-    const [brands, types, tags, totalLengthArray] = filterListData;
+    const [brands, types, tags] = filterListData;
 
     const brandsData = arrayObjectToObj(brands);
     const typesData = arrayObjectToObj(types);
