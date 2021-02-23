@@ -123,7 +123,7 @@ const useFilterProvider = (category_slug) => {
   const updateTotalLength = () => {
     const total = showFilterData[1] ? showFilterData[1][0].totalLength : null;
 
-    setTotalProductLength({total});
+    setTotalProductLength({ total });
   };
 
   const hanldeMoblieCheckbox = (value) => {
