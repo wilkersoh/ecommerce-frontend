@@ -21,21 +21,7 @@ function MyApp({ Component, pageProps }) {
         <ShopProvider>
           <AuthProvider>
             <CartProvider>
-              <DefaultSeo
-                {...SEO}
-                // openGraph={{
-                //   ...SEO.openGraph,
-                //   images: [
-                //     {
-                //       url: `https://boilerplateuploadprovider.s3.ap-southeast-1.amazonaws.com/Face_Book_Card_bc0eae1a20.png`,
-                //       width: 1200,
-                //       height: 630,
-                //       alt:
-                //         "利用网路科技，解决问题，和我说你的问题，或许我能帮到你。",
-                //     },
-                //   ],
-                // }}
-              />
+              <DefaultSeo {...SEO} />
               <Component {...pageProps} />
             </CartProvider>
           </AuthProvider>

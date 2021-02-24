@@ -9,7 +9,7 @@ const SEO = {
     site_name: "Creative 文具屋",
     images: [
       {
-        url: "https://creative.staging.selfpaths.com/images/banner.jpg",
+        url: "https://creative.staging.selfpaths.com/images/banner_1.jpg",
         width: 1200,
         height: 630,
         alt: "利用网路科技，解决问题，和我说你的问题，或许我能帮到你。",
