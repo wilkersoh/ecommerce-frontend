@@ -4,7 +4,7 @@ const SEO = {
   openGraph: {
     type: "website",
     locale: "en_IE",
-    description: "Find the best stationery deals and happy hours in your area.",
+    description: "利用网路科技，解决问题，和我说你的问题，或许我能帮到你。",
     url: "https://creative.staging.selfpaths.com/",
     site_name: "Creative 文具屋",
     images: [
@@ -12,8 +12,7 @@ const SEO = {
         url: "https://creative.staging.selfpaths.com/images/facebook_2.jpg",
         width: 1200,
         height: 630,
-        alt:
-          "Creative 文具 | Find the best stationery deals and happy hours in your area.",
+        alt: "利用网路科技，解决问题，和我说你的问题，或许我能帮到你。.",
       },
     ],
   },
