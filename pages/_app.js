@@ -24,16 +24,10 @@ function MyApp({ Component, pageProps }) {
               <DefaultSeo
                 {...SEO}
                 // openGraph={{
-                //   type: "website",
-                //   locale: "en_IE",
-                //   url: "https://creative.staging.selfpaths.com/",
-                //   description:
-                //     "利用网路科技，解决问题，和我说你的问题，或许我能帮到你。",
-                //   site_name: "Creative 文具屋",
+                //   ...SEO.openGraph,
                 //   images: [
                 //     {
-                //       url:
-                //         "https://creative.staging.selfpaths.com/images/banner.jpg",
+                //       url: `https://boilerplateuploadprovider.s3.ap-southeast-1.amazonaws.com/Face_Book_Card_bc0eae1a20.png`,
                 //       width: 1200,
                 //       height: 630,
                 //       alt:

@@ -16,11 +16,6 @@ const SEO = {
       },
     ],
   },
-  facebook: {
-    handle: "@yz",
-    site: "@yz",
-    cardType: "summary_large_image",
-  },
 };
 
 export default SEO;
