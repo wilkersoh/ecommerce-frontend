@@ -1,6 +1,6 @@
 const SEO = {
-  title: "Creative 文具 | YZ",
-  description: "",
+  title: "网页开发者",
+  description: "利用网路科技，解决问题，和我说你的问题，或许我能帮到你。",
   openGraph: {
     type: "website",
     locale: "en_IE",
