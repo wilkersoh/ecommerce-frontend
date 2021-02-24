@@ -27,15 +27,17 @@ function MyApp({ Component, pageProps }) {
                 //   type: "website",
                 //   locale: "en_IE",
                 //   url: "https://creative.staging.selfpaths.com/",
+                //   description:
+                //     "利用网路科技，解决问题，和我说你的问题，或许我能帮到你。",
                 //   site_name: "Creative 文具屋",
                 //   images: [
                 //     {
                 //       url:
-                //         "https://creative.staging.selfpaths.com/images/facebook_1.jpg",
+                //         "https://creative.staging.selfpaths.com/images/banner.jpg",
                 //       width: 1200,
                 //       height: 630,
                 //       alt:
-                //         "Creative 文具 | Find the best stationery deals and happy hours in your area.",
+                //         "利用网路科技，解决问题，和我说你的问题，或许我能帮到你。",
                 //     },
                 //   ],
                 // }}
