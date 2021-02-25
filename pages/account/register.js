@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import NextLink from "next/link";
-import { useForm, ErrorMessage } from "react-hook-form";
+import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
 import { API_URL } from "../../utils/urls";
 import App from "../../components/App";
 import { ClientMessage, ServerMessage } from "../../components/Messages";
@@ -10,6 +11,7 @@ import { Box, Button, Stack, Input, Text, Link } from "@chakra-ui/react";
 export default function register() {
   const { register, handleSubmit, errors } = useForm();
   const [hasErrors, setErrors] = useState({});
+  const router = useRouter();
   const firstNameRef = useRef();
   const { setLoginUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -35,14 +37,16 @@ export default function register() {
         throw new Error(payload.message[0].messages[0].message);
       }
 
+      // Activate email confirmation, it never straight login after sign up
+      router.push({ pathname: "/activate", query: { redirect: true } });
+
       // save in contextAuth
-      setLoginUser(payload.user);
+      // setLoginUser(payload.user);
     } catch (error) {
       setIsLoading(false);
       // doing popup handle error
       setErrors({ email: { type: "duplicated", message: error } });
     }
-    // console.log(payload); // {status: "", user: {carts: [], orders:[], username: "wilker002" }}
   };
 
   return (
