@@ -1,5 +1,5 @@
 const SEO = {
-  title: "我是网页开发者",
+  title: "商城平台樣品",
   description: "开发系统/处理数据/解决问题，把你的时间省下来。",
   openGraph: {
     type: "website",
@@ -9,7 +9,7 @@ const SEO = {
     site_name: "Creative 文具屋",
     images: [
       {
-        url: "https://creative.staging.selfpaths.com/images/social_banner.jpg",
+        url: "https://creative.staging.selfpaths.com/images/banner_face.jpg",
         width: 1200,
         height: 630,
         alt: "开发系统/处理数据/解决问题，把你的时间省下来",
