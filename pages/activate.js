@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import App from "../components/App";
+import SkeletionLoading from "../components/SkeletionLoading";
 
 import { Heading, Text, Link } from "@chakra-ui/react";
 import { useAuth } from "../context/AuthContext";
@@ -18,6 +19,13 @@ export default function activate() {
     return (
       <App>
         <Heading>We already sent confirmation to your email.</Heading>
+      </App>
+    );
+
+  if (hasTokenCookie)
+    return (
+      <App>
+        <SkeletionLoading />
       </App>
     );
 
