@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import App from "../components/App";
-import SkeletionLoading from "../components/SkeletionLoading";
+import SkeletonLoading from "../components/SkeletonLoading";
 
 import { Heading, Text, Link } from "@chakra-ui/react";
 import { useAuth } from "../context/AuthContext";
@@ -25,7 +25,7 @@ export default function activate() {
   if (hasTokenCookie)
     return (
       <App>
-        <SkeletionLoading />
+        <SkeletonLoading />
       </App>
     );
 
